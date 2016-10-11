@@ -7,6 +7,7 @@ import com.badlogic.gdx.Game;
  *representa el juego completo
  */
 //COMENTARIO DE KARLO
+// fff
 public class juego extends Game{
 
     @Override
