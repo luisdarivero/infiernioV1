@@ -9,8 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Karlo on 11/10/2016.
  */
 
+
 public class Pereza
 {
+
     private Sprite sprite;
     //ESTADO
     public Estado estado;
@@ -29,6 +31,7 @@ public class Pereza
         {
             case 0:
                 estado = Estado.UNCUARTO;
+                sprite.setPosition(x,y-5);
                 break;
             case 1:
                 estado = Estado.UNMEDIO;
@@ -54,11 +57,11 @@ public class Pereza
     private void actualizar()
     {
         contadors ++;
-
         //animacion
         switch(estado)
         {
             case UNCUARTO:
+                sprite.setSize(sprite.getWidth()-((toquesP%5)),sprite.getHeight()+((toquesP%5)*1.12f));
                 if(contadors==40)
                 {
                     contadors=0;
@@ -69,10 +72,11 @@ public class Pereza
                 }
                 else
                 {
-                    sprite.setX(sprite.getX() + 4);
+                    sprite.setX(sprite.getX() + 5);
                 }
                 break;
             case UNMEDIO:
+                sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)/2));
                 if(contadors==30)
                 {
                     contadors=0;
@@ -87,6 +91,7 @@ public class Pereza
                 }
                 break;
             case TRESCUARTOS:
+                sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)/4));
                 if(toquesP < 19)
                 {
                     if (contadors == 20) {
@@ -133,6 +138,7 @@ public class Pereza
 
     public boolean contiene(float x, float y)
     {
-        return sprite.getBoundingRectangle().contains(x, y);
+        return sprite.getBoundingRectangle().contains(x,y);
     }
 }
+
