@@ -27,6 +27,7 @@ public class NivelPereza implements Screen, InputProcessor {
     private  int vidas;
     private int almas ;
     private  boolean estado;
+    private boolean sizeF = false;
 
     private Texture texturafondo;
     private Texture texturaGana;
@@ -119,7 +120,7 @@ public class NivelPereza implements Screen, InputProcessor {
                     perezas.add(pereza1);
                     break;
                 case 2 :
-                    Pereza pereza2 = new Pereza(texturaPreza3,50,0,j);
+                    Pereza pereza2 = new Pereza(texturaPreza3,30,0,j);
                     perezas.add(pereza2);
                     break;
                 case 3 :
@@ -136,11 +137,10 @@ public class NivelPereza implements Screen, InputProcessor {
 
     private void inicializarCamara()
     {
-        camara = new OrthographicCamera(1280,800);
-        camara.position.set(1280/2,800/2,0);
+        camara = new OrthographicCamera(1280,720);
+        camara.position.set(1280/2,720/2,0);
         camara.update();
-
-        vista = new StretchViewport(1280,800,camara);
+        vista = new StretchViewport(1280,720,camara);
     }
     //quizas necesite cargar otras texturas
     private void cargarTexturas()
@@ -165,6 +165,8 @@ public class NivelPereza implements Screen, InputProcessor {
         batch.begin();
         //aki se dibujan los elementos
         fondo.draw(batch);
+        fondo.setSizeF(0, 10);
+
 
         // Aqui dibujamos perezs distintas
         if (toques < 5)
@@ -172,6 +174,11 @@ public class NivelPereza implements Screen, InputProcessor {
             if(toques == 0)
             {
                 info.draw(batch);
+                if(sizeF == false)
+                {
+                info.setPositionF(0,-200);
+                sizeF = true;
+                }
             }
             Pereza p = perezas.get(0);
 
@@ -239,14 +246,14 @@ public class NivelPereza implements Screen, InputProcessor {
 
         if(toques<20)
         {
-            texto.mostrarMensaje(batch, "Tiempo: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 1050, 800);
+            texto.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 720);
         }
         else
         {
-            texto.mostrarMensaje(batch, "Tiempo: 0", 1050, 800);
+            texto.mostrarMensaje(batch, "Time: 0", 640, 720);
         }
 
-        texto.mostrarMensaje(batch, "Toques: " + toques,200, 800);
+        //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 90 )
         {
@@ -272,7 +279,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
+            vista.update(width,height);
     }
 
     @Override

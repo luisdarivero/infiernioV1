@@ -156,7 +156,7 @@ public class MenuPrincipal implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
-                juego.setScreen(new Avaricia(juego));
+                juego.setScreen(new NivelPereza(juego, 3, 3,true,0));
             }
         });
 

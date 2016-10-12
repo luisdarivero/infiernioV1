@@ -122,8 +122,10 @@ public class Lobby implements Screen {
                 h.setPosition();
                 vidas-=1;
                 juego.setScreen(new Avaricia(juego, vidas, almas));
+
             }else{
                 juego.setScreen(new Avaricia(juego, vidas, almas));
+
             }
 
         }
