@@ -17,9 +17,9 @@ import java.util.Random;
 /**
  * Created by Karlo on 06/10/2016.
  */
-//
+
 public class NivelLujuria implements Screen, InputProcessor {
-    private final juego juego;
+    private final juego Juego;
 
     private Texture texturafondo;
     private Texture texturaPierde;
@@ -38,10 +38,10 @@ public class NivelLujuria implements Screen, InputProcessor {
     private int toques = -1;
     private int totals = 0;
 
-    //musica
-    private final Music musica;
-    private final Music winnie;
-    private final Music bop;
+    //Musica
+    private final Music Musica;
+    private final Music Winnie;
+    private final Music Bop;
     private int bC = 0;
 
     //SpriteBatch
@@ -60,15 +60,15 @@ public class NivelLujuria implements Screen, InputProcessor {
     //Contador de lujurias volteadas correctamente
     private int contador=0;
 
-    //TODO: PONER LAS COSAS CORRECTAS MUSICA
-    public NivelLujuria(juego juego)
+    //TODO: PONER LAS COSAS CORRECTAS Musica
+    public NivelLujuria(juego Juego)
     {
-        this.juego=juego;
-        musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
-        winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
-        bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
-        musica.setVolume(0.6f);
-        musica.play();
+        this.Juego=Juego;
+        Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+        Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
+        Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
+        Musica.setVolume(0.6f);
+        Musica.play();
     }
 
     //Marcador
@@ -224,10 +224,10 @@ public class NivelLujuria implements Screen, InputProcessor {
             texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
 
             if (contador >= totals) {
-                musica.stop();
-                winnie.setVolume(0.4f);
-                //winnie.play();
-                winnie.setVolume(0.4f);
+                Musica.stop();
+                Winnie.setVolume(0.4f);
+                //Winnie.play();
+                Winnie.setVolume(0.4f);
                 batch.draw(texturaGana, 300, 300);
             }
         }
@@ -292,12 +292,12 @@ public class NivelLujuria implements Screen, InputProcessor {
             if (l.contiene(x, y) && l.sexy == 0 && l.cdr == 0)
             {
                 //le pico
-                bop.stop();
+                Bop.stop();
                 contador++;
                 toques++;
                 l.cdr++;
-                bop.setVolume(.4f);
-                bop.play();
+                Bop.setVolume(.4f);
+                Bop.play();
                 l.setEstado(Lujuria.Estado.ROTANDO);
             }
             if (l.contiene(x, y) && toques == -1)
