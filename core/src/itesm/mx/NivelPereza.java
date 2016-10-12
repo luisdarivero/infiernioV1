@@ -255,7 +255,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
         //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 90 )
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 20 )
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby

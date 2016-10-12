@@ -220,7 +220,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                     ll.draw(batch);
                     if (ll.info==false)
                     {
-                        ll.setSize(l.getW(), l.getH() - 10);
+                        ll.setSize(l.getW()-15, l.getH() - 15);
                         ll.info = true;
                     }
                 } else if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec != 5) {
@@ -230,14 +230,14 @@ public class NivelLujuria implements Screen, InputProcessor {
                     ll.draw(batch);
                     if (ll.info==false)
                     {
-                        ll.setSize(l.getW(), l.getH() - 10);
+                        ll.setSize(l.getW()-15, l.getH() - 15);
                         ll.info = true;
                     }
                 } else {
                     l.draw(batch);
                     if(l.info==false)
                     {
-                        l.setSize(l.getW(), l.getH() - 10);
+                        l.setSize(l.getW()-15, l.getH() - 15);
                         l.info = true;
                     }
                 }
@@ -257,13 +257,21 @@ public class NivelLujuria implements Screen, InputProcessor {
                 Winnie.setVolume(0.4f);
                 //Winnie.play();
                 Winnie.setVolume(0.4f);
-                batch.draw(texturaGana, 300, 300);
+                //batch.draw(texturaGana, 300, 300);
             }
         }
         else
         {
             inst.draw(batch);
         }
+
+        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 0)
+        {
+            Musica.stop();
+            //Aqui me deberia regresar al Lobby
+            Juego.setScreen(new MenuPrincipal(Juego));
+        }
+
         batch.end();
     }
 
