@@ -105,8 +105,8 @@ public class Avaricia implements Screen, InputProcessor {
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
 
-            //Aqui me deberia regresar al Lobby
-            juego.setScreen(new Lobby(juego));
+            almas+=1;
+            juego.setScreen(new Lobby(juego,vidas,almas,true));
         }
 
         batch.end();
@@ -164,9 +164,6 @@ public class Avaricia implements Screen, InputProcessor {
                 //Toco el billete;
             juego.setScreen(new Lobby(juego,vidas,almas,false));
 
-        }else {
-            almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true));
         }
 
         return false;
