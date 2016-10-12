@@ -9,20 +9,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.util.Random;
 
 /**
  * Created by Daniel Riv on 16/09/2016.
@@ -38,9 +29,6 @@ public class AboutUs implements Screen, InputProcessor {
     //para saber en que modo esta la pantalla
     private boolean contributor = false;
 
-    //escena para la pantalla
-    private Stage escena;
-
     //textura para la imagen de fondo
     private Texture texturaFondo;
     private Fondo imgFondo;
@@ -48,19 +36,26 @@ public class AboutUs implements Screen, InputProcessor {
     private Fondo becky;
     private Fondo sam;
     private Fondo daniel;
-    private Fondo samantha;
+    private Fondo marina;
 
     //SpriteBatch
     private SpriteBatch batch;
 
     //Textura vacio
     private Texture texturavac;
+    private Texture texturakarlo;
+    private Texture texturamarina;
+    private Texture texturadaniel;
+    private Texture texturasam;
+    private Texture texturabecky;
 
     //texturas de las demas imagenes
     private Texture texturaBtnBack;
+    private Texture texturaBtnOk;
 
     private Array<Lujuria> decentes;   //Lista de Lujurias 5
     Lujuria btnBack ;
+    Lujuria btnOk ;
     //administra la carga de assets
     private final AssetManager assetManager = new AssetManager();
 
@@ -83,9 +78,8 @@ public class AboutUs implements Screen, InputProcessor {
         cargarTexturas();
         inicializarCamara();
         crearEscena();
-        escena = new Stage();
         //habilitar el manejo de eventos
-        Gdx.input.setInputProcessor(escena);
+        Gdx.input.setInputProcessor(this);
     }
 
     private void inicializarCamara()
@@ -99,6 +93,11 @@ public class AboutUs implements Screen, InputProcessor {
     private void crearEscena()
     {
         batch = new SpriteBatch();
+        karlo= new Fondo(texturakarlo);
+        becky=new Fondo(texturabecky);
+        sam=new Fondo(texturasam);
+        daniel=new Fondo(texturadaniel);
+        marina=new Fondo(texturamarina);
         decentes = new Array<Lujuria>(12);
         //DECENTES
         for(int i = 0;i<5;i++)
@@ -153,6 +152,12 @@ public class AboutUs implements Screen, InputProcessor {
         texturaFondo = assetManager.get("aboutUs.png");
         texturaBtnBack = assetManager.get("back.png");
         texturavac = assetManager.get("LujuriaP1.png");
+        texturakarlo = new Texture("Karlo.png");
+        texturabecky = new Texture("Becky.png");
+        texturamarina = new Texture("Marina.png");
+        texturadaniel = new Texture("Daniel.png");
+        texturasam = new Texture("Sam.png");
+        texturaBtnOk = new Texture("back.png");
     }
 
     public void anadirTexturas()
@@ -160,27 +165,27 @@ public class AboutUs implements Screen, InputProcessor {
         //para el fondo
         imgFondo = new Fondo(texturaFondo);
         //botones
-         btnBack =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
+        btnBack =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
+        btnOk =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
     }
 
     @Override
     public void render(float delta) {
         //pantalla blanca
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        imgFondo.draw(batch);
-
         if(contributor==false)
         {
+            imgFondo.draw(batch);
             btnBack.draw(batch);
             btnBack.setRotation();
             for (Lujuria l : decentes)
             {
                 if(l.showInfo==false)
                 {
-                    l.draw(batch);
+                    //l.draw(batch);
                     l.setRotation();
                     if (l.info == false) {
                         l.setSize(l.getW() - 80, l.getH() - 5);
@@ -188,6 +193,33 @@ public class AboutUs implements Screen, InputProcessor {
                     }
                 }
             }
+        }
+        else
+        {
+            for (Lujuria l : decentes)
+            {
+                if(l.showInfo==true)
+                switch (l.contributor)
+                {
+                    case 0:
+                        becky.draw(batch);
+                        break;
+                    case 1:
+                        karlo.draw(batch);
+                        break;
+                    case 2:
+                        marina.draw(batch);
+                        break;
+                    case 3:
+                        daniel.draw(batch);
+                        break;
+                    case 4:
+                        sam.draw(batch);
+                        break;
+                }
+            }
+            btnOk.draw(batch);
+            btnOk.setRotation();
         }
         batch.end();
     }
@@ -237,7 +269,7 @@ public class AboutUs implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // VErificar si le pego a un topo
+        // VErificar si le pego
         // transformar coordenadas
         Vector3 v = new Vector3(screenX,screenY,0);
         camara.unproject(v);
@@ -270,10 +302,18 @@ public class AboutUs implements Screen, InputProcessor {
                 l.showInfo = true;
                 contributor = true;
             }
-            if (btnBack.contiene(x,y))
+        }
+        if (btnBack.contiene(x,y)&& contributor == false)
+        {
+            juego.setScreen(new MenuPrincipal(juego,musica));
+        }
+        if (btnOk.contiene(x,y) && contributor == true)
+        {
+            for (Lujuria l : decentes)
             {
-                juego.setScreen(new MenuPrincipal(juego,musica));
+                l.showInfo = false;
             }
+            contributor = false;
         }
         return false;
     }
