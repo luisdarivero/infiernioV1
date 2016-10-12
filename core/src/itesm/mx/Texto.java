@@ -5,14 +5,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-/**
- * Created by Sam on 20/09/2016.
- */
+
 public class Texto {
     private BitmapFont font;
 
     public Texto() {
-        font = new BitmapFont(Gdx.files.internal("fuente.fnt"));
+        font = new BitmapFont(Gdx.files.internal("Eccentric.fnt"));
     }
 
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y) {
