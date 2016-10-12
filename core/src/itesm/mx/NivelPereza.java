@@ -19,6 +19,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 public class NivelPereza implements Screen, InputProcessor {
     private final juego Juego;
 
+//Esto son el tiempo y la dificultad que se va a tener
+    private int dificultad;
+    private int temporizador;
+
+//Los valores que necesito tener guardados para el Lobby
+    private  int vidas;
+    private int almas ;
+    private  boolean estado;
+
     private Texture texturafondo;
     private Texture texturaGana;
     private Texture texturaPierde;
@@ -56,12 +65,18 @@ public class NivelPereza implements Screen, InputProcessor {
     private Array<Pereza> perezas;
 
     //temporizador de toques a pereza
-    private int temporizador=5;
     private int toques=0;
 
-    public NivelPereza(juego Juego)
+    public NivelPereza(juego Juego, int vidas, int almas, boolean estado, int dificultad)
     {
-        this.Juego=Juego;
+        this.Juego = Juego;
+        this.vidas = vidas;
+        this.almas = almas;
+        this.estado = estado;
+        this.dificultad = dificultad;
+
+        this.temporizador = 5-dificultad;
+
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("bop1.mp3"));

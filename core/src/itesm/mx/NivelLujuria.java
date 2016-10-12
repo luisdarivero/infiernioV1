@@ -21,6 +21,15 @@ import java.util.Random;
 public class NivelLujuria implements Screen, InputProcessor {
     private final juego Juego;
 
+//Esto son el tiempo y la dificultad que se va a tener
+    private int dificultad;
+    private long tempo;
+
+//Los valores que necesito tener guardados para el Lobby
+    private  int vidas;
+    private int almas ;
+    private  boolean estado;
+
     private Texture texturafondo;
     private Texture texturaPierde;
     private Texture texturaLujuria;
@@ -32,9 +41,8 @@ public class NivelLujuria implements Screen, InputProcessor {
     private Texture texturaGana;
     private Texture texturaInstr;
 
-    //Tiempo
+    //Valores iniciales necesarios
     private long startTime = System.currentTimeMillis();
-    private long tempo = 5;
     private int toques = -1;
     private int totals = 0;
 
@@ -61,9 +69,15 @@ public class NivelLujuria implements Screen, InputProcessor {
     private int contador=0;
 
     //TODO: PONER LAS COSAS CORRECTAS Musica
-    public NivelLujuria(juego Juego)
+    public NivelLujuria(juego Juego, int vidas, int almas, boolean estado, int dificultad)
     {
-        this.Juego=Juego;
+        this.Juego = Juego;
+        this.vidas = vidas;
+        this.almas = almas;
+        this.estado = estado;
+        this.dificultad = dificultad;
+
+        this.tempo = 4 - dificultad;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
