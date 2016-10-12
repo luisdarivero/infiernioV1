@@ -245,12 +245,12 @@ public class NivelLujuria implements Screen, InputProcessor {
 
             //MArcador
             if (toques < 90) {
-                texto.mostrarMensaje(batch, "Tiempo: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 600, 200);
+                texto.mostrarMensaje(batch, "Time: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 640, 400);
             } else {
-                texto.mostrarMensaje(batch, "Tiempo: 0", 600, 200);
+                texto.mostrarMensaje(batch, "Time: 0", 640, 400);
             }
 
-            texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
+           // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
 
             if (contador >= totals) {
                 Musica.stop();
