@@ -218,13 +218,28 @@ public class NivelLujuria implements Screen, InputProcessor {
                     Lujuria ll = decentes.get(l.dec);
                     ll.setCoordenates(l.getX(), l.getY());
                     ll.draw(batch);
+                    if (ll.info==false)
+                    {
+                        ll.setSize(l.getW(), l.getH() - 10);
+                        ll.info = true;
+                    }
                 } else if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec != 5) {
                     Random rnd = new Random();
                     Lujuria ll = decentes.get(l.dec);
                     ll.setCoordenates(l.getX(), l.getY());
                     ll.draw(batch);
+                    if (ll.info==false)
+                    {
+                        ll.setSize(l.getW(), l.getH() - 10);
+                        ll.info = true;
+                    }
                 } else {
                     l.draw(batch);
+                    if(l.info==false)
+                    {
+                        l.setSize(l.getW(), l.getH() - 10);
+                        l.info = true;
+                    }
                 }
             }
 

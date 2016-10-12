@@ -20,6 +20,9 @@ public class Lujuria
     public int sexy ;
     public int flip=80;
     public int dec=5;
+    public boolean info = false;
+    public int contributor ;
+    public boolean showInfo = false;
 
     public Lujuria(Texture textura)
     {
@@ -53,6 +56,26 @@ public class Lujuria
     {
         sprite.draw(batch);
         actualizar();
+    }
+
+    public void setRotation()
+    {
+        sprite.setRotation(0);
+    }
+
+    public void setSize(float x,float y)
+    {
+        sprite.setSize(x,y);
+    }
+
+    public float getW()
+    {
+        return sprite.getWidth();
+    }
+
+    public float getH()
+    {
+        return sprite.getHeight();
     }
 
     private void actualizar()
