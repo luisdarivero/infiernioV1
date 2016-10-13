@@ -40,7 +40,7 @@ public class Avaricia implements Screen, InputProcessor {
     int vidas;
     int almas;
 
-    //variables constantes de ancho y alto de la pantalla
+    //variables constantes de ancho y alto de la pamtalla
     private final float ancho = 1280;
     private final float alto = 720;
 
