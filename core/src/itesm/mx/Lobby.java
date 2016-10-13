@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Marina on 08/10/2016.
  */
+//
 public class Lobby implements Screen {
     private final juego juego;
 
@@ -121,8 +122,10 @@ public class Lobby implements Screen {
                 h.setPosition();
                 vidas-=1;
                 juego.setScreen(new Avaricia(juego, vidas, almas));
+
             }else{
                 juego.setScreen(new Avaricia(juego, vidas, almas));
+
             }
 
         }

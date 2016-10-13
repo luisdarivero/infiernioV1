@@ -14,12 +14,20 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * Created by Karlo on 21/09/2016.
- * TODO: crear la variable para el tamanio de la escena
- * [1280,800] <- Reemplazar
  */
 
 public class NivelPereza implements Screen, InputProcessor {
-    private final juego juego;
+    private final juego Juego;
+
+//Esto son el tiempo y la dificultad que se va a tener
+    private int dificultad;
+    private int temporizador;
+
+//Los valores que necesito tener guardados para el Lobby
+    private  int vidas;
+    private int almas ;
+    private  boolean estado;
+    private boolean sizeF = false;
 
     private Texture texturafondo;
     private Texture texturaGana;
@@ -31,13 +39,13 @@ public class NivelPereza implements Screen, InputProcessor {
     private Texture texturaPreza5;
     private Texture texturaInfo;
 
-    //musica
-    private final Music musica;
-    private final Music winnie;
-    private final Music bop;
-    private final Music bop2;
-    private final Music bop3;
-    private final Music bop4;
+    //Musica
+    private final Music Musica;
+    private final Music Winnie;
+    private final Music Bop;
+    private final Music Bop2;
+    private final Music Bop3;
+    private final Music Bop4;
     private int bC = 0;
 
     //El Tiempo
@@ -58,20 +66,26 @@ public class NivelPereza implements Screen, InputProcessor {
     private Array<Pereza> perezas;
 
     //temporizador de toques a pereza
-    private int temporizador=5;
     private int toques=0;
 
-    public NivelPereza(juego juego)
+    public NivelPereza(juego Juego, int vidas, int almas, boolean estado, int dificultad)
     {
-        this.juego=juego;
-        musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
-        winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
-        bop = Gdx.audio.newMusic(Gdx.files.internal("bop1.mp3"));
-        bop2 = Gdx.audio.newMusic(Gdx.files.internal("bop2.mp3"));
-        bop3 = Gdx.audio.newMusic(Gdx.files.internal("bop3.mp3"));
-        bop4 = Gdx.audio.newMusic(Gdx.files.internal("bop4.mp3"));
-        musica.setVolume(0.6f);
-        musica.play();
+        this.Juego = Juego;
+        this.vidas = vidas;
+        this.almas = almas;
+        this.estado = estado;
+        this.dificultad = dificultad;
+
+        this.temporizador = 5-dificultad;
+
+        Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+        Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
+        Bop = Gdx.audio.newMusic(Gdx.files.internal("bop1.mp3"));
+        Bop2 = Gdx.audio.newMusic(Gdx.files.internal("bop2.mp3"));
+        Bop3 = Gdx.audio.newMusic(Gdx.files.internal("bop3.mp3"));
+        Bop4 = Gdx.audio.newMusic(Gdx.files.internal("bop4.mp3"));
+        Musica.setVolume(0.6f);
+        Musica.play();
     }
 
     //Marcador
@@ -106,7 +120,7 @@ public class NivelPereza implements Screen, InputProcessor {
                     perezas.add(pereza1);
                     break;
                 case 2 :
-                    Pereza pereza2 = new Pereza(texturaPreza3,50,0,j);
+                    Pereza pereza2 = new Pereza(texturaPreza3,30,0,j);
                     perezas.add(pereza2);
                     break;
                 case 3 :
@@ -123,11 +137,10 @@ public class NivelPereza implements Screen, InputProcessor {
 
     private void inicializarCamara()
     {
-        camara = new OrthographicCamera(1280,800);
-        camara.position.set(1280/2,800/2,0);
+        camara = new OrthographicCamera(1280,720);
+        camara.position.set(1280/2,720/2,0);
         camara.update();
-
-        vista = new StretchViewport(1280,800,camara);
+        vista = new StretchViewport(1280,720,camara);
     }
     //quizas necesite cargar otras texturas
     private void cargarTexturas()
@@ -152,6 +165,8 @@ public class NivelPereza implements Screen, InputProcessor {
         batch.begin();
         //aki se dibujan los elementos
         fondo.draw(batch);
+        fondo.setSizeF(0, 10);
+
 
         // Aqui dibujamos perezs distintas
         if (toques < 5)
@@ -159,6 +174,11 @@ public class NivelPereza implements Screen, InputProcessor {
             if(toques == 0)
             {
                 info.draw(batch);
+                if(sizeF == false)
+                {
+                info.setPositionF(0,-200);
+                sizeF = true;
+                }
             }
             Pereza p = perezas.get(0);
 
@@ -168,7 +188,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             if(bC == 0)
             {
-                bop.play();
+                Bop.play();
                 bC++;
             }
             Pereza p = perezas.get(1);
@@ -178,7 +198,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             if(bC == 1)
             {
-                bop2.play();
+                Bop2.play();
                 bC++;
             }
             Pereza p = perezas.get(2);
@@ -188,7 +208,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             if(bC == 2)
             {
-                bop3.play();
+                Bop3.play();
                 bC++;
             }
             Pereza p = perezas.get(3);
@@ -197,7 +217,7 @@ public class NivelPereza implements Screen, InputProcessor {
         else if ( toques >= 20)
         {
             if (bC == 3) {
-                bop4.play();
+                Bop4.play();
                 bC++;
             }
 
@@ -226,30 +246,30 @@ public class NivelPereza implements Screen, InputProcessor {
 
         if(toques<20)
         {
-            texto.mostrarMensaje(batch, "Tiempo: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 1050, 800);
+            texto.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 720);
         }
         else
         {
-            texto.mostrarMensaje(batch, "Tiempo: 0", 1050, 800);
+            texto.mostrarMensaje(batch, "Time: 0", 640, 720);
         }
 
-        texto.mostrarMensaje(batch, "Toques: " + toques,200, 800);
+        //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 90 )
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 20 )
         {
-            musica.stop();
+            Musica.stop();
             //Aqui me deberia regresar al Lobby
-            juego.setScreen(new MenuPrincipal(juego));
+            Juego.setScreen(new MenuPrincipal(Juego));
         }
 
         if(toques>=20)
         {
-            musica.stop();
+            Musica.stop();
             if(bC == 4)
             {
-                winnie.setVolume(0.4f);
-                winnie.play();
-                winnie.setVolume(0.4f);
+                Winnie.setVolume(0.4f);
+                Winnie.play();
+                Winnie.setVolume(0.4f);
                 bC++;
             }
             //batch.draw(texturaGana,300,300);
@@ -259,7 +279,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
+            vista.update(width,height);
     }
 
     @Override
