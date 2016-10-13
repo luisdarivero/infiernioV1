@@ -30,7 +30,8 @@ public class Avaricia implements Screen, InputProcessor {
     private Texture texDinero;
 
     //Texto
-    private Texto texTexto;
+    private Texto texTexto_a;
+    private Texto texTexto_b;
 
     //billete
     Billete b;
@@ -66,7 +67,8 @@ public class Avaricia implements Screen, InputProcessor {
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
-        texTexto = new Texto();
+        texTexto_a = new Texto("fuenteAv_a.fnt");
+        texTexto_b = new Texto("fuenteAv_b.fnt");
     }
     private void inicializarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -83,7 +85,7 @@ public class Avaricia implements Screen, InputProcessor {
     private void crearEscena(){
         batch=new SpriteBatch();
         fondo=new Fondo(texturaFondo);
-        b=new Billete(texDinero,1500,alto/2);
+        b=new Billete(texDinero,0,0);
 
     }
 
@@ -101,7 +103,8 @@ public class Avaricia implements Screen, InputProcessor {
 
         b.draw(batch);
         //Texto
-        texTexto.mostrarMensaje(batch,"Don't touch the money", 700, 780);
+        texTexto_a.mostrarMensaje(batch,"touch the money", 750, 700);
+        texTexto_b.mostrarMensaje(batch,"Don't", 460, 695);
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
 
@@ -160,11 +163,11 @@ public class Avaricia implements Screen, InputProcessor {
         camara.unproject(v);
         float x=v.x;
         float y=v.y;
-        if (b.contiene(x,y)){
+        /*if (b.contiene(x,y)){
                 //Toco el billete;
             juego.setScreen(new Lobby(juego,vidas,almas,false));
 
-        }
+        }*/
 
         return false;
     }

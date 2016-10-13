@@ -12,8 +12,12 @@ public class Texto {
     private BitmapFont font;
 
     public Texto() {
-        font = new BitmapFont(Gdx.files.internal("fuente.fnt"));
+        font = new BitmapFont(Gdx.files.internal("fuenteAv_a.fnt"));
     }
+    public Texto(String texto) {
+        font = new BitmapFont(Gdx.files.internal(texto));
+    }
+
 
     public void mostrarMensaje(SpriteBatch batch, String mensaje, float x, float y) {
         GlyphLayout glyp = new GlyphLayout();

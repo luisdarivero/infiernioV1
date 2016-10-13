@@ -50,25 +50,25 @@ public class Billete
 
             case SUBIENDO:
                 alturaActual+=velocidad;
-                if(anchoActual>10)
-                    anchoActual-=velocidad;
-                else
+                if(alturaActual<-75)
                     anchoActual+=velocidad;
+                else
+                    anchoActual-=velocidad;
 
-                if (alturaActual>=60){
-                    alturaActual=60;
+                if (alturaActual>0){
+                    alturaActual=0;
                     estado= Estado.BAJANDO;
                 }
                 break;
 
             case BAJANDO:
                 alturaActual-=velocidad;
-                if(anchoActual<-10)
-                    anchoActual+=velocidad;
-                else
+                if(alturaActual>-75)
                     anchoActual-=velocidad;
+                else
+                    anchoActual+=velocidad;
 
-                if(alturaActual<=-150){
+                if(alturaActual<-150){
                     alturaActual=-150;
                     estado= Estado.SUBIENDO;
                 }

@@ -47,7 +47,7 @@ public class Lobby implements Screen {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=3;
+    private int temporizador=2;
 
     public Lobby(juego juego){
         this.juego=juego;
