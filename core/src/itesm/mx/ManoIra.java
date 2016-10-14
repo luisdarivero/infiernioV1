@@ -81,6 +81,7 @@ public class ManoIra {
                 ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)) + ym
         );
         if(xm<xf && ym>yf){
+            cambiarSprite(sprite.getX(),sprite.getY(),sprite.getRotation());
             furioso.setEstado(Furioso.Estado.Agarrado);
         }
 
@@ -91,8 +92,8 @@ public class ManoIra {
             return;
         }
         sprite.setCenter(
-                ((float)Math.cos(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.25f)) + furioso.getX(),
-                ((float)Math.sin(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.25f)) + furioso.getY()
+                ((float)Math.cos(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.40f)) + furioso.getX(),
+                ((float)Math.sin(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.40f)) + furioso.getY()
         );
     }
 
