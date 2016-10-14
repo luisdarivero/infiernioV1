@@ -13,6 +13,7 @@ public class Texto {
 
     public Texto() {
         font = new BitmapFont(Gdx.files.internal("fuenteAv_a.fnt"));
+
     }
     public Texto(String texto) {
         font = new BitmapFont(Gdx.files.internal(texto));

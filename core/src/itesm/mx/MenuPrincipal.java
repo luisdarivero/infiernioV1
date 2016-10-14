@@ -55,7 +55,7 @@ public class MenuPrincipal implements Screen {
     //constructor
     public MenuPrincipal(itesm.mx.juego juego){
         this.juego =  juego;
-        musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchil.wav"));
+        musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
         musica.setLooping(true);
         musica.play();
 
@@ -157,6 +157,7 @@ public class MenuPrincipal implements Screen {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
                 juego.setScreen(new Lobby(juego));
+                //juego.setScreen(new NivelPereza(juego,1,1,true,0));
             }
         });
 

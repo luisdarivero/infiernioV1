@@ -72,7 +72,7 @@ public class Pereza
                 }
                 else
                 {
-                    sprite.setX(sprite.getX() + 5);
+                    sprite.setX(sprite.getX() + 4);
                 }
                 break;
             case UNMEDIO:
