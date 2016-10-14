@@ -67,7 +67,7 @@ public class Ira implements Screen {
         cargarTexturas();
         //inicializar los objetos en el escenario
         furioso = new Furioso(ancho/2, alto*0.35f);//se alinea con respecto al centro
-        mano = new ManoIra(ancho*.75f, alto*.50f);
+        mano = new ManoIra(ancho*.75f, alto*.25f,furioso);
 
 
     }
@@ -136,7 +136,7 @@ public class Ira implements Screen {
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         furioso.draw(batch);
-        mano.draw(batch,furioso);
+        mano.draw(batch);
         batch.end();
     }
 

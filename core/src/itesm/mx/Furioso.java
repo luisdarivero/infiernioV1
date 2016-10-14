@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  */
 public class Furioso {
     private Sprite sprite;
-    private Estado estado= Estado.Acelerometro;
+    private Estado estado= Estado.Estatico;
     private Float accelY;
     private float rotacionActual;
     private BigDecimal bd;
@@ -79,6 +79,7 @@ public class Furioso {
                 if(sprite.getRotation() >= 90 || sprite.getRotation() <= -90){
                     estado = Estado.Perdio;
                 }
+                break;
         }
 
     }
@@ -142,5 +143,13 @@ public class Furioso {
     }
     public float getY(){
         return y;
+    }
+
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
     }
 }
