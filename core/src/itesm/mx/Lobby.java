@@ -48,7 +48,7 @@ public class Lobby implements Screen {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=2;
+    private int temporizador=3;
 
     public Lobby(juego juego){
         this.juego=juego;
@@ -89,11 +89,17 @@ public class Lobby implements Screen {
         batch=new SpriteBatch();
         fondo=new Fondo(texFondo);
 
-        arrCora=new Array<Corazon>(vidas);
-        for(int i=1; i<=vidas;i++){
+        if (vidas==0){
+            juego.setScreen(new MenuPrincipal(juego));
 
-            Corazon cor=new Corazon(texCora,300+i*150,550);
-            arrCora.add(cor);
+        }else {
+
+            arrCora = new Array<Corazon>(vidas);
+            for (int i = 1; i <= vidas; i++) {
+
+                Corazon cor = new Corazon(texCora, 300 + i * 150, 550);
+                arrCora.add(cor);
+            }
         }
 
 
@@ -116,18 +122,22 @@ public class Lobby implements Screen {
             h.draw(batch);
         }
         texto.mostrarMensaje(batch,""+almas,720,490);
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
+
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 2){
             if (estado==false){
                 Corazon h=arrCora.get(arrCora.size-1);
                 h.setPosition();
-                vidas-=1;
-                juego.setScreen(new Avaricia(juego, vidas, almas));
-
-            }else{
-                juego.setScreen(new Avaricia(juego, vidas, almas));
-
             }
-
+        }
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0) {
+            if (estado==false){
+                vidas-=1;
+            }
+            if (vidas==0) {
+                juego.setScreen(new MenuPrincipal(juego));
+            }else{
+                juego.setScreen(new Avaricia(juego,vidas,almas));
+            }
         }
         batch.end();
 

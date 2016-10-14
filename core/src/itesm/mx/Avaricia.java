@@ -163,11 +163,11 @@ public class Avaricia implements Screen, InputProcessor {
         camara.unproject(v);
         float x=v.x;
         float y=v.y;
-        /*if (b.contiene(x,y)){
+        if (b.contiene(x,y)){
                 //Toco el billete;
             juego.setScreen(new Lobby(juego,vidas,almas,false));
 
-        }*/
+        }
 
         return false;
     }
