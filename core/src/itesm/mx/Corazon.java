@@ -33,7 +33,7 @@ public class Corazon {
     }
 
     public void setPosition(){
-        sprite.setPosition(1280,720);
+        sprite.setPosition(1300,730);
     }
 
 
