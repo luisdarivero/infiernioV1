@@ -250,9 +250,9 @@ public class NivelPereza implements Screen, InputProcessor {
         }
         else
         {
-            texto.mostrarMensaje(batch, "Time: 0", 640, 720);
+            texto.mostrarMensaje(batch, " ", 640, 720);
         }
-
+//Si es necesario modificar los toques
         //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 20 )
@@ -262,7 +262,7 @@ public class NivelPereza implements Screen, InputProcessor {
             Juego.setScreen(new MenuPrincipal(Juego));
         }
 
-        if(toques>=20)
+        if(toques>=20 && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
         {
             Musica.stop();
             if(bC == 4)
@@ -272,7 +272,8 @@ public class NivelPereza implements Screen, InputProcessor {
                 Winnie.setVolume(0.4f);
                 bC++;
             }
-            //batch.draw(texturaGana,300,300);
+
+            Juego.setScreen(new MenuPrincipal(Juego));
         }
         batch.end();
     }

@@ -94,7 +94,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
-        texto = new Texto();
+        texto = new Texto("fuenteAv_a.fnt");
     }
 
     private void crearEscena()

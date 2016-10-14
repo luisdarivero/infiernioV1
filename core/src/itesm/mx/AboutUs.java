@@ -156,7 +156,7 @@ public class AboutUs implements Screen, InputProcessor {
         texturamarina = new Texture("Marina.png");
         texturadaniel = new Texture("Daniel.png");
         texturasam = new Texture("Sam.png");
-        texturaBtnOk = new Texture("back.png");
+        texturaBtnOk = new Texture("ok.png");
     }
 
     public void anadirTexturas()
@@ -165,7 +165,7 @@ public class AboutUs implements Screen, InputProcessor {
         imgFondo = new Fondo(texturaFondo);
         //botones
         btnBack =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
-        btnOk =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
+        btnOk =  new Lujuria(texturaBtnOk,(ancho*.02f)-17,(alto * .02f)-17,4);
     }
 
     @Override
