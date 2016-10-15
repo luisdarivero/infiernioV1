@@ -21,12 +21,14 @@ public class ManoIra {
     private Float angulo;
     private  float xf;
     private float yf;
+    private float deltaTime;
 
 
     public ManoIra(float ancho, float alto,Furioso furioso){//se modifica la posicion al centro
         cargarTexturas();
         this.furioso = furioso;
         sprite = new Sprite(mano);
+        deltaTime = 0;
 
         if(furioso.isDerecha()){
             sprite.setCenter(ancho*.75f, alto*.25f);
@@ -73,7 +75,7 @@ public class ManoIra {
                 if(angulo == null){
                     generarDatos();
                 }
-                setPosDirigido(Gdx.graphics.getDeltaTime(),angulo);
+                setPosDirigido(Gdx.graphics.getDeltaTime(),angulo,1);
 
                 break;
             case Desventaja:
@@ -84,6 +86,16 @@ public class ManoIra {
                 break;
             case Callendo:
                 setPosAFurioso();
+                break;
+            case QuitarMano:
+                if(deltaTime == 0) {
+                    cambiarSprite(sprite.getX(), sprite.getY(), sprite.getRotation());
+                }
+                deltaTime += Gdx.graphics.getDeltaTime();
+                if(deltaTime > .4){
+                    furioso.setEstado(Furioso.Estado.Gano);
+                }
+                setPosDirigido(Gdx.graphics.getDeltaTime(),angulo,-1);
                 break;
         }
 
@@ -110,14 +122,14 @@ public class ManoIra {
     }
 
     //separar metodo que calcula las componentes, ya que se pueden guardar en una variable
-    private void setPosDirigido(float time, float anguloMano) {
+    private void setPosDirigido(float time, float anguloMano, float signo) {
         //las coordenadas del furioso
         float xm = sprite.getX() + sprite.getWidth()/2;
         float ym = sprite.getY() + sprite.getHeight()/2;
 
         sprite.setCenter(
-                ((float)Math.cos(Math.toRadians(anguloMano))*(time*1000)) + xm,
-                ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)) + ym
+                ((float)Math.cos(Math.toRadians(anguloMano))*(time*1000)*signo) + xm,
+                ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)*signo) + ym
         );
 
         if(ym>yf){
