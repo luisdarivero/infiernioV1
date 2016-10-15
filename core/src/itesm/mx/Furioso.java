@@ -113,9 +113,9 @@ public class Furioso {
                 rotacionActual = -(accelY*180f)/(9.0f*2.5f);
                 rotacionActual = round(rotacionActual,0);
                 /**
-                if(rotacionActual %3 ==0){
-                    sprite.setRotation(rotacionActual);
-                }*/
+                 if(rotacionActual %3 ==0){
+                 sprite.setRotation(rotacionActual);
+                 }*/
 
                 //para la dificultad
 
@@ -123,7 +123,7 @@ public class Furioso {
                     if (rotacionActual + sprite.getRotation() > 0) {
                         sprite.setRotation(sprite.getRotation() + 1);
                         if (sprite.getRotation() > 0) {
-                            estado = Estado.QuitarMano;
+                            estado = Estado.Gano;
                         }
                     } else {
                         sprite.setRotation(sprite.getRotation() - 1);
@@ -133,7 +133,7 @@ public class Furioso {
                     if (rotacionActual + sprite.getRotation() < 0) {
                         sprite.setRotation(sprite.getRotation() - 1);
                         if (sprite.getRotation() < 0) {
-                            estado = Estado.QuitarMano;
+                            estado = Estado.Gano;
                         }
                     } else {
                         sprite.setRotation(sprite.getRotation() + 1);

@@ -42,9 +42,11 @@ public class Ira implements Screen {
     //spritebatch . administra trazos
     private SpriteBatch batch;
 
+    private  int nivel;
     //constructor
-    public Ira(itesm.mx.juego juego){
+    public Ira(itesm.mx.juego juego, int nivel){
         this.juego = juego;
+        this.nivel = nivel;
     }
 
     //Objetos en el escenario
@@ -54,6 +56,8 @@ public class Ira implements Screen {
     //texturas
     private Texture texturaback;
     private Texture texturaFondo;
+
+    //manejador del tiempo
 
 
 
@@ -68,6 +72,8 @@ public class Ira implements Screen {
         //inicializar los objetos en el escenario
         furioso = new Furioso(ancho/2, alto*0.35f);//se alinea con respecto al centro
         mano = new ManoIra(ancho,alto,furioso);
+        //inicializar variables tiempo
+
 
 
     }
@@ -90,6 +96,7 @@ public class Ira implements Screen {
         assetManager.load("back.png",Texture.class);
         assetManager.load("Ira.png",Texture.class);
 
+
         //bloquea hasta que se carguen las imgenes
         assetManager.finishLoading();
 
@@ -98,12 +105,15 @@ public class Ira implements Screen {
         texturaFondo = assetManager.get("Ira.png");
 
 
+
         Image imgFondo = new Image(texturaFondo);
         //Escalar
         float escalaX = ancho / imgFondo.getWidth();
         float escalaY = alto / imgFondo.getHeight();
         imgFondo.setScale(escalaX, escalaY);
         escena.addActor(imgFondo);
+
+
 
         //para asignar funcionalidad a la imagen como boton
         TextureRegionDrawable trBtnBack = new TextureRegionDrawable(new TextureRegion(texturaback));
@@ -138,6 +148,12 @@ public class Ira implements Screen {
         furioso.draw(batch);
         mano.draw(batch);
         batch.end();
+        if(furioso.getEstado() == Furioso.Estado.Gano){
+            //juego.setScreen(new Ira(juego,nivel + 1));
+        }
+        else if(furioso.getEstado() == Furioso.Estado.Perdio){
+            //juego.setScreen(new Ira(juego,1));
+        }
     }
 
     @Override
