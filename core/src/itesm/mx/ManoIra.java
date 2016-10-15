@@ -4,6 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
+
+
 
 /**
  * Created by Daniel Riv on 11/10/2016.
@@ -15,14 +18,28 @@ public class ManoIra {
     private Sprite sprite;
     private boolean isCerrada;
     private  Furioso furioso;
+    private Float angulo;
+    private  float xf;
+    private float yf;
 
 
-    public ManoIra(float x, float y, Furioso furioso){//se modifica la posicion al centro
+    public ManoIra(float ancho, float alto,Furioso furioso){//se modifica la posicion al centro
         cargarTexturas();
         this.furioso = furioso;
         sprite = new Sprite(mano);
-        sprite.setCenter(x,y);
-        sprite.rotate(45);
+
+        if(furioso.isDerecha()){
+            sprite.setCenter(ancho*.75f, alto*.25f);
+            sprite.rotate(45);
+
+        }
+        else{
+            sprite.setCenter(ancho*.25f, alto*.25f);
+            sprite.rotate(-45);
+
+        }
+
+        angulo = null;
         //cambiarSprite(sprite.getX(),sprite.getY(),sprite.getRotation());
     }
     private void cargarTexturas(){
@@ -53,10 +70,19 @@ public class ManoIra {
     private void actualizar(){
         switch (furioso.getEstado()){
             case Estatico:
-                setPosDirigido(Gdx.graphics.getDeltaTime());
+                if(angulo == null){
+                    generarDatos();
+                }
+                setPosDirigido(Gdx.graphics.getDeltaTime(),angulo);
 
                 break;
+            case Desventaja:
+                setPosAFurioso();
+                break;
             case Agarrado: //la mano agarra al personaje
+                setPosAFurioso();
+                break;
+            case Callendo:
                 setPosAFurioso();
                 break;
         }
@@ -64,25 +90,39 @@ public class ManoIra {
 
     }
 
-    //separar metodo que calcula las componentes, ya que se pueden guardar en una variable
-    private void setPosDirigido(float time) {
-        //las coordenadas del furioso
-        float xf = ((float)Math.cos(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.25f)) + furioso.getX();
-        float yf = ((float)Math.sin(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.25f)) + furioso.getY();
+    private void generarDatos(){
+
+
         float xm = sprite.getX() + sprite.getWidth()/2;
         float ym = sprite.getY() + sprite.getHeight()/2;
-        //System.out.println(xf + "," + yf + "    " + xm + "," + ym);
+        xf = ((float)Math.cos(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.4f)) + furioso.getX();
+        yf = ((float)Math.sin(Math.toRadians(90+furioso.getRotacionActual()))*(furioso.getAlturaSprite()*.4f)) + furioso.getY();
+        System.out.println(xf + "," + yf + "    " + xm + "," + ym);
         double anguloMano = Math.toDegrees(Math.asin(((yf-ym) / (Math.sqrt(((xf-xm)*(xf-xm))+((yf-ym)*(yf-ym)))))));
         //System.out.println(anguloMano);
-        anguloMano += 90;
+        if(furioso.isDerecha()){
+            anguloMano = 180 - anguloMano;
+        }
+
+
+        angulo = (float)anguloMano;
+        //System.out.println(anguloMano);
+    }
+
+    //separar metodo que calcula las componentes, ya que se pueden guardar en una variable
+    private void setPosDirigido(float time, float anguloMano) {
+        //las coordenadas del furioso
+        float xm = sprite.getX() + sprite.getWidth()/2;
+        float ym = sprite.getY() + sprite.getHeight()/2;
 
         sprite.setCenter(
                 ((float)Math.cos(Math.toRadians(anguloMano))*(time*1000)) + xm,
                 ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)) + ym
         );
-        if(xm<xf && ym>yf){
+
+        if(ym>yf){
             cambiarSprite(sprite.getX(),sprite.getY(),sprite.getRotation());
-            furioso.setEstado(Furioso.Estado.Agarrado);
+            furioso.setEstado(Furioso.Estado.Desventaja);
         }
 
     }

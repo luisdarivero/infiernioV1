@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 
 /**
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  */
 public class Furioso {
     private Sprite sprite;
-    private Estado estado= Estado.Estatico;
+    private Estado estado= Estado.Acelerometro;
     private Float accelY;
     private float rotacionActual;
     private BigDecimal bd;
@@ -24,6 +25,9 @@ public class Furioso {
     private boolean isRojo;
     private float x;
     private float y;
+    private float contadorDeltaRime;
+    private float desventaja;
+    private boolean derecha;
 
 
     public Furioso(float x, float y){//se modifica la posicion al centro
@@ -33,6 +37,18 @@ public class Furioso {
         this.x = x;
         this.y=y;
         sprite.setCenter(x,y);
+        contadorDeltaRime = 0 ;
+        Random rand = new Random();
+        desventaja = -20;
+        int random = rand.nextInt(2);
+        if(rand.nextInt(2) == 0){
+
+            derecha = true;
+        }
+        else{
+
+            derecha = false;
+        }
 
     }
 
@@ -50,6 +66,7 @@ public class Furioso {
     private void actualizar(){
         switch(estado){
             case Acelerometro:
+
                 accelY = Gdx.input.getAccelerometerY();
                 rotacionActual = -(accelY*180f)/(9.0f*2.5f);
                 rotacionActual = round(rotacionActual,0);
@@ -61,11 +78,78 @@ public class Furioso {
                 }
                 //para cambiar de color la imagen
                 if(!isRojo && (rotacionActual >20 || rotacionActual < -20)){
-                    cambiarSprite();
+                    cambiarSprite(rotacionActual);
 
                 }
                 else if(isRojo && (rotacionActual <=20 && rotacionActual >= -20)){
-                    cambiarSprite();
+                    cambiarSprite(rotacionActual);
+                }
+                contadorDeltaRime += Gdx.graphics.getDeltaTime();
+                if(contadorDeltaRime> 1){
+                    estado = Estado.Estatico;
+                }
+
+                break;
+            case Estatico:
+
+                break;
+            case Desventaja:
+                if(derecha) {
+                    sprite.setRotation(sprite.getRotation() - 1);
+                    if (sprite.getRotation() <= desventaja) {
+                        estado = Estado.Agarrado;
+                    }
+                }
+                else{
+                    sprite.setRotation(sprite.getRotation() + 1);
+                    if (sprite.getRotation() >= -desventaja) {
+                        estado = Estado.Agarrado;
+                    }
+                }
+                break;
+
+            case Agarrado:
+                accelY = Gdx.input.getAccelerometerY();
+                rotacionActual = -(accelY*180f)/(9.0f*2.5f);
+                rotacionActual = round(rotacionActual,0);
+                /**
+                if(rotacionActual %3 ==0){
+                    sprite.setRotation(rotacionActual);
+                }*/
+
+                //para la dificultad
+
+                if(derecha) {
+                    if (rotacionActual + sprite.getRotation() > 0) {
+                        sprite.setRotation(sprite.getRotation() + 1);
+                        if (sprite.getRotation() > 0) {
+                            estado = Estado.Gano;
+                        }
+                    } else {
+                        sprite.setRotation(sprite.getRotation() - 1);
+                    }
+                }
+                else{
+                    if (rotacionActual + sprite.getRotation() < 0) {
+                        sprite.setRotation(sprite.getRotation() - 1);
+                        if (sprite.getRotation() < 0) {
+                            estado = Estado.Gano;
+                        }
+                    } else {
+                        sprite.setRotation(sprite.getRotation() + 1);
+                    }
+                }
+
+                if(sprite.getRotation() >dificultad || sprite.getRotation() < -dificultad){
+                    estado = Estado.Callendo;
+                }
+                //para cambiar de color la imagen
+                if(!isRojo && (sprite.getRotation() >20 || sprite.getRotation() < -20)){
+                    cambiarSprite(sprite.getRotation());
+
+                }
+                else if(isRojo && (sprite.getRotation() <=20 && sprite.getRotation() >= -20)){
+                    cambiarSprite(sprite.getRotation());
                 }
                 break;
             case Callendo:
@@ -80,22 +164,24 @@ public class Furioso {
                     estado = Estado.Perdio;
                 }
                 break;
+            case Gano:
+                break;
         }
 
     }
 
-    public void cambiarSprite(){
+    public void cambiarSprite(float rotacion){
         if(isRojo){
             isRojo = false;
             sprite = new Sprite(azul);
             sprite.setCenter(x,y);
-            sprite.setRotation(rotacionActual);
+            sprite.setRotation(rotacion);
         }
         else{
             isRojo = true;
             sprite = new Sprite(rojo);
             sprite.setCenter(x,y);
-            sprite.setRotation(rotacionActual);
+            sprite.setRotation(rotacion);
         }
     }
 
@@ -104,9 +190,10 @@ public class Furioso {
         Acelerometro,
         Estatico, //para que no se mueva en el eje y la animacion de la mano se vea bien
         Agarrado, //cuando la mano lo tiene agarrado
-        Regresando, //cuando la mano lo suelta
+        Desventaja,
         Callendo, //cuando se pasa de cierto angulo cae para perder
-        Perdio //indica que ya perdio
+        Perdio, //indica que ya perdio
+        Gano
     }
 
     public float round(float d, int decimalPlace) {
@@ -131,11 +218,15 @@ public class Furioso {
         if(rotacionActual %3 ==0){
             return rotacionActual;
         }
-        return null;
+        return sprite.getRotation();
     }
 
     public float getAlturaSprite(){
         return sprite.getHeight();
+    }
+
+    public float getAnchuraSprite(){
+        return sprite.getWidth();
     }
 
     public float getX(){
@@ -151,5 +242,9 @@ public class Furioso {
 
     public void setEstado(Estado estado) {
         this.estado = estado;
+    }
+
+    public boolean isDerecha(){
+        return derecha;
     }
 }
