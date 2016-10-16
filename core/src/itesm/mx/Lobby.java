@@ -50,17 +50,22 @@ public class Lobby implements Screen {
     private long startTime = System.currentTimeMillis();
     private int temporizador=3;
 
+    //dificultad
+    private Dificultad escNivel;
+
     public Lobby(juego juego){
         this.juego=juego;
         this.vidas=3;
         this.almas=0;
         this.estado=true;
+        this.escNivel=new Dificultad();
     }
-    public Lobby(juego juego, int vidas, int almas, boolean estado){
+    public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.estado=estado;
+        this.escNivel=escNivel;
     }
 
     @Override
@@ -129,19 +134,50 @@ public class Lobby implements Screen {
                 h.setPosition();
             }
         }
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0) {
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 0) {
             if (estado==false){
                 vidas-=1;
             }
             if (vidas==0) {
                 juego.setScreen(new MenuPrincipal(juego));
             }else{
-                juego.setScreen(new Avaricia(juego,vidas,almas));
+                int nivel=escNivel.cambiarNivel();
+                int dif=escNivel.getDificultad();
+                switch (nivel){
+                    case 1:
+                        //soberbia
+
+                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+
+                        break;
+                    case 2:
+                        //envidia
+
+                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+
+                        break;
+                    case 3:
+                        //ira
+
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+
+                        break;
+                    case 4:
+                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+                        break;
+                    case 5:
+                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+                        break;
+                    case 6:
+                        //gula
+                        break;
+                    case 7:
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        break;
+                }
             }
         }
         batch.end();
-
-
     }
 
     @Override

@@ -26,8 +26,8 @@ public class NivelPereza implements Screen, InputProcessor {
 //Los valores que necesito tener guardados para el Lobby
     private  int vidas;
     private int almas ;
-    private  boolean estado;
     private boolean sizeF = false;
+    private Dificultad escNivel;
 
     private Texture texturafondo;
     private Texture texturaGana;
@@ -68,13 +68,13 @@ public class NivelPereza implements Screen, InputProcessor {
     //temporizador de toques a pereza
     private int toques=0;
 
-    public NivelPereza(juego Juego, int vidas, int almas, boolean estado, int dificultad)
+    public NivelPereza(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel)
     {
         this.Juego = Juego;
         this.vidas = vidas;
         this.almas = almas;
-        this.estado = estado;
         this.dificultad = dificultad;
+        this.escNivel=escNivel;
 
         this.temporizador = 5-dificultad;
 
@@ -259,7 +259,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
-            Juego.setScreen(new MenuPrincipal(Juego));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
         }
 
         if(toques>=20 && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
@@ -273,7 +273,7 @@ public class NivelPereza implements Screen, InputProcessor {
                 bC++;
             }
 
-            Juego.setScreen(new MenuPrincipal(Juego));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
         }
         batch.end();
     }

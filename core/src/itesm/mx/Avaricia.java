@@ -39,6 +39,7 @@ public class Avaricia implements Screen, InputProcessor {
     //varibles
     int vidas;
     int almas;
+    private Dificultad escNivel;
 
     //variables constantes de ancho y alto de la pamtalla
     private final float ancho = 1280;
@@ -46,7 +47,7 @@ public class Avaricia implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=5;
+    private int temporizador=6;
 
     public Avaricia(juego juego) {
         this.juego=juego;
@@ -55,10 +56,12 @@ public class Avaricia implements Screen, InputProcessor {
 
     }
 
-    public Avaricia(juego juego, int vidas, int almas){
+    public Avaricia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
+        this.temporizador-=temporizador;
+        this.escNivel=escNivel;
     }
 
     @Override
@@ -109,7 +112,7 @@ public class Avaricia implements Screen, InputProcessor {
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
 
             almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true));
+            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
         }
 
         batch.end();
@@ -165,7 +168,7 @@ public class Avaricia implements Screen, InputProcessor {
         float y=v.y;
         if (b.contiene(x,y)){
                 //Toco el billete;
-            juego.setScreen(new Lobby(juego,vidas,almas,false));
+            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
 
         }
 

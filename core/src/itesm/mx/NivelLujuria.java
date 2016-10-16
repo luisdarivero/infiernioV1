@@ -21,14 +21,14 @@ import java.util.Random;
 public class NivelLujuria implements Screen, InputProcessor {
     private final juego Juego;
 
-//Esto son el tiempo y la dificultad que se va a tener
+    //Esto son el tiempo y la dificultad que se va a tener
     private int dificultad;
     private long tempo;
 
-//Los valores que necesito tener guardados para el Lobby
+    //Los valores que necesito tener guardados para el Lobby
     private  int vidas;
     private int almas ;
-    private  boolean estado;
+    private Dificultad escNivel;
 
     private Texture texturafondo;
     private Texture texturaPierde;
@@ -69,13 +69,13 @@ public class NivelLujuria implements Screen, InputProcessor {
     private int contador=0;
 
     //TODO: PONER LAS COSAS CORRECTAS Musica
-    public NivelLujuria(juego Juego, int vidas, int almas, boolean estado, int dificultad)
+    public NivelLujuria(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel)
     {
         this.Juego = Juego;
         this.vidas = vidas;
         this.almas = almas;
-        this.estado = estado;
         this.dificultad = dificultad;
+        this.escNivel=escNivel;
 
         this.tempo = 4 - dificultad;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
@@ -250,7 +250,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                 texto.mostrarMensaje(batch, "Time: 0", 640, 400);
             }
 
-           // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
+            // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
 
             if (contador >= totals) {
                 Musica.stop();
@@ -269,7 +269,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
-            Juego.setScreen(new MenuPrincipal(Juego));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
         }
 
         batch.end();
@@ -364,5 +364,6 @@ public class NivelLujuria implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
 
