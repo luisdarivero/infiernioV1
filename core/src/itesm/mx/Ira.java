@@ -59,7 +59,7 @@ public class Ira implements Screen {
 
 
     //texturas
-    private Texture texturaback;
+    //private Texture texturaback;
     private Texture texturaFondo;
     private Texture texturaInstrucciones;
     private  Image imgInstrucciones;
@@ -78,7 +78,7 @@ public class Ira implements Screen {
         //cargar texturas
         cargarTexturas();
         //inicializar los objetos en el escenario
-        furioso = new Furioso(ancho/2, alto*0.35f);//se alinea con respecto al centro
+        furioso = new Furioso(ancho/2, alto*0.35f,nivel);//se alinea con respecto al centro
         mano = new ManoIra(ancho,alto,furioso);
         //inicializar variables tiempo
         instrucciones = true;
@@ -103,7 +103,7 @@ public class Ira implements Screen {
     }
 
     public void cargarTexturas(){
-        assetManager.load("back.png",Texture.class);
+        //assetManager.load("back.png",Texture.class);
         assetManager.load("Ira.png",Texture.class);
         assetManager.load("instrucciones_ira.png",Texture.class);
 
@@ -112,7 +112,7 @@ public class Ira implements Screen {
         assetManager.finishLoading();
 
         //cuando termina, leemos las texturas
-        texturaback = assetManager.get("back.png");
+        //texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("Ira.png");
         texturaInstrucciones = assetManager.get("instrucciones_ira.png");
 
@@ -133,7 +133,7 @@ public class Ira implements Screen {
         escena.addActor(imgInstrucciones);
 
 
-
+        /**
         //para asignar funcionalidad a la imagen como boton
         TextureRegionDrawable trBtnBack = new TextureRegionDrawable(new TextureRegion(texturaback));
         ImageButton btnBack = new ImageButton(trBtnBack);
@@ -148,7 +148,7 @@ public class Ira implements Screen {
                 Gdx.app.log("clicked", "TAP sobre el boton de regresar");
                 juego.setScreen(new MenuPrincipal(juego));
             }
-        });
+        });**/
 
     }
 
@@ -163,7 +163,7 @@ public class Ira implements Screen {
         if (instrucciones){
             escena.draw();
             deltaTime += Gdx.graphics.getDeltaTime();
-            if(deltaTime > 1.5){
+            if(deltaTime > 1.3){
                 imgInstrucciones = imgFondo;
                 escena.clear();
                 escena.addActor(imgFondo);
@@ -182,7 +182,7 @@ public class Ira implements Screen {
             if (furioso.getEstado() == Furioso.Estado.Gano) {
                 juego.setScreen(new Ira(juego, nivel + 1));
             } else if (furioso.getEstado() == Furioso.Estado.Perdio) {
-                juego.setScreen(new Ira(juego,1));
+                juego.setScreen(new MenuPrincipal(juego));
             }
         }
     }

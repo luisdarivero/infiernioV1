@@ -28,9 +28,10 @@ public class Furioso {
     private float contadorDeltaRime;
     private float desventaja;
     private boolean derecha;
+    private  int nivel;
 
 
-    public Furioso(float x, float y){//se modifica la posicion al centro
+    public Furioso(float x, float y,int nivel){//se modifica la posicion al centro
         cargarTexturas();
         sprite = new Sprite(azul);
         isRojo = false;
@@ -39,7 +40,12 @@ public class Furioso {
         sprite.setCenter(x,y);
         contadorDeltaRime = 0 ;
         Random rand = new Random();
-        desventaja = -20;
+        if(nivel<5) {
+            desventaja = -20 - (nivel * 3);
+        }
+        else{
+            desventaja = -20 - (15);
+        }
         int random = rand.nextInt(2);
         if(rand.nextInt(2) == 0){
 
@@ -49,6 +55,7 @@ public class Furioso {
 
             derecha = false;
         }
+        this.nivel = nivel;
 
     }
 
@@ -246,5 +253,12 @@ public class Furioso {
 
     public boolean isDerecha(){
         return derecha;
+    }
+
+    public int getNivel(){
+        if(nivel > 4){
+            return 5;
+        }
+        return nivel;
     }
 }

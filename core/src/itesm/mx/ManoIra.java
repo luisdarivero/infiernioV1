@@ -128,8 +128,8 @@ public class ManoIra {
         float ym = sprite.getY() + sprite.getHeight()/2;
 
         sprite.setCenter(
-                ((float)Math.cos(Math.toRadians(anguloMano))*(time*1000)*signo) + xm,
-                ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)*signo) + ym
+                ((float)Math.cos(Math.toRadians(anguloMano))*(time*(1000 + (furioso.getNivel()*200)))*signo) + xm,
+                ((float)Math.sin(Math.toRadians(anguloMano))*(time*(1000 + (furioso.getNivel()*200)))*signo) + ym
         );
 
         if(ym>yf && deltaTime == 0){
