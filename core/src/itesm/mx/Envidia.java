@@ -6,58 +6,68 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Sam on 13/09/2016.
+ * Created by Marina on 16/10/2016.
  */
 
+public class Envidia implements Screen, InputProcessor {
 
-public class Avaricia implements Screen, InputProcessor {
     private final juego juego;
-    private Texture texturaFondo;
 
+    //Texturas
+    private Texture texFondo;
+    private Texture texMonedaA;
+    private Texture texMonedaB;
+
+    //Batch
     private SpriteBatch batch;
 
+    //camara
     private OrthographicCamera camara;
     private Viewport vista;
+    private final float ancho = 1280;
+    private final float alto = 720;
+
+    //clases
     private Fondo fondo;
 
-    private Texture texDinero;
-
     //Texto
-    private Texto texTexto_a;
-    private Texto texTexto_b;
+    private Texto textoIns;
+    private Texto texCont;
 
-    //billete
-    Billete b;
+    //Monedas array
+    private Array<Monedas> monedasA;
+    private Array<Monedas> monedasB;
 
-    //varibles
+    //variables
     int vidas;
     int almas;
     private Dificultad escNivel;
-
-    //variables constantes de ancho y alto de la pamtalla
-    private final float ancho = 1280;
-    private final float alto = 720;
+    private int contador;
 
     //tiempo
     private long startTime = System.currentTimeMillis();
     private int temporizador=6;
 
+    //pueba
+    Monedas c;
 
-
-    public Avaricia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel){
+    public Envidia(juego juego, int vidas, int almas, int temporizador ){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.temporizador-=temporizador;
-        this.escNivel=escNivel;
+        this.escNivel=new Dificultad();
     }
+
+
 
     @Override
     public void show() {
@@ -65,27 +75,49 @@ public class Avaricia implements Screen, InputProcessor {
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
-        texTexto_a = new Texto("fuenteAv_a.fnt");
-        texTexto_b = new Texto("fuenteAv_b.fnt");
+        textoIns=new Texto("fuenteAv_a.fnt");
+        texCont=new Texto("fuenteAv_a.fnt");
     }
-    private void inicializarCamara(){
+
+    private void crearEscena() {
+        batch=new SpriteBatch();
+        fondo=new Fondo(texFondo);
+
+        //c=new Monedas(texMonedaA,700,700);
+
+
+        float rnd=(float)Math.random() * (1200-10)+10;
+
+        //agragar monedas A
+        monedasA = new Array<Monedas>(10);
+        for (int i=0;i<10;i++){
+            Monedas monA=new Monedas(texMonedaA,rnd,700);
+            monedasA.add(monA);
+            rnd=(float)Math.random() * (1200-10)+10;
+        }
+
+        //agragar monedas b
+        monedasB = new Array<Monedas>(10);
+        rnd=(float)Math.random() * (1200-10)+10;
+        for (int i=0;i<10;i++){
+            Monedas monB=new Monedas(texMonedaB,rnd, 700);
+            monedasB.add(monB);
+            rnd=(float)Math.random() * (1200-10)+10;
+        }
+
+    }
+
+    private void inicializarCamara() {
         camara=new OrthographicCamera(ancho,alto);
         camara.position.set(ancho/2,alto/2,0);
         camara.update();
         vista=new FitViewport(ancho,alto,camara);
     }
 
-    private void cargarTexturas(){
-        texturaFondo=new Texture("FondoA.png");
-        texDinero=new Texture("Avaricia.png");
-
-    }
-
-    private void crearEscena(){
-        batch=new SpriteBatch();
-        fondo=new Fondo(texturaFondo);
-        b=new Billete(texDinero,0,0);
-
+    private void cargarTexturas() {
+        texMonedaA=new Texture("heladoA.png");
+        texMonedaB=new Texture("heladoB.png");
+        texFondo=new Texture("fondop.png");
     }
 
     @Override
@@ -93,25 +125,32 @@ public class Avaricia implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Avisar a batch cual es la camara que usamos
         batch.setProjectionMatrix(camara.combined);
 
         batch.begin();
-        //Dibujar todos los elementos
+
+        //Fondo
         fondo.draw(batch);
 
-        b.draw(batch);
-        //Texto
-        texTexto_a.mostrarMensaje(batch,"touch the money", 750, 700);
-        texTexto_b.mostrarMensaje(batch,"Don't", 460, 695);
+        //c.draw(batch);
+        //Monedas A
+        for (Monedas mA: monedasA){
+            mA.draw(batch);
+        }
 
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
+        //Monedas B
+        for (Monedas mB: monedasB){
+            mB.draw(batch);
+        }
 
-            almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+        texCont.mostrarMensaje(batch,"Marcador: "+contador,600,200);
+        if(contador>=5){
+            juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel));
         }
 
         batch.end();
+
+
     }
 
     @Override
@@ -139,6 +178,7 @@ public class Avaricia implements Screen, InputProcessor {
 
     }
 
+
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -156,18 +196,21 @@ public class Avaricia implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //Verificar si le pego a un topo
-        //Transformar coordenadas
         Vector3 v=new Vector3(screenX,screenY,0);
         camara.unproject(v);
         float x=v.x;
         float y=v.y;
-        if (b.contiene(x,y)){
-                //Toco el billete;
-            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
-
+        for (Monedas mA:monedasA){
+            if (mA.contiene(x,y)){
+                //le pegó
+                contador++;
+            }
         }
-
+        /*for (Monedas mB:monedasB){
+            if(mB.contiene(x,y)){
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+            }
+        }*/
         return false;
     }
 

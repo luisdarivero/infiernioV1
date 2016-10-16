@@ -101,7 +101,6 @@ public class Lobby implements Screen {
 
             arrCora = new Array<Corazon>(vidas);
             for (int i = 1; i <= vidas; i++) {
-
                 Corazon cor = new Corazon(texCora, 300 + i * 150, 550);
                 arrCora.add(cor);
             }

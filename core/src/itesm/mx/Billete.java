@@ -89,7 +89,6 @@ public class Billete
     public enum Estado{
         SUBIENDO,
         BAJANDO,
-        IZQUIERDA,
-        DERECHA,
+
     }
 }
