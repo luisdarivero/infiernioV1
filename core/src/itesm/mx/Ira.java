@@ -168,6 +168,7 @@ public class Ira implements Screen {
                 escena.clear();
                 escena.addActor(imgFondo);
                 instrucciones = false;
+
             }
         }
         else {
