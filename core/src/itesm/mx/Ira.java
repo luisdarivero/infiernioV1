@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -42,6 +43,9 @@ public class Ira implements Screen {
     //spritebatch . administra trazos
     private SpriteBatch batch;
 
+    //para saber si se ponen las intstrucciones
+    private boolean instrucciones;
+
     private  int nivel;
     //constructor
     public Ira(itesm.mx.juego juego, int nivel){
@@ -53,12 +57,16 @@ public class Ira implements Screen {
     private Furioso furioso;
     private ManoIra mano;
 
+
     //texturas
     private Texture texturaback;
     private Texture texturaFondo;
+    private Texture texturaInstrucciones;
+    private  Image imgInstrucciones;
+    private  Image imgFondo;
 
     //manejador del tiempo
-
+    private float deltaTime;
 
 
     @Override
@@ -73,6 +81,8 @@ public class Ira implements Screen {
         furioso = new Furioso(ancho/2, alto*0.35f);//se alinea con respecto al centro
         mano = new ManoIra(ancho,alto,furioso);
         //inicializar variables tiempo
+        instrucciones = true;
+        deltaTime = 0;
 
 
 
@@ -95,6 +105,7 @@ public class Ira implements Screen {
     public void cargarTexturas(){
         assetManager.load("back.png",Texture.class);
         assetManager.load("Ira.png",Texture.class);
+        assetManager.load("instrucciones_ira.png",Texture.class);
 
 
         //bloquea hasta que se carguen las imgenes
@@ -103,15 +114,23 @@ public class Ira implements Screen {
         //cuando termina, leemos las texturas
         texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("Ira.png");
+        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
 
 
 
-        Image imgFondo = new Image(texturaFondo);
+        imgFondo = new Image(texturaFondo);
         //Escalar
         float escalaX = ancho / imgFondo.getWidth();
         float escalaY = alto / imgFondo.getHeight();
         imgFondo.setScale(escalaX, escalaY);
-        escena.addActor(imgFondo);
+        //escena.addActor(imgFondo);
+
+        imgInstrucciones = new Image(texturaInstrucciones);
+        //Escalar
+        escalaX = ancho / imgInstrucciones.getWidth();
+        escalaY = alto / imgInstrucciones.getHeight();
+        imgInstrucciones.setScale(escalaX, escalaY);
+        escena.addActor(imgInstrucciones);
 
 
 
@@ -140,19 +159,31 @@ public class Ira implements Screen {
         //borra la pantalla completamente
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
-        escena.draw();
 
-        //para el batch
-        batch.setProjectionMatrix(camara.combined);
-        batch.begin();
-        furioso.draw(batch);
-        mano.draw(batch);
-        batch.end();
-        if(furioso.getEstado() == Furioso.Estado.Gano){
-            //juego.setScreen(new Ira(juego,nivel + 1));
+        if (instrucciones){
+            escena.draw();
+            deltaTime += Gdx.graphics.getDeltaTime();
+            if(deltaTime > 1.5){
+                imgInstrucciones = imgFondo;
+                escena.clear();
+                escena.addActor(imgFondo);
+                instrucciones = false;
+            }
         }
-        else if(furioso.getEstado() == Furioso.Estado.Perdio){
-            //juego.setScreen(new Ira(juego,1));
+        else {
+            escena.draw();
+
+            //para el batch
+            batch.setProjectionMatrix(camara.combined);
+            batch.begin();
+            furioso.draw(batch);
+            mano.draw(batch);
+            batch.end();
+            if (furioso.getEstado() == Furioso.Estado.Gano) {
+                juego.setScreen(new Ira(juego, nivel + 1));
+            } else if (furioso.getEstado() == Furioso.Estado.Perdio) {
+                juego.setScreen(new Ira(juego,1));
+            }
         }
     }
 
@@ -173,11 +204,11 @@ public class Ira implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
+        texturaFondo.dispose();
     }
 }

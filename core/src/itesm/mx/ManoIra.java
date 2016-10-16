@@ -132,7 +132,7 @@ public class ManoIra {
                 ((float)Math.sin(Math.toRadians(anguloMano))*(time*1000)*signo) + ym
         );
 
-        if(ym>yf){
+        if(ym>yf && deltaTime == 0){
             cambiarSprite(sprite.getX(),sprite.getY(),sprite.getRotation());
             furioso.setEstado(Furioso.Estado.Desventaja);
         }

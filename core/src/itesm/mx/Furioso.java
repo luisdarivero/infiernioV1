@@ -123,7 +123,7 @@ public class Furioso {
                     if (rotacionActual + sprite.getRotation() > 0) {
                         sprite.setRotation(sprite.getRotation() + 1);
                         if (sprite.getRotation() > 0) {
-                            estado = Estado.Gano;
+                            estado = Estado.QuitarMano;
                         }
                     } else {
                         sprite.setRotation(sprite.getRotation() - 1);
@@ -133,7 +133,7 @@ public class Furioso {
                     if (rotacionActual + sprite.getRotation() < 0) {
                         sprite.setRotation(sprite.getRotation() - 1);
                         if (sprite.getRotation() < 0) {
-                            estado = Estado.Gano;
+                            estado = Estado.QuitarMano;
                         }
                     } else {
                         sprite.setRotation(sprite.getRotation() + 1);
@@ -164,8 +164,7 @@ public class Furioso {
                     estado = Estado.Perdio;
                 }
                 break;
-            case QuitarMano:
-                break;
+
         }
 
     }
