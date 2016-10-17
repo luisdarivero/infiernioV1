@@ -259,7 +259,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
-            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
         }
 
         if(toques>=20 && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
@@ -273,7 +273,7 @@ public class NivelPereza implements Screen, InputProcessor {
                 bC++;
             }
 
-            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas++,true,escNivel));
         }
         batch.end();
     }

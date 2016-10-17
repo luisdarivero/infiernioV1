@@ -46,11 +46,21 @@ public class Ira implements Screen {
     //para saber si se ponen las intstrucciones
     private boolean instrucciones;
 
+    //variables para el Lobby
+    private  int vidas;
+    private int almas ;
+    private boolean sizeF = false;
+    private Dificultad escNivel;
+
     private  int nivel;
     //constructor
-    public Ira(itesm.mx.juego juego, int nivel){
-        this.juego = juego;
+    public Ira(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel ){
+        this.juego=Juego;
+        this.vidas=vidas;
+        this.almas=almas;
         this.nivel = nivel;
+        this.escNivel=escNivel;
+
     }
 
     //Objetos en el escenario
@@ -181,9 +191,9 @@ public class Ira implements Screen {
             mano.draw(batch);
             batch.end();
             if (furioso.getEstado() == Furioso.Estado.Gano) {
-                juego.setScreen(new Ira(juego, nivel + 1));
+                juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel));
             } else if (furioso.getEstado() == Furioso.Estado.Perdio) {
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
             }
         }
     }

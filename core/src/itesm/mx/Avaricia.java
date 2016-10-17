@@ -99,6 +99,7 @@ public class Avaricia implements Screen, InputProcessor {
         batch.begin();
         //Dibujar todos los elementos
         fondo.draw(batch);
+        fondo.setSizeF(0, 10);
 
         b.draw(batch);
         //Texto
