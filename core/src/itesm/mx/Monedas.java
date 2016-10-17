@@ -18,7 +18,7 @@ public class Monedas {
     private Estado estado= Estado.OCULTO;
 
     //Tiempo
-    private float tiempoOculto;
+    private float tiempoOculto=(float)(Math.random()*4+0.5f);
 
     //Abajo
     private float yActual;
@@ -45,7 +45,7 @@ public class Monedas {
         switch (estado) {
             case BAJANDO:
                 yActual -= velocidad;
-                if (yActual < -10) {
+                if (yActual < -150) {
                     yActual = yOriginal;
                     xActual = (float) Math.random() * (1200 - 10) + 10;
                     tiempoOculto=(float)(Math.random()*4+0.5f);

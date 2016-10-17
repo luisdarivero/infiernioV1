@@ -162,16 +162,24 @@ public class Lobby implements Screen {
 
                         break;
                     case 4:
-                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+                        //Pereza
+
+                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
                         break;
                     case 5:
-                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+                        //Avaricia
+
+                        //juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
                         break;
                     case 6:
-                        //gula
+                        //Gula
+
+
                         break;
                     case 7:
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        //Lujuria
+
+                        //juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
                         break;
                 }
             }

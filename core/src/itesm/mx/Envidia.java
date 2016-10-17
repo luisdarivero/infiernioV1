@@ -56,15 +56,14 @@ public class Envidia implements Screen, InputProcessor {
     private long startTime = System.currentTimeMillis();
     private int temporizador=6;
 
-    //pueba
-    Monedas c;
 
-    public Envidia(juego juego, int vidas, int almas, int temporizador ){
+
+    public Envidia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel ){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.temporizador-=temporizador;
-        this.escNivel=new Dificultad();
+        this.escNivel=escNivel;
     }
 
 
@@ -83,24 +82,21 @@ public class Envidia implements Screen, InputProcessor {
         batch=new SpriteBatch();
         fondo=new Fondo(texFondo);
 
-        //c=new Monedas(texMonedaA,700,700);
-
-
         float rnd=(float)Math.random() * (1200-10)+10;
 
         //agragar monedas A
-        monedasA = new Array<Monedas>(10);
-        for (int i=0;i<10;i++){
-            Monedas monA=new Monedas(texMonedaA,rnd,700);
+        monedasA = new Array<Monedas>(5);
+        for (int i=0;i<5;i++){
+            Monedas monA=new Monedas(texMonedaA,rnd,720);
             monedasA.add(monA);
             rnd=(float)Math.random() * (1200-10)+10;
         }
 
         //agragar monedas b
-        monedasB = new Array<Monedas>(10);
+        monedasB = new Array<Monedas>(5);
         rnd=(float)Math.random() * (1200-10)+10;
-        for (int i=0;i<10;i++){
-            Monedas monB=new Monedas(texMonedaB,rnd, 700);
+        for (int i=0;i<5;i++){
+            Monedas monB=new Monedas(texMonedaB,rnd, 720);
             monedasB.add(monB);
             rnd=(float)Math.random() * (1200-10)+10;
         }
@@ -132,7 +128,6 @@ public class Envidia implements Screen, InputProcessor {
         //Fondo
         fondo.draw(batch);
 
-        //c.draw(batch);
         //Monedas A
         for (Monedas mA: monedasA){
             mA.draw(batch);
@@ -146,6 +141,13 @@ public class Envidia implements Screen, InputProcessor {
         texCont.mostrarMensaje(batch,"Marcador: "+contador,600,200);
         if(contador>=5){
             juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel));
+        }
+        else if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0&&contador==5){
+
+            almas+=1;
+            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+        }else if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
+            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
         }
 
         batch.end();
