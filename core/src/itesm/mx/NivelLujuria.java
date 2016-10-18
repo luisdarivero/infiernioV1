@@ -244,7 +244,7 @@ public class NivelLujuria implements Screen, InputProcessor {
             }
 
             //MArcador
-            if (toques < 90) {
+            if (toques < totals) {
                 texto.mostrarMensaje(batch, "Time: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 640, 400);
             } else {
                 texto.mostrarMensaje(batch, "Time: 0", 640, 400);
@@ -257,7 +257,8 @@ public class NivelLujuria implements Screen, InputProcessor {
                 Winnie.setVolume(0.4f);
                 //Winnie.play();
                 Winnie.setVolume(0.4f);
-                //batch.draw(texturaGana, 300, 300);
+                //Aqui me deberia regresar al Lobby
+                Juego.setScreen(new Lobby(Juego,vidas,almas++,true,escNivel));
             }
         }
         else
@@ -265,11 +266,11 @@ public class NivelLujuria implements Screen, InputProcessor {
             inst.draw(batch);
         }
 
-        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 0)
+        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && contador < totals)
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
-            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
         }
 
         batch.end();
