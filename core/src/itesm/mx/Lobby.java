@@ -168,7 +168,7 @@ public class Lobby implements Screen {
                         break;
                     case 5:
                         //Avaricia
-
+                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
                         //juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
                         break;
                     case 6:
