@@ -219,7 +219,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                     Lujuria ll = decentes.get(l.dec);
                     ll.setCoordenates(l.getX(), l.getY());
                     ll.draw(batch);
-                    if (ll.info==false)
+                    if (ll.info==false)//
                     {
                         ll.setSize(l.getW()-15, l.getH() - 15);
                         ll.info = true;
