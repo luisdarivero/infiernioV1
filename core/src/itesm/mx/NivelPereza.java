@@ -29,6 +29,10 @@ public class NivelPereza implements Screen, InputProcessor {
     private boolean sizeF = false;
     private Dificultad escNivel;
 
+    //Toques
+    private int goal = 20+(dificultad-1);
+
+    //Texturas
     private Texture texturafondo;
     private Texture texturaGana;
     private Texture texturaPierde;
@@ -76,7 +80,7 @@ public class NivelPereza implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
 
-        this.temporizador = 5-dificultad;
+        this.temporizador = 5;
 
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
@@ -169,7 +173,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
 
         // Aqui dibujamos perezs distintas
-        if (toques < 5)
+        if (toques < (goal*1/4))
         {
             if(toques == 0)
             {
@@ -184,7 +188,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
             p.draw(batch);
         }
-        else if (toques>=5 && toques < 10)
+        else if (toques>=(goal*1/4) && toques < (goal*1/2))
         {
             if(bC == 0)
             {
@@ -194,7 +198,7 @@ public class NivelPereza implements Screen, InputProcessor {
             Pereza p = perezas.get(1);
             p.draw(batch);
         }
-        else if (toques>=10 && toques < 15)
+        else if (toques>=(goal*1/2) && toques < (goal*3/4))
         {
             if(bC == 1)
             {
@@ -204,7 +208,7 @@ public class NivelPereza implements Screen, InputProcessor {
             Pereza p = perezas.get(2);
             p.draw(batch);
         }
-        else if (toques>=15 && toques < 20)
+        else if (toques>=(goal*3/4) && toques < goal)
         {
             if(bC == 2)
             {
@@ -214,7 +218,7 @@ public class NivelPereza implements Screen, InputProcessor {
             Pereza p = perezas.get(3);
             p.draw(batch);
         }
-        else if ( toques >= 20)
+        else if ( toques >= goal)
         {
             if (bC == 3) {
                 Bop4.play();
@@ -244,7 +248,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
         //MArcador y tiempo
 
-        if(toques<20)
+        if(toques<goal)
         {
             texto.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 720);
         }
@@ -255,14 +259,14 @@ public class NivelPereza implements Screen, InputProcessor {
 //Si es necesario modificar los toques
         //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < 20 )
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < goal )
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
             Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
         }
 
-        if(toques>=20 && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
+        if(toques>=goal && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
         {
             Musica.stop();
             if(bC == 4)
@@ -272,8 +276,8 @@ public class NivelPereza implements Screen, InputProcessor {
                 Winnie.setVolume(0.4f);
                 bC++;
             }
-
-            Juego.setScreen(new Lobby(Juego,vidas,almas++,true,escNivel));
+            almas++;
+            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
         }
         batch.end();
     }
@@ -328,19 +332,19 @@ public class NivelPereza implements Screen, InputProcessor {
         float y = v.y;
         for (Pereza m : perezas)
         {
-            if (m.contiene(x, y) && toques<5 && m.estado == Pereza.Estado.UNCUARTO)
+            if (m.contiene(x, y) && toques<(goal*1/4) && m.estado == Pereza.Estado.UNCUARTO)
             {
                 toques++;
             }
-            else if (m.contiene(x, y) && (toques>=5 && toques <10) && m.estado == Pereza.Estado.UNMEDIO)
+            else if (m.contiene(x, y) && (toques>=(goal*1/4) && toques <(goal*1/2)) && m.estado == Pereza.Estado.UNMEDIO)
             {
                 toques++;
             }
-            else if (m.contiene(x, y) && (toques>=10 && toques <15) && m.estado == Pereza.Estado.TRESCUARTOS)
+            else if (m.contiene(x, y) && (toques>=(goal*1/2) && toques <(goal*3/4)) && m.estado == Pereza.Estado.TRESCUARTOS)
             {
                 toques++;
             }
-            else if (m.contiene(x, y) && (toques>=15 && toques <20) && m.estado == Pereza.Estado.CASI)
+            else if (m.contiene(x, y) && (toques>=(goal*3/4) && toques <goal) && m.estado == Pereza.Estado.CASI)
             {
                 toques++;
             }

@@ -43,7 +43,7 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     //Valores iniciales necesarios
     private long startTime = System.currentTimeMillis();
-    private int toques = -1;
+    private int toques = 0;
     private int totals = 0;
 
     //Musica
@@ -77,7 +77,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
 
-        this.tempo = 4 - dificultad;
+        this.tempo = 5;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
@@ -210,7 +210,8 @@ public class NivelLujuria implements Screen, InputProcessor {
         //aqui se dibujan los elementos
         fondo.draw(batch);
 
-        if(toques>=0) {
+        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 4-dificultad)
+        {
             for (Lujuria l : lujurias) {
                 if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec == 5) {
                     Random rnd = new Random();
@@ -218,7 +219,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                     Lujuria ll = decentes.get(l.dec);
                     ll.setCoordenates(l.getX(), l.getY());
                     ll.draw(batch);
-                    if (ll.info==false)
+                    if (ll.info==false)//
                     {
                         ll.setSize(l.getW()-15, l.getH() - 15);
                         ll.info = true;
@@ -258,7 +259,8 @@ public class NivelLujuria implements Screen, InputProcessor {
                 //Winnie.play();
                 Winnie.setVolume(0.4f);
                 //Aqui me deberia regresar al Lobby
-                Juego.setScreen(new Lobby(Juego,vidas,almas++,true,escNivel));
+                almas++;
+                Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
             }
         }
         else
@@ -367,4 +369,3 @@ public class NivelLujuria implements Screen, InputProcessor {
     }
 
 }
-
