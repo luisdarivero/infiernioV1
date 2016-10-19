@@ -77,7 +77,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
 
-        this.tempo = 5 - dificultad;
+        this.tempo = 5;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
@@ -259,7 +259,8 @@ public class NivelLujuria implements Screen, InputProcessor {
                 //Winnie.play();
                 Winnie.setVolume(0.4f);
                 //Aqui me deberia regresar al Lobby
-                Juego.setScreen(new Lobby(Juego,vidas,almas++,true,escNivel));
+                almas++;
+                Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
             }
         }
         else
@@ -368,4 +369,3 @@ public class NivelLujuria implements Screen, InputProcessor {
     }
 
 }
-

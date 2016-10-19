@@ -18,6 +18,7 @@ public class Pereza
     public Estado estado;
     private int contadors=0;
     public int toquesP=0;
+
     public Pereza(Texture textura)
     {
         sprite = new Sprite(textura);
