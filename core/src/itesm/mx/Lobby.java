@@ -20,7 +20,6 @@ public class Lobby implements Screen {
     //Texturas
     private Texture texFondo;
     private Texture texCora;
-    private Texture texTache;
 
     private SpriteBatch batch;
     private Fondo fondo;
@@ -164,7 +163,7 @@ public class Lobby implements Screen {
                     case 4:
                         //Pereza
 
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Lujuria(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 5:
