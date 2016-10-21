@@ -68,7 +68,6 @@ public class NivelLujuria implements Screen, InputProcessor {
     //Contador de lujurias volteadas correctamente
     private int contador=0;
 
-    //TODO: PONER LAS COSAS CORRECTAS Musica
     public NivelLujuria(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel)
     {
         this.Juego = Juego;
