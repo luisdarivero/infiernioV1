@@ -40,6 +40,7 @@ public class Avaricia implements Screen, InputProcessor {
     int vidas;
     int almas;
     private Dificultad escNivel;
+    private int binario;
 
     //variables constantes de ancho y alto de la pamtalla
     private final float ancho = 1280;
@@ -47,16 +48,22 @@ public class Avaricia implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=6;
+    private int temporizador;
 
 
 
-    public Avaricia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel){
+    public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
-        this.temporizador-=temporizador;
         this.escNivel=escNivel;
+        if (nivel==1)
+            this.temporizador=5;
+        else if(nivel==2)
+            this.temporizador=4;
+        else if (nivel>=3)
+            this.temporizador=3;
+
     }
 
     @Override
@@ -77,7 +84,12 @@ public class Avaricia implements Screen, InputProcessor {
 
     private void cargarTexturas(){
         texturaFondo=new Texture("FondoA.png");
-        texDinero=new Texture("Avaricia.png");
+        int range = (1-0) + 1;
+        binario= (int)(Math.random() * range) + 0;
+        if (binario==1)
+            texDinero=new Texture("Avaricia.png");
+        else
+            texDinero=new Texture("AVariciaFalso.png");
 
     }
 
@@ -108,8 +120,15 @@ public class Avaricia implements Screen, InputProcessor {
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
 
-            almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+            switch (binario){
+                case 0:
+                    almas+=1;
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    break;
+                case 1:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    break;
+            }
         }
 
         batch.end();
@@ -165,7 +184,17 @@ public class Avaricia implements Screen, InputProcessor {
         float y=v.y;
         if (b.contiene(x,y)){
                 //Toco el billete;
-            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+            switch (binario){
+                case 0:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    break;
+                case 1:
+                    almas+=1;
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    break;
+            }
+
+
 
         }
 

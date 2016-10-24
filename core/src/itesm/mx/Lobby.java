@@ -163,7 +163,7 @@ public class Lobby implements Screen {
                     case 4:
                         //Pereza
 
-                        juego.setScreen(new Lujuria(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 5:
