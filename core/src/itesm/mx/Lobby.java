@@ -146,30 +146,30 @@ public class Lobby implements Screen {
                     case 1:
                         //soberbia
 
-                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 2:
                         //envidia
 
-                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 3:
                         //ira
 
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 4:
                         //Pereza
 
-                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+
                         break;
                     case 5:
                         //Avaricia
-                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
-                        //juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+
                         break;
                     case 6:
                         //Gula
@@ -179,7 +179,6 @@ public class Lobby implements Screen {
                     case 7:
                         //Lujuria
 
-                        //juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
                         break;
                 }
             }

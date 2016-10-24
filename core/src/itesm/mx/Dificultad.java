@@ -15,7 +15,7 @@ public class Dificultad {
 
     public Dificultad(){
         niveles=new ArrayList<Integer>(4);
-        for (int i=1;i<=5;i++){
+        for (int i=1;i<=4;i++){
             niveles.add(i);
         }
         rnd=0;
@@ -28,7 +28,7 @@ public class Dificultad {
         int nivel;
 
         if(niveles.size()==0){
-            for (int i=1;i<=5;i++){
+            for (int i=1;i<=4;i++){
                 niveles.add(i);
             }
         }
@@ -44,11 +44,11 @@ public class Dificultad {
             niveles.remove(rnd);
 
         ronda+=1;
-        if (ronda==5){
+        if (ronda==4){
             dificultad+=1;
             ronda=0;
         }
-        if (dificultad==3){
+        if (dificultad==5){
             dificultad=1;
         }
         return nivel;
