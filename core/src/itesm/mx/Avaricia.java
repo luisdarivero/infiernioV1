@@ -98,7 +98,7 @@ public class Avaricia implements Screen, InputProcessor {
         if (binario==1)
             texDinero=new Texture("Avaricia.png");
         else
-            texDinero=new Texture("AVariciaFalso.png");
+            texDinero=new Texture("AvariciaFalso.png");
 
     }
 

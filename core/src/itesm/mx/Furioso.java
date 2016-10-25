@@ -61,7 +61,7 @@ public class Furioso {
 
     private void cargarTexturas(){
         rojo = new Texture("Ira_personaje.png");
-        azul = new Texture("Ira_personaje_silueta.png");
+        azul = new Texture("Ira_azul.png");
     }
 
     public void draw(SpriteBatch batch){
