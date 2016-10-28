@@ -59,9 +59,13 @@ public class Monedas {
                     estado=Estado.BAJANDO;
                 }
                 break;
+            case GOLPEADO:
+                yActual=yOriginal;
+                xActual=(float) Math.random() * (1200 - 10) + 10;
+                estado=Estado.BAJANDO;
         }
 
-        //sprite.setRegion(0,0,(int)sprite.getWidth(),(int)sprite.getHeight());
+        sprite.setRegion(0,0,(int)sprite.getWidth(),(int)sprite.getHeight());
         sprite.setPosition(xActual,yActual);
 
     }
@@ -70,9 +74,22 @@ public class Monedas {
         return sprite.getBoundingRectangle().contains(x,y);
     }
 
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+    public float getyActual(){
+        return sprite.getY();
+    }
+
+    public void setVelocidad(float velocidad){
+        this.velocidad+=velocidad;
+    }
+
     public enum Estado{
         OCULTO,
         BAJANDO,
+        GOLPEADO,
+
 
     }
 }
