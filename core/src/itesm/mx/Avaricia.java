@@ -19,19 +19,23 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Avaricia implements Screen, InputProcessor {
     private final juego juego;
-    private Texture texturaFondo;
+
 
     private SpriteBatch batch;
 
     private OrthographicCamera camara;
     private Viewport vista;
+
+    //texturas y fondos
+    private Fondo instr;
     private Fondo fondo;
 
+    private Texture texturaFondo;
+    private Texture textInstr;
     private Texture texDinero;
 
     //Texto
-    private Texto texTexto_a;
-    private Texto texTexto_b;
+    private Texto texTiempo;
 
     //billete
     Billete b;
@@ -40,6 +44,7 @@ public class Avaricia implements Screen, InputProcessor {
     int vidas;
     int almas;
     private Dificultad escNivel;
+    private int binario;
 
     //variables constantes de ancho y alto de la pamtalla
     private final float ancho = 1280;
@@ -47,16 +52,26 @@ public class Avaricia implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=6;
+    private int temporizador;
+    private int tiempoInit;
 
 
 
-    public Avaricia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel){
+    public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
-        this.temporizador-=temporizador;
         this.escNivel=escNivel;
+        if (nivel==1)
+            this.temporizador=7;
+        else if(nivel==2)
+            this.temporizador=6;
+        else if (nivel>=3)
+            this.temporizador=5;
+
+        //extras
+        this.tiempoInit=temporizador-1;
+
     }
 
     @Override
@@ -65,8 +80,7 @@ public class Avaricia implements Screen, InputProcessor {
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
-        texTexto_a = new Texto("fuenteAv_a.fnt");
-        texTexto_b = new Texto("fuenteAv_b.fnt");
+        texTiempo = new Texto("fuenteAv_a.fnt");
     }
     private void inicializarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -77,13 +91,21 @@ public class Avaricia implements Screen, InputProcessor {
 
     private void cargarTexturas(){
         texturaFondo=new Texture("FondoA.png");
-        texDinero=new Texture("Avaricia.png");
+        int range = (1-0) + 1;
+        binario= (int)(Math.random() * range) + 0;
+        textInstr=new Texture("InstruccionesAvaricia.png");
+
+        if (binario==1)
+            texDinero=new Texture("Avaricia.png");
+        else
+            texDinero=new Texture("AvariciaFalso.png");
 
     }
 
     private void crearEscena(){
         batch=new SpriteBatch();
         fondo=new Fondo(texturaFondo);
+        instr=new Fondo(textInstr);
         b=new Billete(texDinero,0,0);
 
     }
@@ -101,15 +123,25 @@ public class Avaricia implements Screen, InputProcessor {
         fondo.draw(batch);
         fondo.setSizeF(0, 10);
 
-        b.draw(batch);
-        //Texto
-        texTexto_a.mostrarMensaje(batch,"touch the money", 750, 700);
-        texTexto_b.mostrarMensaje(batch,"Don't", 460, 695);
 
+        if ((temporizador - ((System.currentTimeMillis() - startTime)/1000)) >=tiempoInit ){
+            instr.draw(batch);
+        }
+        else{
+            b.draw(batch);
+            texTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
+        }
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
 
-            almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+            switch (binario){
+                case 0:
+                    almas+=1;
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    break;
+                case 1:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    break;
+            }
         }
 
         batch.end();
@@ -165,7 +197,17 @@ public class Avaricia implements Screen, InputProcessor {
         float y=v.y;
         if (b.contiene(x,y)){
                 //Toco el billete;
-            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+            switch (binario){
+                case 0:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    break;
+                case 1:
+                    almas+=1;
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    break;
+            }
+
+
 
         }
 

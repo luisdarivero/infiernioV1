@@ -24,19 +24,16 @@ public class Billete
     //Izquierda derecha
     private float anchoActual;
 
-    public Billete(Texture textura){
+
+    public Billete(Texture textura, float x, float y){
         sprite=new Sprite(textura);
+        sprite.setPosition(x,y);
 
         //Arriba-Abajo
         alturaActual=sprite.getY();
         alturaOriginal=alturaActual;
         //Izquiera-Derecha
         anchoActual=sprite.getX();
-    }
-
-    public Billete(Texture textura, float x, float y){
-        this(textura);
-        sprite.setPosition(x,y);
     }
 
     public  void draw(SpriteBatch batch){

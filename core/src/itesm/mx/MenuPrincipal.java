@@ -7,6 +7,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
@@ -25,10 +27,13 @@ public class MenuPrincipal implements Screen {
     //se inicializa con una variable Tipo juego para poder pasar a otra escena
     private final itesm.mx.juego juego;
 
-    //variables constantes de ancho y alto de la pamtalla
-    private final int ancho = 1280;
-    private final int alto = 720;
+    //variables constantes de ANCHO y ALTO de la pamtalla
+    private final int ANCHO = 1280;
+    private final int ALTO = 720;
 
+    //para el movimiento de particulas
+    private SpriteBatch batch;
+    private ParticleEffect pe;
 
     //escena para la pantalla
     private Stage escena;
@@ -41,6 +46,8 @@ public class MenuPrincipal implements Screen {
     private Texture texturaBtnPlay;
     private Texture texturaBtnSettings;
     private Texture texturaBtnAboutUs;
+    private Sprite spriteFondo;
+
 
     //administra la carga de assets
     private final AssetManager assetManager = new AssetManager();
@@ -70,11 +77,11 @@ public class MenuPrincipal implements Screen {
     public void show() {
         //equivalente a create o a start, se ejecuta solo al cargar la pantalla
 
-        camara = new OrthographicCamera(ancho,alto);
-        camara.position.set(ancho/2,alto/2,0);
+        camara = new OrthographicCamera(ANCHO, ALTO);
+        camara.position.set(ANCHO /2, ALTO /2,0);
 
         camara.update();
-        vista = new FitViewport(ancho,alto,camara);
+        vista = new FitViewport(ANCHO, ALTO,camara);
 
         escena = new Stage();
 
@@ -82,6 +89,13 @@ public class MenuPrincipal implements Screen {
         Gdx.input.setInputProcessor(escena);
         cargarTexturas();
 
+        //cargar lo necesario para el sistema de particulas
+        batch = new SpriteBatch();
+
+        pe = new ParticleEffect();
+        pe.load(Gdx.files.internal("particles3.party"),Gdx.files.internal(""));
+        //pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        pe.setPosition(ANCHO *.53f, ALTO *.1f);
 
     }
 
@@ -90,7 +104,7 @@ public class MenuPrincipal implements Screen {
 
 
         //textura de fondo
-        assetManager.load("principal.png",Texture.class);
+        assetManager.load("piedras_inicio.png",Texture.class);
 
         //texturas de botones
         assetManager.load("btnPlay.png",Texture.class);
@@ -101,11 +115,12 @@ public class MenuPrincipal implements Screen {
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
         //cuando termina, leemos las texturas
-        texturaFondo = assetManager.get("principal.png");
+        texturaFondo = assetManager.get("piedras_inicio.png");
         texturaBtnPlay = assetManager.get("btnPlay.png");
         texturaBtnSettings = assetManager.get("btnSettings.png");
         texturaBtnAboutUs = assetManager.get("btnAboutUs.png");
         texturaBtnScore = assetManager.get("btnScore.png");
+        spriteFondo = new Sprite(new Texture("fondo_inicio.png"));
 
         anadirTexturas();
 
@@ -117,8 +132,8 @@ public class MenuPrincipal implements Screen {
         //para el fondo
         Image imgFondo = new Image(texturaFondo);
         //Escalar
-        float escalaX = ancho / imgFondo.getWidth();
-        float escalaY = alto / imgFondo.getHeight();
+        float escalaX = ANCHO / imgFondo.getWidth();
+        float escalaY = ALTO / imgFondo.getHeight();
         imgFondo.setScale(escalaX, escalaY);
         escena.addActor(imgFondo);
 
@@ -126,27 +141,27 @@ public class MenuPrincipal implements Screen {
         //btn play
         TextureRegionDrawable trBtnPlay = new TextureRegionDrawable(new TextureRegion(texturaBtnPlay));
         ImageButton btnPlay = new ImageButton(trBtnPlay);
-        btnPlay.setPosition(ancho/2-btnPlay.getWidth()/2,0.48f*alto);
+        btnPlay.setPosition(ANCHO /2-btnPlay.getWidth()/2,0.48f* ALTO);
 
         escena.addActor(btnPlay);
         //opciones
         TextureRegionDrawable trSettings = new TextureRegionDrawable(new TextureRegion(texturaBtnSettings));
         ImageButton btnSettings = new ImageButton(trSettings);
-        btnSettings.setPosition(ancho*.09f,0.37f*alto);
+        btnSettings.setPosition(ANCHO *.09f,0.37f* ALTO);
 
         escena.addActor(btnSettings);
 
         //acerca de
         TextureRegionDrawable trBtnAboutUs = new TextureRegionDrawable(new TextureRegion(texturaBtnAboutUs));
         ImageButton btnAboutUs = new ImageButton(trBtnAboutUs);
-        btnAboutUs.setPosition(ancho*0.70f,0.40f*alto);
+        btnAboutUs.setPosition(ANCHO *0.70f,0.40f* ALTO);
 
         escena.addActor(btnAboutUs);
 
         //btn score
         TextureRegionDrawable trBtnScore = new TextureRegionDrawable(new TextureRegion(texturaBtnScore));
         ImageButton btnScore = new ImageButton(trBtnScore);
-        btnScore.setPosition(ancho/2-btnScore.getWidth()/2,0.17f*alto);
+        btnScore.setPosition(ANCHO /2-btnScore.getWidth()/2,0.17f* ALTO);
 
         escena.addActor(btnScore);
 
@@ -189,11 +204,22 @@ public class MenuPrincipal implements Screen {
 
     @Override
     public void render(float delta) {
-    //es el update
+        //es el update
         //pantalla blanca
         Gdx.gl.glClearColor(0,0,0,1);
         //borra la pantalla completamente
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(camara.combined);
+        pe.update(Gdx.graphics.getDeltaTime());
+        batch.begin();
+        spriteFondo.draw(batch);
+        pe.draw(batch);
+        batch.end();
+        if(pe.isComplete()){
+            pe.reset();
+        }
+
         escena.setViewport(vista);
         escena.draw();
     }
@@ -229,4 +255,3 @@ public class MenuPrincipal implements Screen {
         musica.dispose();
     }
 }
-

@@ -41,29 +41,38 @@ public class Envidia implements Screen, InputProcessor {
     //Texto
     private Texto textoIns;
     private Texto texCont;
+    private Texto textTiempo;
 
     //Monedas array
     private Array<Monedas> monedasA;
     private Array<Monedas> monedasB;
 
     //variables
-    int vidas;
-    int almas;
+    private int vidas;
+    private int almas;
     private Dificultad escNivel;
     private int contador;
+    private float velocidad;
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=6;
+    private int temporizador=8;
 
 
 
-    public Envidia(juego juego, int vidas, int almas, int temporizador, Dificultad escNivel ){
+    public Envidia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel ){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
-        this.temporizador-=temporizador;
         this.escNivel=escNivel;
+
+        if (nivel==1){
+            velocidad=0.3f;
+        }else if(nivel==2){
+            velocidad=0.6f;
+        }else{
+            velocidad=0.9f;
+        }
     }
 
 
@@ -76,6 +85,7 @@ public class Envidia implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         textoIns=new Texto("fuenteAv_a.fnt");
         texCont=new Texto("fuenteAv_a.fnt");
+        textTiempo=new Texto("fuenteAv_a.fnt");
     }
 
     private void crearEscena() {
@@ -88,6 +98,7 @@ public class Envidia implements Screen, InputProcessor {
         monedasA = new Array<Monedas>(5);
         for (int i=0;i<5;i++){
             Monedas monA=new Monedas(texMonedaA,rnd,720);
+            monA.setVelocidad(velocidad);
             monedasA.add(monA);
             rnd=(float)Math.random() * (1200-10)+10;
         }
@@ -97,6 +108,7 @@ public class Envidia implements Screen, InputProcessor {
         rnd=(float)Math.random() * (1200-10)+10;
         for (int i=0;i<5;i++){
             Monedas monB=new Monedas(texMonedaB,rnd, 720);
+            monB.setVelocidad(velocidad);
             monedasB.add(monB);
             rnd=(float)Math.random() * (1200-10)+10;
         }
@@ -134,21 +146,24 @@ public class Envidia implements Screen, InputProcessor {
         }
 
         //Monedas B
+
         for (Monedas mB: monedasB){
             mB.draw(batch);
         }
 
         texCont.mostrarMensaje(batch,"Marcador: "+contador,600,200);
-        if(contador>=5){
-            juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel));
-        }
-        else if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0&&contador==5){
+        textTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
 
+        for (Monedas mA:monedasA){
+            if (mA.getyActual()<-40){
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+            }
+        }
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
             almas+=1;
             juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
-        }else if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
-            juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
         }
+
 
         batch.end();
 
@@ -205,14 +220,15 @@ public class Envidia implements Screen, InputProcessor {
         for (Monedas mA:monedasA){
             if (mA.contiene(x,y)){
                 //le pegó
+                mA.setEstado(Monedas.Estado.GOLPEADO);
                 contador++;
             }
         }
-        /*for (Monedas mB:monedasB){
+        for (Monedas mB:monedasB){
             if(mB.contiene(x,y)){
                 juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
             }
-        }*/
+        }
         return false;
     }
 

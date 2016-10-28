@@ -20,7 +20,6 @@ public class Lobby implements Screen {
     //Texturas
     private Texture texFondo;
     private Texture texCora;
-    private Texture texTache;
 
     private SpriteBatch batch;
     private Fondo fondo;
@@ -31,6 +30,7 @@ public class Lobby implements Screen {
 
     //texto
     private Texto texto;
+    private Texto textTiempo;
 
 
     //Variables
@@ -74,6 +74,7 @@ public class Lobby implements Screen {
         cargarCamara();
         crearEscena();
         texto=new Texto();
+        textTiempo=new Texto();
 
 
     }
@@ -126,6 +127,7 @@ public class Lobby implements Screen {
             h.draw(batch);
         }
         texto.mostrarMensaje(batch,""+almas,720,490);
+        //textTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 2){
             if (estado==false){
@@ -168,6 +170,7 @@ public class Lobby implements Screen {
 
                         break;
                     case 5:
+                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
                         //Avaricia
 
                         break;
