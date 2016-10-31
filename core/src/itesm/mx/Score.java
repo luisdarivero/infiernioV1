@@ -17,6 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import java.io.*;
+import java.util.*;
+
+//TODO:hacer textos y mostrarlos
+//TODO: guardar nuevos scores
 
 /**
  * Created by Daniel Riv on 16/09/2016.
@@ -29,7 +34,6 @@ public class Score implements Screen {
     private final int ancho = 1280;
     private final int alto = 720;
 
-
     //escena para la pantalla
     private Stage escena;
 
@@ -39,6 +43,9 @@ public class Score implements Screen {
     //texturas de las demas imagenes
     private Texture texturaBtnBack;
 
+    //Para los scores
+    private ArrayList<String> nombres = new ArrayList<String>(5);
+    private ArrayList<Integer> scores = new ArrayList<Integer>(5);
 
     //administra la carga de assets
     private final AssetManager assetManager = new AssetManager();
@@ -50,10 +57,37 @@ public class Score implements Screen {
     //musica
     private final Music musica;
 
+    Scanner scan = null;
+    String titulo, artista, genero;
+    double precio;
+
     //constructor
     public Score(itesm.mx.juego juego, Music musica){
         this.juego =  juego;
         this.musica = musica;
+        cargarScores();
+    }
+
+    //
+    private void cargarScores() {
+        try {
+            scan= new Scanner(new FileReader("scores.txt"));
+            while(scan.hasNext())
+            {
+                String [] lines = scan.nextLine().toString().split("	");
+                nombres.add(lines[0]);
+                scores.add(Integer.parseInt(lines[1]));
+            }
+        }catch(FileNotFoundException e) {
+            System.err.println(e);
+        } catch(InputMismatchException e) {
+            System.err.println(e);
+        } catch (java.util.NoSuchElementException e) {
+            System.err.println(e);
+        }
+        finally {
+            scan.close();
+        }
     }
 
     @Override
