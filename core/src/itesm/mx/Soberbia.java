@@ -69,7 +69,9 @@ public class Soberbia implements Screen, InputProcessor {
     private  Image imgFondo;
     //private Sprite botonRojo;
     //private Sprite botonAzul;
-    private Sprite[] listaMovibles;
+    //private Sprite[] listaMovibles;
+    private FichaSoberbia[] listaMovibles;
+    private FichaSoberbia[] listaEstaticas;
 
 
     //manejador del tiempo
@@ -83,7 +85,9 @@ public class Soberbia implements Screen, InputProcessor {
     @Override
     public void show() {
         //arrays imagenes
-        listaMovibles = new Sprite[3];
+        //listaMovibles = new Sprite[3];
+        listaMovibles = new FichaSoberbia[3];
+        listaEstaticas = new FichaSoberbia[3];
         //inicializar la camara
         inicializarCamara();
         //crear la escena
@@ -130,12 +134,19 @@ public class Soberbia implements Screen, InputProcessor {
         texturaFondo = assetManager.get("fondo_inicio.png");
         texturaInstrucciones = assetManager.get("instrucciones_ira.png");
 
-        listaMovibles[0] = new Sprite(new Texture("LujuriaS1.png"));
+        listaMovibles[0] = new FichaSoberbia("1","LujuriaS1.png");
         listaMovibles[0].setCenter(ancho*.25f,alto*.75f);
-        listaMovibles[1] = new Sprite(new Texture("LujuriaS2.png"));
+        listaMovibles[1] = new FichaSoberbia("2","LujuriaS2.png");
         listaMovibles[1].setCenter(ancho*.50f,alto*.75f);
-        listaMovibles[2] = new Sprite(new Texture("LujuriaS3.png"));
+        listaMovibles[2] = new FichaSoberbia("3","LujuriaS3.png");;
         listaMovibles[2].setCenter(ancho*.75f,alto*.75f);
+
+        listaEstaticas[0] = new FichaSoberbia("1","LujuriaS1.png");
+        listaEstaticas[0].setCenter(ancho*.25f,alto*.25f);
+        listaEstaticas[1] = new FichaSoberbia("2","LujuriaS2.png");
+        listaEstaticas[1].setCenter(ancho*.50f,alto*.25f);
+        listaEstaticas[2] = new FichaSoberbia("3","LujuriaS3.png");;
+        listaEstaticas[2].setCenter(ancho*.75f,alto*.25f);
 
         imgFondo = new Image(texturaFondo);
         //Escalar
@@ -179,6 +190,12 @@ public class Soberbia implements Screen, InputProcessor {
             //para el batch
             batch.setProjectionMatrix(camara.combined);
             batch.begin();
+
+            for (FichaSoberbia f: listaEstaticas
+                 ) {
+                f.draw(batch);
+
+            }
 
             for(int i = listaMovibles.length-1;i>=0;i--){
                 listaMovibles[i].draw(batch);
@@ -240,9 +257,9 @@ public class Soberbia implements Screen, InputProcessor {
 
         int contador= 0;
 
-        for (Sprite w: listaMovibles
+        for (FichaSoberbia w: listaMovibles
              ) {
-            if(w.getBoundingRectangle().contains(x,y)){
+            if(w.contains(x,y)){
                 cambiarArrayPosPrincipio(listaMovibles,contador);
 
                 estaTocando = true;
@@ -259,12 +276,12 @@ public class Soberbia implements Screen, InputProcessor {
         return false;
     }
 
-    private void cambiarArrayPosPrincipio(Sprite[] lista, int posicion){
+    private void cambiarArrayPosPrincipio(FichaSoberbia[] lista, int posicion){
         if(lista.length == 0 || lista.length == 1 || posicion == 0){
             return;
         }
 
-        Sprite temp = lista[0];
+        FichaSoberbia temp = lista[0];
 
         lista[0] = lista[posicion];
         lista[posicion] = temp;
@@ -289,9 +306,9 @@ public class Soberbia implements Screen, InputProcessor {
         float y = v.y;
 
 
-        for (Sprite w: listaMovibles
+        for (FichaSoberbia w: listaMovibles
              ) {
-            if(estaTocando && w.getBoundingRectangle().contains(xAnt,yAnt)){
+            if(estaTocando && w.contains(xAnt,yAnt)){
                 w.setCenter(x,y);
             }
             xAnt= x;
