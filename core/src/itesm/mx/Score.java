@@ -137,6 +137,17 @@ public class Score implements Screen, InputProcessor {
         //aki se dibujan los elementos
         fondo.draw(batch);
 
+        /*
+        if(immm==0)
+        {
+            Gdx.input.setOnscreenKeyboardVisible(true);
+            immm++;
+        }
+        if(immm==100)
+        {
+            Gdx.input.setOnscreenKeyboardVisible(false);
+        }
+        */
         scr1.mostrarMensaje(batch, scores.get(0)+" "+nombres.get(0), ancho/2, 720);
         scr2.mostrarMensaje(batch, scores.get(1)+" "+nombres.get(1), ancho/2, 620);
         scr3.mostrarMensaje(batch, scores.get(2)+" "+nombres.get(2), ancho/2, 520);
