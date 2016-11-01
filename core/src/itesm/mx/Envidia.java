@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+
 /**
  * Created by Marina on 16/10/2016.
  */
@@ -59,7 +61,6 @@ public class Envidia implements Screen, InputProcessor {
     private int temporizador=8;
 
 
-
     public Envidia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel ){
         this.juego=juego;
         this.vidas=vidas;
@@ -92,25 +93,41 @@ public class Envidia implements Screen, InputProcessor {
         batch=new SpriteBatch();
         fondo=new Fondo(texFondo);
 
-        float rnd=(float)Math.random() * (1200-10)+10;
 
+        //pos
+        ArrayList<Integer> pos=new ArrayList<Integer>(10);
+        for (int j=0;j<10;j++){
+            pos.add(j*120);
+        }
+
+        int range = ((pos.size()-1) -0) + 1;
+        int rnd=(int)(Math.random() * range) + 0;
         //agragar monedas A
         monedasA = new Array<Monedas>(5);
         for (int i=0;i<5;i++){
-            Monedas monA=new Monedas(texMonedaA,rnd,720);
+            Monedas monA=new Monedas(texMonedaA,pos.get(rnd),720);
             monA.setVelocidad(velocidad);
             monedasA.add(monA);
-            rnd=(float)Math.random() * (1200-10)+10;
+            pos.remove(rnd);
+            range = ((pos.size()-1) -0) + 1;
+            rnd=(int)(Math.random() * range) + 0;
+
         }
 
         //agragar monedas b
+        range = ((pos.size()-1) -0) + 1;
+        rnd= (int)(Math.random() * range) + 0;
+
         monedasB = new Array<Monedas>(5);
-        rnd=(float)Math.random() * (1200-10)+10;
+        rnd= (int)(Math.random() * range) + 0;
         for (int i=0;i<5;i++){
-            Monedas monB=new Monedas(texMonedaB,rnd, 720);
+
+            Monedas monB=new Monedas(texMonedaB,pos.get(rnd), 720);
             monB.setVelocidad(velocidad);
             monedasB.add(monB);
-            rnd=(float)Math.random() * (1200-10)+10;
+            pos.remove(rnd);
+            range = ((pos.size()-1) -0) + 1;
+            rnd= (int)(Math.random() * range) + 0;
         }
 
     }
@@ -140,7 +157,9 @@ public class Envidia implements Screen, InputProcessor {
         //Fondo
         fondo.draw(batch);
 
+
         //Monedas A
+
         for (Monedas mA: monedasA){
             mA.draw(batch);
         }
