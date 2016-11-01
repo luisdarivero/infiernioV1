@@ -65,7 +65,8 @@ public class Pereza
             case UNCUARTO:
                 if(tocado==false)
                 {
-                    sprite.setSize(sprite.getWidth() - ((toquesP % 5)), sprite.getHeight() + ((toquesP % 5) * 16));
+                    sprite.setSize(sprite.getWidth() - ((toquesP % 5)), sprite.getHeight() + ((toquesP % 5) * 16
+                    ));
                     tocado = true;
                 }
                 if(contadors==40)
