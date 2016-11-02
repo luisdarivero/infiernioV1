@@ -40,4 +40,25 @@ public class FichaSoberbia {
     public String getEtiqueta() {
         return etiqueta;
     }
+
+    public boolean ColisionImagen(Sprite imagen){
+        if(sprite.getBoundingRectangle().contains(imagen.getBoundingRectangle())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object ficha){
+        if (ficha instanceof FichaSoberbia) {
+            if(ficha != null){
+                System.out.println( this.getEtiqueta() + " " + ((FichaSoberbia)ficha).getEtiqueta());
+                if ((this.getEtiqueta()).equals( ((FichaSoberbia)ficha).getEtiqueta())){
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
