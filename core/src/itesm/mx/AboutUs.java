@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
- * Created by Daniel Riv on 16/09/2016.
+ * KRLO 16/09/2016.
  */
 public class AboutUs implements Screen, InputProcessor {
     //se inicializa con una variable Tipo juego para poder pasar a otra escena
