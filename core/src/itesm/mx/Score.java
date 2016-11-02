@@ -42,6 +42,7 @@ public class Score implements Screen, InputProcessor {
 
     //texturas de las demas imagenes
     private Texture texturaBtnBack;
+    Lujuria btnBack ;
 
     //Para los scores
     private ArrayList<String> nombres = new ArrayList<String>(5);
@@ -51,6 +52,11 @@ public class Score implements Screen, InputProcessor {
     private Texto scr3;
     private Texto scr4;
     private Texto scr5;
+    private Texto scr1N;
+    private Texto scr2N;
+    private Texto scr3N;
+    private Texto scr4N;
+    private Texto scr5N;
 
 
     //administra la carga de assets
@@ -67,6 +73,14 @@ public class Score implements Screen, InputProcessor {
     public Score(itesm.mx.juego juego, Music musica){
         this.juego =  juego;
         this.musica = musica;
+        cargarScores();
+    }
+
+    public Score(itesm.mx.juego juego){
+        this.juego =  juego;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
+        musica.setLooping(true);
+        musica.play();
         cargarScores();
     }
 
@@ -106,12 +120,18 @@ public class Score implements Screen, InputProcessor {
         scr3 = new Texto();
         scr4 = new Texto();
         scr5 = new Texto();
+        scr1N = new Texto();
+        scr2N = new Texto();
+        scr3N = new Texto();
+        scr4N = new Texto();
+        scr5N = new Texto();
     }
 
     private void crearEscena()
     {
         batch = new SpriteBatch();
         fondo = new Fondo(texturaFondo);
+        btnBack =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
     }
 
     private void inicializarCamara()
@@ -136,23 +156,22 @@ public class Score implements Screen, InputProcessor {
         batch.begin();
         //aki se dibujan los elementos
         fondo.draw(batch);
+        btnBack.draw(batch);
+        btnBack.setRotation();
+        scr1.mostrarMensaje(batch, scores.get(0).toString(), ancho/2-150, 540);
+        scr1N.mostrarMensaje(batch,nombres.get(0), ancho/2+140, 540);
 
-        /*
-        if(immm==0)
-        {
-            Gdx.input.setOnscreenKeyboardVisible(true);
-            immm++;
-        }
-        if(immm==100)
-        {
-            Gdx.input.setOnscreenKeyboardVisible(false);
-        }
-        */
-        scr1.mostrarMensaje(batch, scores.get(0)+" "+nombres.get(0), ancho/2, 720);
-        scr2.mostrarMensaje(batch, scores.get(1)+" "+nombres.get(1), ancho/2, 620);
-        scr3.mostrarMensaje(batch, scores.get(2)+" "+nombres.get(2), ancho/2, 520);
-        scr4.mostrarMensaje(batch, scores.get(3)+" "+nombres.get(3), ancho/2, 420);
-        scr5.mostrarMensaje(batch, scores.get(4)+" "+nombres.get(4), ancho/2, 320);
+        scr2.mostrarMensaje(batch, scores.get(1).toString(), ancho/2-150, 480);
+        scr2N.mostrarMensaje(batch,nombres.get(1), ancho/2+140, 480);
+
+        scr3.mostrarMensaje(batch, scores.get(2).toString(), ancho/2-150, 420);
+        scr3N.mostrarMensaje(batch,nombres.get(2), ancho/2+140, 420);
+
+        scr4.mostrarMensaje(batch, scores.get(3).toString(), ancho/2-150, 360);
+        scr4N.mostrarMensaje(batch,nombres.get(3), ancho/2+140, 360);
+
+        scr5.mostrarMensaje(batch, scores.get(4).toString(), ancho/2-150, 300);
+        scr5N.mostrarMensaje(batch,nombres.get(4), ancho/2+140, 300);
         batch.end();
     }
 
@@ -205,6 +224,10 @@ public class Score implements Screen, InputProcessor {
         camara.unproject(v);
         float x = v.x;
         float y = v.y;
+        if (btnBack.contiene(x,y))
+        {
+            juego.setScreen(new MenuPrincipal(juego,musica));
+        }
         return false;
     }
 
