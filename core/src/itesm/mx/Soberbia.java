@@ -302,7 +302,7 @@ public class Soberbia implements Screen, InputProcessor {
                     juego.setScreen(new Soberbia(juego, vidas,  almas+1, nivel+1,null));
                 }
             }
-
+            //comentario
             if(Estado.Normal == estado){
                 deltaTime = deltaTime -Gdx.graphics.getDeltaTime();
             }
