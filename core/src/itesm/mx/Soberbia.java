@@ -299,7 +299,7 @@ public class Soberbia implements Screen, InputProcessor {
             if(Estado.Gano ==estado){
                 tiempoGano += Gdx.graphics.getDeltaTime();
                 if(tiempoGano >= .2){
-                    juego.setScreen(new Soberbia(juego, vidas,  almas+1, nivel+1,null));
+                    juego.setScreen(new Lobby(juego, vidas,  almas+1,true,escNivel));
                 }
             }
             //comentario
@@ -309,7 +309,7 @@ public class Soberbia implements Screen, InputProcessor {
 
 
             if(deltaTime <=0){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
             }
 
 
