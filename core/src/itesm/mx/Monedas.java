@@ -47,7 +47,6 @@ public class Monedas {
                 yActual -= velocidad;
                 if (yActual < -150) {
                     yActual = yOriginal;
-                    xActual = (float) Math.random() * (1200 - 10) + 10;
                     tiempoOculto=(float)(Math.random()*4+0.5f);
                     estado=Estado.OCULTO;
 
@@ -61,12 +60,11 @@ public class Monedas {
                 break;
             case GOLPEADO:
                 yActual=yOriginal;
-                xActual=(float) Math.random() * (1200 - 10) + 10;
                 estado=Estado.BAJANDO;
         }
 
         sprite.setRegion(0,0,(int)sprite.getWidth(),(int)sprite.getHeight());
-        sprite.setPosition(xActual,yActual);
+        sprite.setPosition(sprite.getX(),yActual);
 
     }
 
@@ -79,6 +77,9 @@ public class Monedas {
     }
     public float getyActual(){
         return sprite.getY();
+    }
+    public float getxActual(){
+        return sprite.getX();
     }
 
     public void setVelocidad(float velocidad){

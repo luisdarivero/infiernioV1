@@ -26,4 +26,5 @@ public class Texto {
         float anchoTexto = glyp.width;
         font.draw(batch,glyp,x-anchoTexto/2,y);
     }
+
 }

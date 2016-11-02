@@ -31,12 +31,12 @@ public class ManoIra {
         deltaTime = 0;
 
         if(furioso.isDerecha()){
-            sprite.setCenter(ancho*.75f, alto*.25f);
+            sprite.setCenter(ancho*.75f, /**alto*.25f**/ alto * -.75f);
             sprite.rotate(45);
 
         }
         else{
-            sprite.setCenter(ancho*.25f, alto*.25f);
+            sprite.setCenter(ancho*.25f, /**alto*.25f**/ alto * -.75f);
             sprite.rotate(-45);
 
         }
