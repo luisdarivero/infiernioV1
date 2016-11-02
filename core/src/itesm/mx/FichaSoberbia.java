@@ -12,10 +12,12 @@ public class FichaSoberbia {
 
     private Sprite sprite;
     private String etiqueta;
+    private boolean match;
 
     public FichaSoberbia(String etiqueta, String imagen){
         this.etiqueta = etiqueta;
         sprite = new Sprite(new Texture(imagen));
+        match = false;
     }
 
     public void draw(SpriteBatch batch){
@@ -60,5 +62,13 @@ public class FichaSoberbia {
             }
         }
         return false;
+    }
+
+    public boolean isMatch() {
+        return match;
+    }
+
+    public void setMatch(boolean match) {
+        this.match = match;
     }
 }

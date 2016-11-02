@@ -229,7 +229,10 @@ public class Soberbia implements Screen, InputProcessor {
                 listaMovibles[i].draw(batch);
             }
 
+
             batch.end();
+
+
             if (estaTocando) {
                 for (FichaSoberbia w : listaEstaticas
                         ) {
@@ -248,16 +251,28 @@ public class Soberbia implements Screen, InputProcessor {
                                     j.setCenter(w.getSprite().getX()+(w.getSprite().getWidth()*.5f), w.getSprite().getY()+(w.getSprite().getHeight()*.5f));
                                     //suelta la imagen
                                     estaTocando = false;
+                                    w.setMatch(true);
+                                    j.setMatch(true);
                                 }
                             }
                         }
+
+
 
                     }
 
                 }
 
             }
+
             banderaGano = true;
+
+            for (FichaSoberbia f: listaEstaticas
+                 ) {
+                if(!f.isMatch()){
+                    banderaGano = false;
+                }
+            }
 
             if(banderaGano){
                 juego.setScreen(new Soberbia(juego,0,0,0,null));
