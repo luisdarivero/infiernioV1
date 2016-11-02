@@ -262,7 +262,7 @@ public class NivelPereza implements Screen, InputProcessor {
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < goal )
         {
             Musica.stop();
-            //Aqui me deberia regresar al Lobby
+            //Aqui me regresa al Lobby
             Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
         }
 
@@ -335,18 +335,22 @@ public class NivelPereza implements Screen, InputProcessor {
             if (m.contiene(x, y) && toques<(goal*1/4) && m.estado == Pereza.Estado.UNCUARTO)
             {
                 toques++;
+                m.tocado = false;
             }
             else if (m.contiene(x, y) && (toques>=(goal*1/4) && toques <(goal*1/2)) && m.estado == Pereza.Estado.UNMEDIO)
             {
                 toques++;
+                m.tocado = false;
             }
             else if (m.contiene(x, y) && (toques>=(goal*1/2) && toques <(goal*3/4)) && m.estado == Pereza.Estado.TRESCUARTOS)
             {
                 toques++;
+                m.tocado = false;
             }
             else if (m.contiene(x, y) && (toques>=(goal*3/4) && toques <goal) && m.estado == Pereza.Estado.CASI)
             {
                 toques++;
+                m.tocado = false;
             }
             m.toquesP++;
         }

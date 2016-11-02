@@ -18,6 +18,7 @@ public class Pereza
     public Estado estado;
     private int contadors=0;
     public int toquesP=0;
+    public boolean tocado = false;
 
     public Pereza(Texture textura)
     {
@@ -62,7 +63,12 @@ public class Pereza
         switch(estado)
         {
             case UNCUARTO:
-                sprite.setSize(sprite.getWidth()-((toquesP%5)),sprite.getHeight()+((toquesP%5)*1.12f));
+                if(tocado==false)
+                {
+                    sprite.setSize(sprite.getWidth() - ((toquesP % 5)), sprite.getHeight() + ((toquesP % 5) * 16
+                    ));
+                    tocado = true;
+                }
                 if(contadors==40)
                 {
                     contadors=0;
@@ -77,7 +83,11 @@ public class Pereza
                 }
                 break;
             case UNMEDIO:
-                sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)/2));
+                if(tocado==false)
+                {
+                    sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)*4));
+                    tocado = true;
+                }
                 if(contadors==30)
                 {
                     contadors=0;
@@ -92,7 +102,11 @@ public class Pereza
                 }
                 break;
             case TRESCUARTOS:
-                sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)/4));
+                if(tocado==false)
+                {
+                    sprite.setSize(sprite.getWidth()-((toquesP%5)/5),sprite.getHeight()+((toquesP%5)*2));
+                    tocado = true;
+                }
                 if(toquesP < 19)
                 {
                     if (contadors == 20) {

@@ -76,7 +76,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
 
-        this.tempo = 5;
+        this.tempo = 7;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
