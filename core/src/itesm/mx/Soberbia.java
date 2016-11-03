@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.math.BigDecimal;
 import java.util.Random;
 
 /**
@@ -23,6 +25,8 @@ public class Soberbia implements Screen, InputProcessor {
 
     //variable tipo juego para poder intarcambiar de escenas
     private final itesm.mx.juego juego;
+
+    private Estado estado;
 
     //variables constantes del ancho y largo de la pantalla
     private final float ancho = 1280;
@@ -51,16 +55,6 @@ public class Soberbia implements Screen, InputProcessor {
     private Dificultad escNivel;
 
     private  int nivel;
-    //constructor
-    public Soberbia(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel ){
-        this.juego=Juego;
-        this.vidas=vidas;
-        this.almas=almas;
-        this.nivel = nivel;
-        this.escNivel=escNivel;
-
-    }
-
 
     //texturas
     //private Texture texturaback;
@@ -84,6 +78,26 @@ public class Soberbia implements Screen, InputProcessor {
     private float yAnt;
     private Random rand;
     private boolean banderaGano;
+    private float tiempoJuego;
+    private Texto texto;
+    private float tiempoGano;
+
+    //constructor
+    public Soberbia(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel ){
+        this.juego=Juego;
+        this.vidas=vidas;
+        this.almas=almas;
+        this.nivel = nivel;
+        this.escNivel=escNivel;
+        if(nivel<=4){
+            tiempoJuego = 6-nivel;
+        }
+        else{
+            tiempoJuego = 1.5f;
+        }
+
+
+    }
 
     @Override
     public void show() {
@@ -105,7 +119,9 @@ public class Soberbia implements Screen, InputProcessor {
         deltaTime = 0;
         //los imputs procesors
         estaTocando = false;
-
+        texto = new Texto();
+        estado = Estado.Normal;
+        tiempoGano = 0;
 
 
     }
@@ -150,9 +166,9 @@ public class Soberbia implements Screen, InputProcessor {
             listaMovibles[i] = new FichaSoberbia(listaIndex[i],listaMovImagenes[i]);
         }
 
-        listaMovibles[0].setCenter(ancho*.20f,alto*.75f);
-        listaMovibles[1].setCenter(ancho*.50f,alto*.75f);
-        listaMovibles[2].setCenter(ancho*.80f,alto*.75f);
+        listaMovibles[0].setCenter(ancho*.20f,alto*.70f);
+        listaMovibles[1].setCenter(ancho*.50f,alto*.70f);
+        listaMovibles[2].setCenter(ancho*.80f,alto*.70f);
 
         listaMovImagenes[0] = "LujuriaS1.png";
         listaMovImagenes[1] = "LujuriaS2.png";
@@ -172,9 +188,9 @@ public class Soberbia implements Screen, InputProcessor {
             listaEstaticas[i] = new FichaSoberbia(listaIndex[i],listaMovImagenes[i]);
         }
 
-        listaEstaticas[0].setCenter(ancho*.20f,alto*.25f);
-        listaEstaticas[1].setCenter(ancho*.50f,alto*.25f);
-        listaEstaticas[2].setCenter(ancho*.80f,alto*.25f);
+        listaEstaticas[0].setCenter(ancho*.20f,alto*.20f);
+        listaEstaticas[1].setCenter(ancho*.50f,alto*.20f);
+        listaEstaticas[2].setCenter(ancho*.80f,alto*.20f);
 
         imgFondo = new Image(texturaFondo);
         //Escalar
@@ -209,6 +225,7 @@ public class Soberbia implements Screen, InputProcessor {
                 escena.clear();
                 escena.addActor(imgFondo);
                 instrucciones = false;
+                deltaTime = tiempoJuego;
 
             }
         }
@@ -229,7 +246,7 @@ public class Soberbia implements Screen, InputProcessor {
                 listaMovibles[i].draw(batch);
             }
 
-
+            texto.mostrarMensaje(batch,Float.toString(round(deltaTime,1)),ancho*.5f, alto*.98f);
             batch.end();
 
 
@@ -275,7 +292,24 @@ public class Soberbia implements Screen, InputProcessor {
             }
 
             if(banderaGano){
-                juego.setScreen(new Soberbia(juego,0,0,0,null));
+                estado = Estado.Gano;
+
+            }
+
+            if(Estado.Gano ==estado){
+                tiempoGano += Gdx.graphics.getDeltaTime();
+                if(tiempoGano >= .2){
+                    juego.setScreen(new Soberbia(juego, vidas,  almas+1, nivel+1,null));
+                }
+            }
+            //comentario
+            if(Estado.Normal == estado){
+                deltaTime = deltaTime -Gdx.graphics.getDeltaTime();
+            }
+
+
+            if(deltaTime <=0){
+                juego.setScreen(new MenuPrincipal(juego));
             }
 
 
@@ -411,4 +445,16 @@ public class Soberbia implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
+    public enum Estado{
+
+        Normal,Gano
+    }
+
 }
