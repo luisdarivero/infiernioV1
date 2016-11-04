@@ -47,6 +47,8 @@ public class Score implements Screen, InputProcessor {
     //Para los scores
     private ArrayList<String> nombres = new ArrayList<String>(5);
     private ArrayList<Integer> scores = new ArrayList<Integer>(5);
+
+    private ArrayList<Integer> scoresB = new ArrayList<Integer>(5);
     private Texto scr1;
     private Texto scr2;
     private Texto scr3;
@@ -74,7 +76,14 @@ public class Score implements Screen, InputProcessor {
         this.juego =  juego;
         this.musica = musica;
         cargarScores();
+        boolean exist = Gdx.files.external("scores.txt").exists();
+        if(exist)
+        {
+            scrs = Gdx.files.external("scores.txt");
+            cargarScores();
+        }
     }
+
 
     public Score(itesm.mx.juego juego){
         this.juego =  juego;
@@ -82,17 +91,26 @@ public class Score implements Screen, InputProcessor {
         musica.setLooping(true);
         musica.play();
         cargarScores();
+        boolean exist = Gdx.files.external("scores.txt").exists();
+        if(exist)
+        {
+            scrs = Gdx.files.external("scores.txt");
+            cargarScores();
+        }
     }
 
     //
     private void cargarScores() {
-        String alle = scrs.readString();
+
+        String alle ="";
+        alle = scrs.readString();
         StringBuilder sb = new StringBuilder(50);
         char[] arrCar = alle.toCharArray();
-
+        scores = new ArrayList<Integer>(5);
+        nombres = new ArrayList<String>(5);
         for(int i=0; i< arrCar.length; i++)
         {
-            if(arrCar[i]=='\n')
+            if(arrCar[i]=='|')
             {
                 scores.add(Integer.parseInt(sb.toString()));
                 sb = new StringBuilder();
