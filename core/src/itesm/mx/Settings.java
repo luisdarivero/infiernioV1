@@ -81,13 +81,13 @@ public class Settings implements Screen {
         assetManager.load("settings.png",Texture.class);
 
         //texturas de botones
-        assetManager.load("back.png",Texture.class);
+        assetManager.load("back2.png",Texture.class);
 
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("settings.png");
-        texturaBtnBack = assetManager.get("back.png");
+        texturaBtnBack = assetManager.get("back2.png");
 
         anadirTexturas();
     }
@@ -106,7 +106,7 @@ public class Settings implements Screen {
         //btn back
         TextureRegionDrawable trBtnBack = new TextureRegionDrawable(new TextureRegion(texturaBtnBack));
         ImageButton btnBack = new ImageButton(trBtnBack);
-        btnBack.setPosition(ancho*.02f, alto * .83f);
+        btnBack.setPosition(ancho*.02f,alto * .02f);
         escena.addActor(btnBack);
 
 
