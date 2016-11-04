@@ -25,6 +25,7 @@ public class Envidia implements Screen, InputProcessor {
 
     //Texturas
     private Texture texFondo;
+    private Texture texInstr;
     private Texture texMonedaA;
     private Texture texMonedaB;
 
@@ -39,6 +40,7 @@ public class Envidia implements Screen, InputProcessor {
 
     //clases
     private Fondo fondo;
+    private Fondo instr;
 
     //Texto
     private Texto textoIns;
@@ -59,6 +61,7 @@ public class Envidia implements Screen, InputProcessor {
     //tiempo
     private long startTime = System.currentTimeMillis();
     private int temporizador=8;
+    private int tiempoInit;
 
 
     public Envidia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel ){
@@ -74,6 +77,9 @@ public class Envidia implements Screen, InputProcessor {
         }else{
             velocidad=0.9f;
         }
+
+        //extras
+        this.tiempoInit=temporizador-1;
     }
 
 
@@ -92,6 +98,7 @@ public class Envidia implements Screen, InputProcessor {
     private void crearEscena() {
         batch=new SpriteBatch();
         fondo=new Fondo(texFondo);
+        instr=new Fondo(texInstr);
 
 
         //pos
@@ -143,11 +150,12 @@ public class Envidia implements Screen, InputProcessor {
         texMonedaA=new Texture("heladoA.png");
         texMonedaB=new Texture("heladoB.png");
         texFondo=new Texture("fondop.png");
+        texInstr=new Texture("instrucciones_envidia.png");
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.setProjectionMatrix(camara.combined);
@@ -157,30 +165,34 @@ public class Envidia implements Screen, InputProcessor {
         //Fondo
         fondo.draw(batch);
 
+        if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) >= tiempoInit) {
+            instr.draw(batch);
+        } else {
 
-        //Monedas A
+            //Monedas A
 
-        for (Monedas mA: monedasA){
-            mA.draw(batch);
-        }
-
-        //Monedas B
-
-        for (Monedas mB: monedasB){
-            mB.draw(batch);
-        }
-
-        texCont.mostrarMensaje(batch,"Marcador: "+contador,600,200);
-        textTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
-
-        for (Monedas mA:monedasA){
-            if (mA.getyActual()<-40){
-                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+            for (Monedas mA : monedasA) {
+                mA.draw(batch);
             }
-        }
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
-            almas+=1;
-            juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+
+            //Monedas B
+
+            for (Monedas mB : monedasB) {
+                mB.draw(batch);
+            }
+
+            texCont.mostrarMensaje(batch, "Marcador: " + contador, 600, 200);
+            textTiempo.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 700);
+
+            for (Monedas mA : monedasA) {
+                if (mA.getyActual() < -40) {
+                    juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel));
+                }
+            }
+            if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
+                almas += 1;
+                juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel));
+            }
         }
 
 
