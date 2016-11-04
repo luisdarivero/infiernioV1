@@ -105,11 +105,11 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
     public void cargarTexturas(){
 
-        assetManager.load("gO.jpg",Texture.class);
-        assetManager.load("gO2.png",Texture.class);
+        assetManager.load("GameOver.png",Texture.class);
+        assetManager.load("Continue.png",Texture.class);
         assetManager.finishLoading();
-        texturaFondo = assetManager.get("gO.jpg");
-        texturaFondo2 = assetManager.get("gO2.png");
+        texturaFondo = assetManager.get("GameOver.png");
+        texturaFondo2 = assetManager.get("Continue.png");
     }
 
     @Override

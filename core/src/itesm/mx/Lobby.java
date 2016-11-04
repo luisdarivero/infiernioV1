@@ -150,35 +150,36 @@ public class Lobby implements Screen, InputProcessor {
                     case 1:
                         //soberbia
 
-                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 2:
                         //envidia
 
-                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 3:
                         //ira
 
-                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 4:
                         //Pereza
 
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 5:
-                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
                         //Avaricia
 
                         break;
                     case 6:
                         //Gula
 
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 7:

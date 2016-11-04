@@ -171,7 +171,7 @@ public class MenuPrincipal implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
-                juego.setScreen(new Soberbia(juego,0,0,0,null));
+                juego.setScreen(new Lobby(juego));
 
             }
         });
@@ -189,8 +189,8 @@ public class MenuPrincipal implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton acerca de....");
                 //cambiar a la pantalla acerca de
-                //juego.setScreen(new AboutUs(juego,musica));
-                juego.setScreen(new SetName(juego,musica));
+                juego.setScreen(new AboutUs(juego,musica));
+                //juego.setScreen(new SetName(juego,musica));
             }
         });
 
