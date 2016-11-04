@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,8 +16,11 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
- * Created by Daniel Riv on 16/09/2016.
+KRLO 2/11/16
  */
 public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     //se inicializa con una variable Tipo juego para poder pasar a otra escena
@@ -26,43 +30,31 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private final float ancho = 1280;
     private final float alto = 720;
 
+    //puntos a recibir
+    int pointer ;
+
     //teclado
     private boolean teclado =false;
 
     //Texto
     private String text;
 
-    //para saber en que modo esta la pantalla
-    private boolean contributor = false;
+    //Para los scores
+    FileHandle scrs = Gdx.files.internal("scores.txt");
+    private ArrayList<String> nombres = new ArrayList<String>(6);
+    private ArrayList<Integer> scores = new ArrayList<Integer>(6);
+    private ArrayList<String> nombresOrd = new ArrayList<String>(6);
+    private ArrayList<Integer> scoresOrd = new ArrayList<Integer>(6);
 
     //textura para la imagen de fondo
     private Texture texturaFondo;
     private Fondo imgFondo;
-    private Fondo karlo;
-    private Fondo becky;
-    private Fondo sam;
-    private Fondo daniel;
-    private Fondo marina;
+    private Texture texturaFondo2;
+    private Fondo imgFondo2;
 
     //SpriteBatch
     private SpriteBatch batch;
 
-    //Textura vacio
-    private Texture texturavac;
-    private Texture texturakarlo;
-    private Texture texturamarina;
-    private Texture texturadaniel;
-    private Texture texturasam;
-    private Texture texturabecky;
-
-    //texturas de las demas imagenes
-    private Texture texturaBtnBack;
-    private Texture texturaBtnOk;
-
-    private Array<Lujuria> decentes;   //Lista de Lujurias 5
-    Lujuria btnBack ;
-    Lujuria btnOk ;
-    //administra la carga de assets
     private final AssetManager assetManager = new AssetManager();
 
     //camara
@@ -78,13 +70,20 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         this.musica = musica;
     }
 
+    //constructor
+    public SetName(itesm.mx.juego juego, int points, Music musica){
+        this.juego =  juego;
+        pointer = points;
+        //TODO: quitar musica
+        this.musica = musica;
+    }
+
     @Override
     public void show() {
         //equivalente a create o a start, se ejecuta solo al cargar la pantalla
         cargarTexturas();
         inicializarCamara();
         crearEscena();
-        //habilitar el manejo de eventos
         Gdx.input.setInputProcessor(this);
     }
 
@@ -99,142 +98,92 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private void crearEscena()
     {
         batch = new SpriteBatch();
-        karlo= new Fondo(texturakarlo);
-        becky=new Fondo(texturabecky);
-        sam=new Fondo(texturasam);
-        daniel=new Fondo(texturadaniel);
-        marina=new Fondo(texturamarina);
-        decentes = new Array<Lujuria>(12);
-        //DECENTES
-        for(int i = 0;i<5;i++)
-        {
-            switch(i)
-            {
-                case 0:
-                    Lujuria lujuria = new Lujuria(texturavac,110,270,1);
-                    lujuria.contributor = 0;
-                    decentes.add(lujuria);
-                    break;
-                case 1:
-                    Lujuria lujuria1 = new Lujuria(texturavac,330,270,1);
-                    lujuria1.contributor = 1;
-                    decentes.add(lujuria1);
-                    break;
-                case 2:
-                    Lujuria lujuria2 = new Lujuria(texturavac,550,270,1);
-                    lujuria2.contributor = 2;
-                    decentes.add(lujuria2);
-                    break;
-                case 3:
-                    Lujuria lujuria3 = new Lujuria(texturavac,770,270,1);
-                    lujuria3.contributor = 3;
-                    decentes.add(lujuria3);
-                    break;
-                case 4:
-                    Lujuria lujuria4 = new Lujuria(texturavac,990,270,1);
-                    lujuria4.contributor = 4;
-                    decentes.add(lujuria4);
-                    break;
-            }
-        }
-        anadirTexturas();
+        imgFondo = new Fondo(texturaFondo);
+        imgFondo2 = new Fondo(texturaFondo2);
     }
 
 
     public void cargarTexturas(){
 
-        //textura de vac
-        assetManager.load("LujuriaP1.png",Texture.class);
-
-        //textura de fondo
-        assetManager.load("aboutUs.png",Texture.class);
-
-        //texturas de botones
-        assetManager.load("back.png",Texture.class);
-
-        //se bloquea hasta cargar los recursos
-        assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
-        //cuando termina, leemos las texturas
-        texturaFondo = assetManager.get("aboutUs.png");
-        texturaBtnBack = assetManager.get("back.png");
-        texturavac = assetManager.get("LujuriaP1.png");
-        texturakarlo = new Texture("Karlo.png");
-        texturabecky = new Texture("Becky.png");
-        texturamarina = new Texture("Marina.png");
-        texturadaniel = new Texture("Daniel.png");
-        texturasam = new Texture("Sam.png");
-        texturaBtnOk = new Texture("ok.png");
-    }
-
-    public void anadirTexturas()
-    {
-        //para el fondo
-        imgFondo = new Fondo(texturaFondo);
-        //botones
-        btnBack =  new Lujuria(texturaBtnBack,ancho*.02f,alto * .02f,4);
-        btnOk =  new Lujuria(texturaBtnOk,(ancho*.02f)-17,(alto * .02f)-17,4);
+        assetManager.load("gO.jpg",Texture.class);
+        assetManager.load("gO2.png",Texture.class);
+        assetManager.finishLoading();
+        texturaFondo = assetManager.get("gO.jpg");
+        texturaFondo2 = assetManager.get("gO2.png");
     }
 
     @Override
     public void render(float delta) {
         //pantalla blanca
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-
-
-        if(Gdx.input.justTouched())
-        {
-            Gdx.input.getTextInput(this, "Type your name", "Touch me!", "Name");
-        }
-
-        if(contributor==false)
+        if(teclado == false)
         {
             imgFondo.draw(batch);
-            btnBack.draw(batch);
-            btnBack.setRotation();
-            for (Lujuria l : decentes)
-            {
-                if(l.showInfo==false)
-                {
-                    //l.draw(batch);
-                    l.setRotation();
-                    if (l.info == false) {
-                        l.setSize(l.getW() - 80, l.getH() - 5);
-                        l.info = true;
-                    }
-                }
-            }
         }
-        else
+        else if (teclado == true && text != null)
         {
-            for (Lujuria l : decentes)
+            imgFondo2.draw(batch);
+        }
+
+        if(Gdx.input.justTouched() && teclado == false)
+        {
+            Gdx.input.getTextInput(this, "Type your name", "", "Type here");
+            teclado = true;
+        }
+
+        if(teclado == true && Gdx.input.justTouched() && text != null)
+        {
+            boolean exist = Gdx.files.external("scores.txt").exists();
+            if(exist)
             {
-                if(l.showInfo==true)
-                switch (l.contributor)
-                {
-                    case 0:
-                        becky.draw(batch);
-                        break;
-                    case 1:
-                        karlo.draw(batch);
-                        break;
-                    case 2:
-                        marina.draw(batch);
-                        break;
-                    case 3:
-                        daniel.draw(batch);
-                        break;
-                    case 4:
-                        sam.draw(batch);
-                        break;
-                }
+                scrs = Gdx.files.external("scores.txt");
+                cargarScores();
+            }else
+            {
+                cargarScores();
             }
-            btnOk.draw(batch);
-            btnOk.setRotation();
+            escribirScores(text);
+            musica.stop();
+            juego.setScreen(new Score(juego));
         }
         batch.end();
+    }
+
+    private void escribirScores(String texto)
+    {
+        pointer=14;
+        boolean added;
+        scores.add(pointer);
+        nombres.add(texto);
+        System.out.println(nombres);
+        System.out.println(scores);
+        for (Integer i : scores)
+        {
+            scoresOrd.add(i);
+        }
+        Collections.sort(scoresOrd);
+        Collections.reverse(scoresOrd);
+        for (Integer u : scoresOrd)
+        {
+            added =false;
+            for (int k = 0;k< scores.size();k++)
+            {
+                if (u == scores.get(k) && added == false && Collections.frequency(nombresOrd,nombres.get(k)) < Collections.frequency(nombres,nombres.get(k)))
+                {
+                    nombresOrd.add(nombres.get(k));
+                    added = true;
+                }
+            }
+        }
+        scrs = Gdx.files.external("scores.txt");
+        scrs.writeString(nombresOrd.get(0)+" "+scoresOrd.get(0)+'|', false);
+        for (int i = 1;i<=4;i++)
+        {
+            scrs.writeString(nombresOrd.get(i)+" "+scoresOrd.get(i)+'|', true);
+        }
     }
 
     @Override
@@ -259,9 +208,6 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
     @Override
     public void dispose() {
-        //liberar los recursos utilizados en la memoria
-
-        texturaBtnBack.dispose();
         texturaFondo.dispose();
     }
 
@@ -282,52 +228,11 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // VErificar si le pego
-        // transformar coordenadas
         Vector3 v = new Vector3(screenX,screenY,0);
         camara.unproject(v);
         float x = v.x;
         float y = v.y;
-        for (Lujuria l : decentes)
-        {
-            if (l.contiene(x, y) && l.showInfo == false && l.contributor == 0)
-            {
-                l.showInfo = true;
-                contributor = true;
-            }
-            else if (l.contiene(x, y) && l.showInfo == false && l.contributor == 1)
-            {
-                l.showInfo = true;
-                contributor = true;
-            }
-            else if (l.contiene(x, y) && l.showInfo == false && l.contributor == 2)
-            {
-                l.showInfo = true;
-                contributor = true;
-            }
-            else if (l.contiene(x, y) && l.showInfo == false && l.contributor == 3)
-            {
-                l.showInfo = true;
-                contributor = true;
-            }
-            else if (l.contiene(x, y) && l.showInfo == false && l.contributor == 4)
-            {
-                l.showInfo = true;
-                contributor = true;
-            }
-        }
-        if (btnBack.contiene(x,y)&& contributor == false)
-        {
-            juego.setScreen(new MenuPrincipal(juego,musica));
-        }
-        if (btnOk.contiene(x,y) && contributor == true)
-        {
-            for (Lujuria l : decentes)
-            {
-                l.showInfo = false;
-            }
-            contributor = false;
-        }
+
         return false;
     }
 
@@ -364,5 +269,30 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     public void canceled() {
 
     }
+
+    private void cargarScores() {
+        String alle = scrs.readString();
+        StringBuilder sb = new StringBuilder(50);
+        char[] arrCar = alle.toCharArray();
+
+        for(int i=0; i< arrCar.length; i++)
+        {
+            if(arrCar[i]=='|')
+            {
+                scores.add(Integer.parseInt(sb.toString()));
+                sb = new StringBuilder();
+            }
+            else if (arrCar[i]==' ')
+            {
+                nombres.add(sb.toString());
+                sb = new StringBuilder();
+            }
+            if(Character.isDigit(arrCar[i])||Character.isLetter(arrCar[i]))
+            {
+                sb.append(arrCar[i]);
+            }
+        }
+    }
+
 }
 

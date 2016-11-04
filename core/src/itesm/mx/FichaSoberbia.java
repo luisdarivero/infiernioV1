@@ -12,10 +12,12 @@ public class FichaSoberbia {
 
     private Sprite sprite;
     private String etiqueta;
+    private boolean match;
 
     public FichaSoberbia(String etiqueta, String imagen){
         this.etiqueta = etiqueta;
         sprite = new Sprite(new Texture(imagen));
+        match = false;
     }
 
     public void draw(SpriteBatch batch){
@@ -39,5 +41,34 @@ public class FichaSoberbia {
 
     public String getEtiqueta() {
         return etiqueta;
+    }
+
+    public boolean ColisionImagen(Sprite imagen){
+        if(sprite.getBoundingRectangle().contains(imagen.getBoundingRectangle())){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean equals(Object ficha){
+        if (ficha instanceof FichaSoberbia) {
+            if(ficha != null){
+                System.out.println( this.getEtiqueta() + " " + ((FichaSoberbia)ficha).getEtiqueta());
+                if ((this.getEtiqueta()).equals( ((FichaSoberbia)ficha).getEtiqueta())){
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isMatch() {
+        return match;
+    }
+
+    public void setMatch(boolean match) {
+        this.match = match;
     }
 }
