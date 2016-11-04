@@ -62,6 +62,7 @@ public class Soberbia implements Screen, InputProcessor {
     private Texture texturaInstrucciones;
     private  Image imgInstrucciones;
     private  Image imgFondo;
+    private Sprite btnPausa;
     //private Sprite botonRojo;
     //private Sprite botonAzul;
     //private Sprite[] listaMovibles;
@@ -146,6 +147,7 @@ public class Soberbia implements Screen, InputProcessor {
         assetManager.load("instrucciones_ira.png",Texture.class);
 
 
+
         //bloquea hasta que se carguen las imgenes
         assetManager.finishLoading();
 
@@ -153,6 +155,8 @@ public class Soberbia implements Screen, InputProcessor {
         //texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("fondo_inicio.png");
         texturaInstrucciones = assetManager.get("instrucciones_ira.png");
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+
         String listaMovImagenes[] = {"LujuriaS1.png","LujuriaS2.png","LujuriaS3.png"};
         String listaIndex[] = {"1","2","3"};
 
@@ -247,6 +251,7 @@ public class Soberbia implements Screen, InputProcessor {
             }
 
             texto.mostrarMensaje(batch,Float.toString(round(deltaTime,1)),ancho*.5f, alto*.98f);
+            btnPausa.draw(batch);
             batch.end();
 
 
@@ -313,6 +318,7 @@ public class Soberbia implements Screen, InputProcessor {
             }
 
 
+
         }
     }
 
@@ -364,6 +370,11 @@ public class Soberbia implements Screen, InputProcessor {
         camara.unproject(v);
         float x = v.x;
         float y = v.y;
+
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+
+        }
 
         int contador= 0;
 
@@ -454,7 +465,7 @@ public class Soberbia implements Screen, InputProcessor {
 
     public enum Estado{
 
-        Normal,Gano
+        Normal,Gano, Pausa
     }
 
 }
