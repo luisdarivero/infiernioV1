@@ -47,6 +47,8 @@ public class Score implements Screen, InputProcessor {
     //Para los scores
     private ArrayList<String> nombres = new ArrayList<String>(5);
     private ArrayList<Integer> scores = new ArrayList<Integer>(5);
+
+    private ArrayList<Integer> scoresB = new ArrayList<Integer>(5);
     private Texto scr1;
     private Texto scr2;
     private Texto scr3;
@@ -74,7 +76,14 @@ public class Score implements Screen, InputProcessor {
         this.juego =  juego;
         this.musica = musica;
         cargarScores();
+        boolean exist = Gdx.files.external("scores.txt").exists();
+        if(exist)
+        {
+            scrs = Gdx.files.external("scores.txt");
+            cargarScores();
+        }
     }
+
 
     public Score(itesm.mx.juego juego){
         this.juego =  juego;
@@ -82,17 +91,26 @@ public class Score implements Screen, InputProcessor {
         musica.setLooping(true);
         musica.play();
         cargarScores();
+        boolean exist = Gdx.files.external("scores.txt").exists();
+        if(exist)
+        {
+            scrs = Gdx.files.external("scores.txt");
+            cargarScores();
+        }
     }
 
     //
     private void cargarScores() {
-        String alle = scrs.readString();
+
+        String alle ="";
+        alle = scrs.readString();
         StringBuilder sb = new StringBuilder(50);
         char[] arrCar = alle.toCharArray();
-
+        scores = new ArrayList<Integer>(5);
+        nombres = new ArrayList<String>(5);
         for(int i=0; i< arrCar.length; i++)
         {
-            if(arrCar[i]=='\n')
+            if(arrCar[i]=='|')
             {
                 scores.add(Integer.parseInt(sb.toString()));
                 sb = new StringBuilder();
@@ -115,16 +133,16 @@ public class Score implements Screen, InputProcessor {
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
-        scr1 = new Texto();
-        scr2 = new Texto();
-        scr3 = new Texto();
-        scr4 = new Texto();
-        scr5 = new Texto();
-        scr1N = new Texto();
-        scr2N = new Texto();
-        scr3N = new Texto();
-        scr4N = new Texto();
-        scr5N = new Texto();
+        scr1 = new Texto(true);
+        scr2 = new Texto(true);
+        scr3 = new Texto(true);
+        scr4 = new Texto(true);
+        scr5 = new Texto(true);
+        scr1N = new Texto(true);
+        scr2N = new Texto(true);
+        scr3N = new Texto(true);
+        scr4N = new Texto(true);
+        scr5N = new Texto(true);
     }
 
     private void crearEscena()
@@ -158,20 +176,20 @@ public class Score implements Screen, InputProcessor {
         fondo.draw(batch);
         btnBack.draw(batch);
         btnBack.setRotation();
-        scr1.mostrarMensaje(batch, scores.get(0).toString(), ancho/2-150, 540);
-        scr1N.mostrarMensaje(batch,nombres.get(0), ancho/2+140, 540);
+        scr1.mostrarMensaje(batch, scores.get(0).toString(), ancho/2+140, 525);
+        scr1N.mostrarMensaje(batch,nombres.get(0), ancho/2-150, 525);
 
-        scr2.mostrarMensaje(batch, scores.get(1).toString(), ancho/2-150, 480);
-        scr2N.mostrarMensaje(batch,nombres.get(1), ancho/2+140, 480);
+        scr2.mostrarMensaje(batch, scores.get(1).toString(), ancho/2+140, 465);
+        scr2N.mostrarMensaje(batch,nombres.get(1), ancho/2-150, 465);
 
-        scr3.mostrarMensaje(batch, scores.get(2).toString(), ancho/2-150, 420);
-        scr3N.mostrarMensaje(batch,nombres.get(2), ancho/2+140, 420);
+        scr3.mostrarMensaje(batch, scores.get(2).toString(), ancho/2+140, 405);
+        scr3N.mostrarMensaje(batch,nombres.get(2), ancho/2-150, 405);
 
-        scr4.mostrarMensaje(batch, scores.get(3).toString(), ancho/2-150, 360);
-        scr4N.mostrarMensaje(batch,nombres.get(3), ancho/2+140, 360);
+        scr4.mostrarMensaje(batch, scores.get(3).toString(), ancho/2+140, 345);
+        scr4N.mostrarMensaje(batch,nombres.get(3), ancho/2-150, 345);
 
-        scr5.mostrarMensaje(batch, scores.get(4).toString(), ancho/2-150, 300);
-        scr5N.mostrarMensaje(batch,nombres.get(4), ancho/2+140, 300);
+        scr5.mostrarMensaje(batch, scores.get(4).toString(), ancho/2+140, 285);
+        scr5N.mostrarMensaje(batch,nombres.get(4), ancho/2-150, 285);
         batch.end();
     }
 

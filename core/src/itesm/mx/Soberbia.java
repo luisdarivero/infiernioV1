@@ -216,7 +216,7 @@ public class Soberbia implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         //pantalla blanca
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         //borra la pantalla completamente
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         escena.setViewport(vista);
@@ -304,7 +304,7 @@ public class Soberbia implements Screen, InputProcessor {
             if(Estado.Gano ==estado){
                 tiempoGano += Gdx.graphics.getDeltaTime();
                 if(tiempoGano >= .2){
-                    juego.setScreen(new Soberbia(juego, vidas,  almas+1, nivel+1,null));
+                    juego.setScreen(new Lobby(juego, vidas,  almas+1,true,escNivel));
                 }
             }
             //comentario
@@ -314,7 +314,7 @@ public class Soberbia implements Screen, InputProcessor {
 
 
             if(deltaTime <=0){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
             }
 
 

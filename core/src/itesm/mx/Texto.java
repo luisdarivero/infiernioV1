@@ -15,6 +15,12 @@ public class Texto {
         font = new BitmapFont(Gdx.files.internal("fuenteAv_a.fnt"));
 
     }
+
+    public Texto(boolean chico) {
+        font = new BitmapFont(Gdx.files.internal("EccentricChico.fnt"));
+
+    }
+
     public Texto(String texto) {
         font = new BitmapFont(Gdx.files.internal(texto));
     }

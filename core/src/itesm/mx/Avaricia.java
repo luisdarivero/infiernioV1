@@ -96,9 +96,9 @@ public class Avaricia implements Screen, InputProcessor {
         textInstr=new Texture("InstruccionesAvaricia.png");
 
         if (binario==1)
-            texDinero=new Texture("Avaricia.png");//no toco
+            texDinero=new Texture("Avaricia.png");// toco
         else
-            texDinero=new Texture("AvariciaFalso.png");//toco
+            texDinero=new Texture("AvariciaFalso.png");//no toco
 
     }
 
@@ -121,7 +121,7 @@ public class Avaricia implements Screen, InputProcessor {
         batch.begin();
         //Dibujar todos los elementos
         fondo.draw(batch);
-        fondo.setSizeF(0, 10);
+        //fondo.setSizeF(0, 10);
 
 
         if ((temporizador - ((System.currentTimeMillis() - startTime)/1000)) >=tiempoInit ){
@@ -135,11 +135,11 @@ public class Avaricia implements Screen, InputProcessor {
 
             switch (binario){
                 case 0:
-                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
-                    break;
-                case 1:
                     almas+=1;
                     juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    break;
+                case 1:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
                     break;
             }
         }
@@ -199,12 +199,13 @@ public class Avaricia implements Screen, InputProcessor {
                 //Toco el billete;
             switch (binario){
                 case 0:
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    break;
+                case 1:
                     almas+=1;
                     juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
                     break;
-                case 1:
-                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
-                    break;
+
             }
 
 
