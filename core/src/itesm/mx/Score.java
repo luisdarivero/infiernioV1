@@ -16,8 +16,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.*;
 
 
-//TODO:Acomodar el texto
-
 /**
  * Created by Daniel Riv on 16/09/2016.
  * Modified by Karlo on 10/31/16
@@ -47,6 +45,7 @@ public class Score implements Screen, InputProcessor {
     //Para los scores
     private Map mapaP = new HashMap();
     private ArrayList<String> nombresL;
+    private ArrayList<String> nombresAcomodados =new ArrayList<String>();
 
     private Texto scr1;
     private Texto scr2;
@@ -77,29 +76,41 @@ public class Score implements Screen, InputProcessor {
         preferencias();
     }
 
-    private void preferencias()
-    {
+    private void preferencias() {
         prefs = Gdx.app.getPreferences("ScoresPref");
-        if(prefs.getBoolean("Scores"))
-        {
+
+        if (prefs.getBoolean("Scores")) {
             int x = 0;
-        }
-        else
-        {
-            prefs.putBoolean("Scores",true);
+        } else {
+            prefs.putBoolean("Scores", true);
             prefs.flush();
             prefs = Gdx.app.getPreferences("ScoresNames");
-            prefs.putString("Karlo","0");
-            prefs.putString("Marina","0");
-            prefs.putString("Daniel","0");
-            prefs.putString("Becky","0");
-            prefs.putString("Samantha","0");
+            prefs.putInteger("Karlo", 0);
+            prefs.putInteger("Marina", 0);
+            prefs.putInteger("Daniel", 0);
+            prefs.putInteger("Becky", 0);
+            prefs.putInteger("Samantha", 0);
             prefs.flush();
         }
         prefs = Gdx.app.getPreferences("ScoresNames");
         mapaP = prefs.get();
         Set keys = mapaP.keySet();
         nombresL = new ArrayList<String>(keys);
+
+        for (int j = 0; j < 5; j++)
+        {
+            String max = nombresL.get(0);
+            for (int i = 0; i < nombresL.size(); i++) {
+                if(i!=nombresL.size()-1)
+                if (Integer.parseInt(mapaP.get(max).toString()) <= Integer.parseInt((mapaP.get(nombresL.get(i + 1))).toString()))
+                {
+                    max = nombresL.get(i + 1);
+                }
+            }
+            nombresL.remove(max);
+            nombresAcomodados.add(max);
+        }
+        System.out.println(nombresAcomodados);
     }
 
 
@@ -161,20 +172,20 @@ public class Score implements Screen, InputProcessor {
         btnBack.draw(batch);
         btnBack.setRotation();
 
-        scr1.mostrarMensaje(batch, mapaP.get(nombresL.get(0)).toString(), ancho/2+140, 525);
-        scr1N.mostrarMensaje(batch,nombresL.get(0), ancho/2-150, 525);
+        scr1.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(0)).toString(), ancho/2+140, 525);
+        scr1N.mostrarMensaje(batch,nombresAcomodados.get(0), ancho/2-150, 525);
 
-        scr2.mostrarMensaje(batch, mapaP.get(nombresL.get(1)).toString(), ancho/2+140, 465);
-        scr2N.mostrarMensaje(batch,nombresL.get(1), ancho/2-150, 465);
+        scr2.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(1)).toString(), ancho/2+140, 465);
+        scr2N.mostrarMensaje(batch,nombresAcomodados.get(1), ancho/2-150, 465);
 
-        scr3.mostrarMensaje(batch, mapaP.get(nombresL.get(2)).toString(), ancho/2+140, 405);
-        scr3N.mostrarMensaje(batch,nombresL.get(2), ancho/2-150, 405);
+        scr3.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(2)).toString(), ancho/2+140, 405);
+        scr3N.mostrarMensaje(batch,nombresAcomodados.get(2), ancho/2-150, 405);
 
-        scr4.mostrarMensaje(batch, mapaP.get(nombresL.get(3)).toString(), ancho/2+140, 345);
-        scr4N.mostrarMensaje(batch,nombresL.get(3), ancho/2-150, 345);
+        scr4.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(3)).toString(), ancho/2+140, 345);
+        scr4N.mostrarMensaje(batch,nombresAcomodados.get(3), ancho/2-150, 345);
 
-        scr5.mostrarMensaje(batch, mapaP.get(nombresL.get(4)).toString(), ancho/2+140, 285);
-        scr5N.mostrarMensaje(batch,nombresL.get(4), ancho/2-150, 285);
+        scr5.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(4)).toString(), ancho/2+140, 285);
+        scr5N.mostrarMensaje(batch,nombresAcomodados.get(4), ancho/2-150, 285);
 
         batch.end();
     }
