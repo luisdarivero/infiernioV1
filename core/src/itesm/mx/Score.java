@@ -2,10 +2,10 @@ package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class Score implements Screen, InputProcessor {
 
-    FileHandle scrs = Gdx.files.internal("scores.txt");
+    Preferences prefs = Gdx.app.getPreferences("ScoresPref");
 
     //se inicializa con una variable Tipo juego para poder pasar a otra escena
     private final juego juego;
@@ -45,10 +45,9 @@ public class Score implements Screen, InputProcessor {
     Lujuria btnBack ;
 
     //Para los scores
-    private ArrayList<String> nombres = new ArrayList<String>(5);
-    private ArrayList<Integer> scores = new ArrayList<Integer>(5);
+    private Map mapaP = new HashMap();
+    private ArrayList<String> nombresL;
 
-    private ArrayList<Integer> scoresB = new ArrayList<Integer>(5);
     private Texto scr1;
     private Texto scr2;
     private Texto scr3;
@@ -75,13 +74,32 @@ public class Score implements Screen, InputProcessor {
     public Score(itesm.mx.juego juego, Music musica){
         this.juego =  juego;
         this.musica = musica;
-        cargarScores();
-        boolean exist = Gdx.files.external("scores.txt").exists();
-        if(exist)
+        preferencias();
+    }
+
+    private void preferencias()
+    {
+        prefs = Gdx.app.getPreferences("ScoresPref");
+        if(prefs.getBoolean("Scores"))
         {
-            scrs = Gdx.files.external("scores.txt");
-            cargarScores();
+            int x = 0;
         }
+        else
+        {
+            prefs.putBoolean("Scores",true);
+            prefs.flush();
+            prefs = Gdx.app.getPreferences("ScoresNames");
+            prefs.putString("Karlo","0");
+            prefs.putString("Marina","0");
+            prefs.putString("Daniel","0");
+            prefs.putString("Becky","0");
+            prefs.putString("Samantha","0");
+            prefs.flush();
+        }
+        prefs = Gdx.app.getPreferences("ScoresNames");
+        mapaP = prefs.get();
+        Set keys = mapaP.keySet();
+        nombresL = new ArrayList<String>(keys);
     }
 
 
@@ -90,41 +108,7 @@ public class Score implements Screen, InputProcessor {
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
         musica.setLooping(true);
         musica.play();
-        cargarScores();
-        boolean exist = Gdx.files.external("scores.txt").exists();
-        if(exist)
-        {
-            scrs = Gdx.files.external("scores.txt");
-            cargarScores();
-        }
-    }
-
-    //
-    private void cargarScores() {
-
-        String alle ="";
-        alle = scrs.readString();
-        StringBuilder sb = new StringBuilder(50);
-        char[] arrCar = alle.toCharArray();
-        scores = new ArrayList<Integer>(5);
-        nombres = new ArrayList<String>(5);
-        for(int i=0; i< arrCar.length; i++)
-        {
-            if(arrCar[i]=='|')
-            {
-                scores.add(Integer.parseInt(sb.toString()));
-                sb = new StringBuilder();
-            }
-            else if (arrCar[i]==' ')
-            {
-                nombres.add(sb.toString());
-                sb = new StringBuilder();
-            }
-            if(Character.isDigit(arrCar[i])||Character.isLetter(arrCar[i]))
-            {
-                sb.append(arrCar[i]);
-            }
-        }
+        preferencias();
     }
 
     @Override
@@ -176,20 +160,22 @@ public class Score implements Screen, InputProcessor {
         fondo.draw(batch);
         btnBack.draw(batch);
         btnBack.setRotation();
-        scr1.mostrarMensaje(batch, scores.get(0).toString(), ancho/2+140, 525);
-        scr1N.mostrarMensaje(batch,nombres.get(0), ancho/2-150, 525);
 
-        scr2.mostrarMensaje(batch, scores.get(1).toString(), ancho/2+140, 465);
-        scr2N.mostrarMensaje(batch,nombres.get(1), ancho/2-150, 465);
+        scr1.mostrarMensaje(batch, mapaP.get(nombresL.get(0)).toString(), ancho/2+140, 525);
+        scr1N.mostrarMensaje(batch,nombresL.get(0), ancho/2-150, 525);
 
-        scr3.mostrarMensaje(batch, scores.get(2).toString(), ancho/2+140, 405);
-        scr3N.mostrarMensaje(batch,nombres.get(2), ancho/2-150, 405);
+        scr2.mostrarMensaje(batch, mapaP.get(nombresL.get(1)).toString(), ancho/2+140, 465);
+        scr2N.mostrarMensaje(batch,nombresL.get(1), ancho/2-150, 465);
 
-        scr4.mostrarMensaje(batch, scores.get(3).toString(), ancho/2+140, 345);
-        scr4N.mostrarMensaje(batch,nombres.get(3), ancho/2-150, 345);
+        scr3.mostrarMensaje(batch, mapaP.get(nombresL.get(2)).toString(), ancho/2+140, 405);
+        scr3N.mostrarMensaje(batch,nombresL.get(2), ancho/2-150, 405);
 
-        scr5.mostrarMensaje(batch, scores.get(4).toString(), ancho/2+140, 285);
-        scr5N.mostrarMensaje(batch,nombres.get(4), ancho/2-150, 285);
+        scr4.mostrarMensaje(batch, mapaP.get(nombresL.get(3)).toString(), ancho/2+140, 345);
+        scr4N.mostrarMensaje(batch,nombresL.get(3), ancho/2-150, 345);
+
+        scr5.mostrarMensaje(batch, mapaP.get(nombresL.get(4)).toString(), ancho/2+140, 285);
+        scr5N.mostrarMensaje(batch,nombresL.get(4), ancho/2-150, 285);
+
         batch.end();
     }
 
