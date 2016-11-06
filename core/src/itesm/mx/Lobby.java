@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,6 +25,7 @@ public class Lobby implements Screen, InputProcessor {
 
     private SpriteBatch batch;
     private Fondo fondo;
+    private Music musica;
 
 
     //array
@@ -60,6 +62,8 @@ public class Lobby implements Screen, InputProcessor {
         this.almas=0;
         this.estado=true;
         this.escNivel=new Dificultad();
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
+        this.musica.play();
     }
     public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel){
         this.juego=juego;
@@ -67,6 +71,8 @@ public class Lobby implements Screen, InputProcessor {
         this.almas=almas;
         this.estado=estado;
         this.escNivel=escNivel;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
+        this.musica.play();
     }
 
     @Override
@@ -77,8 +83,6 @@ public class Lobby implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         texto=new Texto();
         textTiempo=new Texto();
-
-
     }
     private void cargarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -90,7 +94,6 @@ public class Lobby implements Screen, InputProcessor {
     private void cargarTexturas(){
         texFondo=new Texture("Lobby.png");
         texCora=new Texture("vida.png");
-
     }
 
     private void crearEscena(){
@@ -108,9 +111,7 @@ public class Lobby implements Screen, InputProcessor {
                 arrCora.add(cor);
             }
         }
-
-
-
+        this.musica.setVolume(0.6f);
     }
     @Override
     public void render(float delta) {
@@ -133,7 +134,7 @@ public class Lobby implements Screen, InputProcessor {
 
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 2){
             if (estado==false){
-                Corazon h=arrCora.get(arrCora.size-1);
+                Corazon h = arrCora.get(arrCora.size-1);
                 h.setPosition();
             }
         }
@@ -142,6 +143,7 @@ public class Lobby implements Screen, InputProcessor {
                 vidas-=1;
             }
             if (vidas==0) {
+                this.musica.stop();
                 juego.setScreen(new SetName(juego,this.almas));
             }else{
                 int nivel=escNivel.cambiarNivel();
@@ -149,42 +151,43 @@ public class Lobby implements Screen, InputProcessor {
                 switch (nivel){
                     case 1:
                         //soberbia
-
+                        this.musica.stop();
                         juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 2:
                         //envidia
-
+                        this.musica.stop();
                         juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 3:
                         //ira
-
+                        this.musica.stop();
                         juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 4:
                         //Pereza
-
+                        this.musica.stop();
                         juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 5:
+                        this.musica.stop();
                         juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
                         //Avaricia
 
                         break;
                     case 6:
                         //Gula
-
+                        this.musica.stop();
                         juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
 
                         break;
                     case 7:
                         //Lujuria
-
+                        this.musica.stop();
                         break;
                 }
             }
