@@ -26,6 +26,7 @@ public class Lobby implements Screen, InputProcessor {
     private SpriteBatch batch;
     private Fondo fondo;
     private Music musica;
+    private  Music Winnie;
 
 
     //array
@@ -64,6 +65,8 @@ public class Lobby implements Screen, InputProcessor {
         this.escNivel=new Dificultad();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
         this.musica.play();
+        this.Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
+        Winnie.setVolume(0);
     }
     public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel){
         this.juego=juego;
@@ -71,9 +74,19 @@ public class Lobby implements Screen, InputProcessor {
         this.almas=almas;
         this.estado=estado;
         this.escNivel=escNivel;
+
+        if(estado)
+        {
+            this.Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
+        }
+        else
+        {
+            this.Winnie = Gdx.audio.newMusic(Gdx.files.internal("badbadnotgood.mp3"));
+        }
+
         if((almas>= 0 && almas <3)&& vidas >0 )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
-        else if((almas>= 3 && almas <6)&& vidas >0 )
+        else if((almas>= 3 && almas <6)&& vidas >0)
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby2.mp3"));
         else if((almas>= 6 && almas <9)&& vidas >0 )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby3.mp3"));
@@ -81,7 +94,7 @@ public class Lobby implements Screen, InputProcessor {
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby4.mp3"));
         else if((almas>= 12 && almas <15)&& vidas >0 )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby5.mp3"));
-        else if(vidas <= 0 )
+        else if(vidas <= 0)
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("LobbyF.mp3"));
         this.musica.play();
     }
@@ -122,7 +135,7 @@ public class Lobby implements Screen, InputProcessor {
                 arrCora.add(cor);
             }
         }
-        this.musica.setVolume(0.6f);
+        this.musica.setVolume(0.4f);
     }
     @Override
     public void render(float delta) {
@@ -148,6 +161,7 @@ public class Lobby implements Screen, InputProcessor {
                 Corazon h = arrCora.get(arrCora.size-1);
                 h.setPosition();
             }
+            Winnie.play();
         }
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 0) {
             if (estado==false){
@@ -230,6 +244,7 @@ public class Lobby implements Screen, InputProcessor {
     public void dispose() {
         texCora.dispose();
         texFondo.dispose();
+        musica.dispose();
     }
 
 
