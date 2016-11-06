@@ -73,18 +73,13 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private final Music musica;
 
     //constructor
-    public SetName(itesm.mx.juego juego, Music musica){
-        this.juego =  juego;
-        this.musica = musica;
-        preferencias();
-    }
-
-    //constructor
-    public SetName(itesm.mx.juego juego, int points, Music musica){
+    public SetName(itesm.mx.juego juego, int points){
         this.juego =  juego;
         pointer = points;
-        //TODO: quitar musica
-        this.musica = musica;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
+        musica.setLooping(true);
+        musica.play();
+        musica.setVolume(0.6f);
         preferencias();
     }
 
@@ -172,8 +167,7 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         if(teclado == true && Gdx.input.justTouched() && text != null)
         {
             escribirScores(text);
-            musica.stop();
-            juego.setScreen(new Score(juego));
+            juego.setScreen(new Score(juego,musica,true));
         }
         batch.end();
     }
@@ -182,7 +176,6 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     {
         prefs = Gdx.app.getPreferences("ScoresNames");
         String max = "";
-        pointer=14;
         mapaP.put(texto,pointer);
         Set keys = mapaP.keySet();
         ArrayList<String> keis = new ArrayList<String>(keys);

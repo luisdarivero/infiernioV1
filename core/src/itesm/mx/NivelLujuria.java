@@ -28,6 +28,7 @@ public class NivelLujuria implements Screen, InputProcessor {
     //Los valores que necesito tener guardados para el Lobby
     private  int vidas;
     private int almas ;
+    private boolean tunTun=true;
     private Dificultad escNivel;
 
     private Texture texturafondo;
@@ -76,9 +77,9 @@ public class NivelLujuria implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
 
-        this.tempo = 7;
+        this.tempo = 5;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
-        Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
+        Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
         Musica.setVolume(0.6f);
         Musica.play();
@@ -209,8 +210,10 @@ public class NivelLujuria implements Screen, InputProcessor {
         //aqui se dibujan los elementos
         fondo.draw(batch);
 
-        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 4-dificultad)
+
+        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 4)
         {
+            fondo.setSizeF(0, 10);
             for (Lujuria l : lujurias) {
                 if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec == 5) {
                     Random rnd = new Random();
@@ -254,12 +257,20 @@ public class NivelLujuria implements Screen, InputProcessor {
 
             if (contador >= totals) {
                 Musica.stop();
-                Winnie.setVolume(0.4f);
-                //Winnie.play();
-                Winnie.setVolume(0.4f);
-                //Aqui me deberia regresar al Lobby
-                almas++;
-                Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
+                if (tunTun)
+                {
+                    Winnie.play();
+                    tunTun=false;
+                }
+                Winnie.setLooping(false);
+                //Winnie.setVolume(0.4f);
+
+
+                if((tempo - ((System.currentTimeMillis() - startTime) / 1000))<-1)
+                {
+                    almas++;
+                    Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel));
+                }
             }
         }
         else

@@ -83,7 +83,7 @@ public class NivelPereza implements Screen, InputProcessor {
         this.temporizador = 5;
 
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
-        Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
+        Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("bop1.mp3"));
         Bop2 = Gdx.audio.newMusic(Gdx.files.internal("bop2.mp3"));
         Bop3 = Gdx.audio.newMusic(Gdx.files.internal("bop3.mp3"));
@@ -271,9 +271,7 @@ public class NivelPereza implements Screen, InputProcessor {
             Musica.stop();
             if(bC == 4)
             {
-                Winnie.setVolume(0.4f);
                 Winnie.play();
-                Winnie.setVolume(0.4f);
                 bC++;
             }
             almas++;

@@ -23,6 +23,7 @@ import java.util.*;
 public class Score implements Screen, InputProcessor {
 
     Preferences prefs = Gdx.app.getPreferences("ScoresPref");
+    boolean yes ;
 
     //se inicializa con una variable Tipo juego para poder pasar a otra escena
     private final juego juego;
@@ -76,6 +77,13 @@ public class Score implements Screen, InputProcessor {
         preferencias();
     }
 
+    public Score(itesm.mx.juego juego, Music musica, boolean setName){
+        this.juego =  juego;
+        this.musica = musica;
+        yes = setName;
+        preferencias();
+    }
+
     private void preferencias() {
         prefs = Gdx.app.getPreferences("ScoresPref");
 
@@ -110,16 +118,6 @@ public class Score implements Screen, InputProcessor {
             nombresL.remove(max);
             nombresAcomodados.add(max);
         }
-        System.out.println(nombresAcomodados);
-    }
-
-
-    public Score(itesm.mx.juego juego){
-        this.juego =  juego;
-        this.musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
-        musica.setLooping(true);
-        musica.play();
-        preferencias();
     }
 
     @Override
@@ -239,7 +237,12 @@ public class Score implements Screen, InputProcessor {
         camara.unproject(v);
         float x = v.x;
         float y = v.y;
-        if (btnBack.contiene(x,y))
+        if (btnBack.contiene(x,y)&& this.yes == true)
+        {
+            musica.stop();
+            juego.setScreen(new MenuPrincipal(juego));
+        }
+        else if (btnBack.contiene(x,y)&& this.yes != true)
         {
             juego.setScreen(new MenuPrincipal(juego,musica));
         }
