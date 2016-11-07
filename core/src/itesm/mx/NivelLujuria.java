@@ -26,9 +26,9 @@ public class NivelLujuria implements Screen, InputProcessor {
     private long tempo;
 
     //Los valores que necesito tener guardados para el Lobby
-    private  int vidas;
-    private int almas ;
-    private boolean tunTun=true;
+    private int vidas;
+    private int almas;
+    private boolean tunTun = true;
     private Dificultad escNivel;
 
     private Texture texturafondo;
@@ -67,22 +67,28 @@ public class NivelLujuria implements Screen, InputProcessor {
     private Array<Lujuria> decentes;   //Lista de Lujurias 12
 
     //Contador de lujurias volteadas correctamente
-    private int contador=0;
+    private int contador = 0;
 
-    public NivelLujuria(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel)
+    //settings
+    private Settings_save settings;
+
+    public NivelLujuria(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel,Settings_save settings)
     {
         this.Juego = Juego;
         this.vidas = vidas;
         this.almas = almas;
         this.dificultad = dificultad;
         this.escNivel=escNivel;
+        this.settings=settings;
 
         this.tempo = 5;
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
         Musica.setVolume(0.6f);
-        Musica.play();
+        if (this.settings.getMusic()){
+            Musica.play();
+        }
     }
 
     //Marcador
@@ -269,7 +275,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                 if((tempo - ((System.currentTimeMillis() - startTime) / 1000))<-1)
                 {
                     almas++;
-                    Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel));
+                    Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel, settings));
                 }
             }
         }
@@ -282,7 +288,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
-            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
         }
 
         batch.end();

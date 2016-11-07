@@ -244,7 +244,7 @@ public class Score implements Screen, InputProcessor {
         }
         else if (btnBack.contiene(x,y)&& this.yes != true)
         {
-            juego.setScreen(new MenuPrincipal(juego,musica));
+            juego.setScreen(new MenuPrincipal(juego));//recuperar musica
         }
         return false;
     }
