@@ -101,7 +101,7 @@ public class Lobby implements Screen, InputProcessor {
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby3.mp3"));
         else if((almas>= 9 && almas <12)&& vidas >0 )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby4.mp3"));
-        else if((almas>= 12 && almas <15)&& vidas >0 )
+        else if((almas>= 12)&& vidas >0 )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby5.mp3"));
         else if(vidas <= 0)
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("LobbyF.mp3"));
