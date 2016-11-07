@@ -312,6 +312,7 @@ public class AboutUs implements Screen, InputProcessor {
                 contributor = true;
             }
         }
+        //LOL
         if (btnBack.contiene(x,y)&& contributor == false)
         {
             musica.stop();
