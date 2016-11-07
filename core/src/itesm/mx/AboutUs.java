@@ -248,10 +248,15 @@ public class AboutUs implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-        //liberar los recursos utilizados en la memoria
-
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        texturakarlo.dispose();
+        texturabecky.dispose();
+        texturasam.dispose();
+        texturadaniel.dispose();
+        texturamarina.dispose();
+        texturaBtnOk.dispose();
+        musica.dispose();
     }
 
     @Override
@@ -308,6 +313,7 @@ public class AboutUs implements Screen, InputProcessor {
         if (btnBack.contiene(x,y)&& contributor == false)
         {
             musica.stop();
+            this.dispose();
             juego.setScreen(new MenuPrincipal(juego));
         }
         if (btnOk.contiene(x,y) && contributor == true)
