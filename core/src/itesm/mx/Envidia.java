@@ -63,12 +63,16 @@ public class Envidia implements Screen, InputProcessor {
     private int temporizador=8;
     private int tiempoInit;
 
+    //settings
+    private Settings_save settings;
 
-    public Envidia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel ){
+
+    public Envidia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings ){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.escNivel=escNivel;
+        this.settings=settings;
 
         if (nivel==1){
             velocidad=0.3f;
@@ -186,12 +190,12 @@ public class Envidia implements Screen, InputProcessor {
 
             for (Monedas mA : monedasA) {
                 if (mA.getyActual() < -40) {
-                    juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel));
+                    juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
                 }
             }
             if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
                 almas += 1;
-                juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel));
+                juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
             }
         }
 
@@ -257,7 +261,7 @@ public class Envidia implements Screen, InputProcessor {
         }
         for (Monedas mB:monedasB){
             if(mB.contiene(x,y)){
-                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
             }
         }
         return false;

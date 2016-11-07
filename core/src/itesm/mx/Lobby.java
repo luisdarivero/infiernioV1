@@ -57,23 +57,32 @@ public class Lobby implements Screen, InputProcessor {
     //dificultad
     private Dificultad escNivel;
 
-    public Lobby(juego juego){
+    //settings
+    private Settings_save settings;
+
+    public Lobby(juego juego,Settings_save sett){
         this.juego=juego;
         this.vidas=3;
         this.almas=0;
         this.estado=true;
         this.escNivel=new Dificultad();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
-        this.musica.play();
         this.Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
         Winnie.setVolume(0);
+
+        this.settings=sett;
+        if (this.settings.getMusic()){
+            this.musica.play();
+        }
+
     }
-    public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel){
+    public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel, Settings_save sett){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.estado=estado;
         this.escNivel=escNivel;
+        this.settings=sett;
 
         if(estado)
         {
@@ -96,7 +105,10 @@ public class Lobby implements Screen, InputProcessor {
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby5.mp3"));
         else if(vidas <= 0)
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("LobbyF.mp3"));
-        this.musica.play();
+
+        if (this.settings.getMusic()){
+            this.musica.play();
+        }
     }
 
     @Override
@@ -160,8 +172,9 @@ public class Lobby implements Screen, InputProcessor {
             if (estado==false){
                 Corazon h = arrCora.get(arrCora.size-1);
                 h.setPosition();
+                Winnie.play();
             }
-            Winnie.play();
+
         }
         if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) == 0) {
             if (estado==false){
@@ -177,37 +190,37 @@ public class Lobby implements Screen, InputProcessor {
                     case 1:
                         //soberbia
                         this.musica.stop();
-                        juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 2:
                         //envidia
                         this.musica.stop();
-                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 3:
                         //ira
                         this.musica.stop();
-                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 4:
                         //Pereza
                         this.musica.stop();
-                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 5:
                         this.musica.stop();
-                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel,settings));
                         //Avaricia
 
                         break;
                     case 6:
                         //Gula
                         this.musica.stop();
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel));
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 7:

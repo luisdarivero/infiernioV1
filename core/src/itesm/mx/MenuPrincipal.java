@@ -59,18 +59,31 @@ public class MenuPrincipal implements Screen {
     //musica
     private final Music musica;
 
+    //Settings
+    private Settings_save settings;
+
+
     //constructor
     public MenuPrincipal(itesm.mx.juego juego){
         this.juego =  juego;
         musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
         musica.setLooping(true);
         musica.play();
+        settings=new Settings_save();
 
     }
 
-    public MenuPrincipal(itesm.mx.juego juego , Music musica){
+    public MenuPrincipal(itesm.mx.juego juego , Music musica, Settings_save sett) {
         this.juego = juego;
         this.musica = musica;
+        this.settings=sett;
+
+        if (this.settings.getMusic()) {
+            musica.play();
+        } else {
+            musica.pause();
+        }
+
     }
 
     @Override
@@ -171,7 +184,7 @@ public class MenuPrincipal implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
-                juego.setScreen(new Lobby(juego));
+                juego.setScreen(new Lobby(juego,settings));
 
             }
         });
@@ -180,7 +193,7 @@ public class MenuPrincipal implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de opciones");
-                juego.setScreen(new Settings(juego,musica));
+                juego.setScreen(new Settings(juego,musica,settings));
             }
         });
 
