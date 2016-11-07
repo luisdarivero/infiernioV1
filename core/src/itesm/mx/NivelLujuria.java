@@ -275,6 +275,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                 if((tempo - ((System.currentTimeMillis() - startTime) / 1000))<-1)
                 {
                     almas++;
+                    this.dispose();
                     Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel, settings));
                 }
             }
@@ -288,6 +289,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me deberia regresar al Lobby
+            this.dispose();
             Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
         }
 
@@ -317,7 +319,19 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
-
+        Musica.dispose();
+        Winnie.dispose();
+        Bop.dispose();
+        texturafondo.dispose();
+        texturaPierde.dispose();
+        texturaLujuriaV.dispose();
+        texturaLujuria2V.dispose();
+        texturaLujuria3V.dispose();
+        texturaLujuria.dispose();
+        texturaLujuria2.dispose();
+        texturaLujuria3.dispose();
+        texturaGana.dispose();
+        texturaInstr.dispose();
     }
 
     @Override

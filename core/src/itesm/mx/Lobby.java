@@ -190,29 +190,34 @@ public class Lobby implements Screen, InputProcessor {
                     case 1:
                         //soberbia
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 2:
                         //envidia
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 3:
                         //ira
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new Ira(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 4:
                         //Pereza
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new NivelPereza(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 5:
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel,settings));
                         //Avaricia
 
@@ -220,12 +225,14 @@ public class Lobby implements Screen, InputProcessor {
                     case 6:
                         //Gula
                         this.musica.stop();
+                        this.dispose();
                         juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 7:
                         //Lujuria
                         this.musica.stop();
+                        this.dispose();
                         break;
                 }
             }
@@ -258,6 +265,7 @@ public class Lobby implements Screen, InputProcessor {
         texCora.dispose();
         texFondo.dispose();
         musica.dispose();
+        Winnie.dispose();
     }
 
 
