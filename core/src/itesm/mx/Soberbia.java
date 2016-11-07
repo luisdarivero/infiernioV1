@@ -63,6 +63,9 @@ public class Soberbia implements Screen, InputProcessor {
     private  Image imgInstrucciones;
     private  Image imgFondo;
     private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
     //private Sprite botonRojo;
     //private Sprite botonAzul;
     //private Sprite[] listaMovibles;
@@ -82,6 +85,8 @@ public class Soberbia implements Screen, InputProcessor {
     private float tiempoJuego;
     private Texto texto;
     private float tiempoGano;
+    private boolean fichaCruz;
+    private boolean fichaFuego;
 
     //constructor
     public Soberbia(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel ){
@@ -91,7 +96,8 @@ public class Soberbia implements Screen, InputProcessor {
         this.nivel = nivel;
         this.escNivel=escNivel;
         if(nivel<=4){
-            tiempoJuego = 6-nivel;
+            //tiempoJuego = 6-nivel;
+            tiempoJuego = 1000f;
         }
         else{
             tiempoJuego = 1.5f;
@@ -104,9 +110,11 @@ public class Soberbia implements Screen, InputProcessor {
     public void show() {
         //arrays imagenes
         //listaMovibles = new Sprite[3];
-        listaMovibles = new FichaSoberbia[3];
-        listaEstaticas = new FichaSoberbia[3];
+        listaMovibles = new FichaSoberbia[4];
+        listaEstaticas = new FichaSoberbia[4];
         rand = new Random();
+        fichaCruz = false;
+        fichaFuego = false;
         //inicializar la camara
         inicializarCamara();
         //crear la escena
@@ -143,7 +151,7 @@ public class Soberbia implements Screen, InputProcessor {
 
     public void cargarTexturas(){
         //assetManager.load("back.png",Texture.class);
-        assetManager.load("fondo_inicio.png",Texture.class);
+        assetManager.load("FondoSoberbia.png",Texture.class);
         assetManager.load("instrucciones_ira.png",Texture.class);
 
 
@@ -153,48 +161,52 @@ public class Soberbia implements Screen, InputProcessor {
 
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = assetManager.get("fondo_inicio.png");
+        texturaFondo = assetManager.get("FondoSoberbia.png");
         texturaInstrucciones = assetManager.get("instrucciones_ira.png");
         btnPausa = new Sprite(new Texture("pausaNS.png"));
 
-        String listaMovImagenes[] = {"LujuriaS1.png","LujuriaS2.png","LujuriaS3.png"};
-        String listaIndex[] = {"1","2","3"};
+        String listaMovImagenes[] = {"kind.png","beautiful.png","coward.png","mean.png"};
+        String listaIndex[] = {"1","2","3","4"};
 
         for (int i = 0; i<=5; i ++){
-            int random = rand.nextInt(3);
+            int random = rand.nextInt(4);
             cambiarArrayPosPrincipio(listaMovImagenes,random);
             cambiarArrayPosPrincipio(listaIndex,random);
         }
 
-        for (int i=0; i<=2; i++){
+        for (int i=0; i<=3; i++){
             listaMovibles[i] = new FichaSoberbia(listaIndex[i],listaMovImagenes[i]);
         }
 
         listaMovibles[0].setCenter(ancho*.20f,alto*.70f);
-        listaMovibles[1].setCenter(ancho*.50f,alto*.70f);
-        listaMovibles[2].setCenter(ancho*.80f,alto*.70f);
+        listaMovibles[1].setCenter(ancho*.40f,alto*.30f);
+        listaMovibles[2].setCenter(ancho*.60f,alto*.70f);
+        listaMovibles[3].setCenter(ancho*.80f,alto*.30f);
 
-        listaMovImagenes[0] = "LujuriaS1.png";
-        listaMovImagenes[1] = "LujuriaS2.png";
-        listaMovImagenes[2] = "LujuriaS3.png";
+        listaMovImagenes[0] = "rude.png";
+        listaMovImagenes[1] = "ugly.png";
+        listaMovImagenes[2] = "brave.png";
+        listaMovImagenes[3] = "nice.png";
 
         listaIndex[0] = "1";
         listaIndex[1] = "2";
         listaIndex[2] = "3";
+        listaIndex[3] = "4";
 
         for (int i = 0; i<=5; i ++){
-            int random = rand.nextInt(3);
+            int random = rand.nextInt(4);
             cambiarArrayPosPrincipio(listaMovImagenes,random);
             cambiarArrayPosPrincipio(listaIndex,random);
         }
 
-        for (int i=0; i<=2; i++){
+        for (int i=0; i<=3; i++){
             listaEstaticas[i] = new FichaSoberbia(listaIndex[i],listaMovImagenes[i]);
         }
 
-        listaEstaticas[0].setCenter(ancho*.20f,alto*.20f);
-        listaEstaticas[1].setCenter(ancho*.50f,alto*.20f);
-        listaEstaticas[2].setCenter(ancho*.80f,alto*.20f);
+        listaEstaticas[0].setCenter(ancho*.20f,alto*.30f);
+        listaEstaticas[1].setCenter(ancho*.40f,alto*.70f);
+        listaEstaticas[2].setCenter(ancho*.60f,alto*.30f);
+        listaEstaticas[3].setCenter(ancho*.80f,alto*.70f);
 
         imgFondo = new Image(texturaFondo);
         //Escalar
@@ -240,22 +252,79 @@ public class Soberbia implements Screen, InputProcessor {
             batch.setProjectionMatrix(camara.combined);
             batch.begin();
 
-            for (FichaSoberbia f : listaEstaticas
+            for (FichaSoberbia w: listaEstaticas
+                 ) {
+                    if(w.isMatch()){
+                        w.draw(batch);
+                    }
+            }
+            for (FichaSoberbia w: listaMovibles
                     ) {
-                f.draw(batch);
-
+                    if(w.isMatch()){
+                        w.draw(batch);
+                    }
             }
 
-            for (int i = listaMovibles.length - 1; i >= 0; i--) {
-                listaMovibles[i].draw(batch);
+            if(!fichaFuego && !fichaCruz){
+                for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                    if(!listaEstaticas[i].isMatch()){
+                        listaEstaticas[i].draw(batch);
+                    }
+
+                }
+
+                for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                    if(!listaMovibles[i].isMatch()){
+                        listaMovibles[i].draw(batch);
+                    }
+
+                }
             }
+            else{
+                if(fichaCruz){
+                    for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                        if(!listaEstaticas[i].isMatch()){
+                            listaEstaticas[i].draw(batch);
+                        }
+
+                    }
+
+                    for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                        if(!listaMovibles[i].isMatch()){
+                            listaMovibles[i].draw(batch);
+                        }
+
+                    }
+
+
+                }
+                else{
+                    for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                        if(!listaMovibles[i].isMatch()){
+                            listaMovibles[i].draw(batch);
+                        }
+
+                    }
+
+                    for (int i = listaMovibles.length - 1; i >= 0; i--) {
+                        if(!listaEstaticas[i].isMatch()){
+                            listaEstaticas[i].draw(batch);
+                        }
+
+                    }
+                }
+            }
+
+
+
+
 
             texto.mostrarMensaje(batch,Float.toString(round(deltaTime,1)),ancho*.5f, alto*.98f);
             btnPausa.draw(batch);
             batch.end();
 
 
-            if (estaTocando) {
+            if (estaTocando && fichaCruz) {
                 for (FichaSoberbia w : listaEstaticas
                         ) {
 
@@ -270,11 +339,59 @@ public class Soberbia implements Screen, InputProcessor {
                                 if (j.getEtiqueta().equals(listaMovibles[0].getEtiqueta())) {
 
                                     //pone la imagen en el mismo centro
-                                    j.setCenter(w.getSprite().getX()+(w.getSprite().getWidth()*.5f), w.getSprite().getY()+(w.getSprite().getHeight()*.5f));
+                                    if(fichaCruz){
+                                        j.setCenter(w.getSprite().getX()+(w.getSprite().getWidth()*.5f), w.getSprite().getY()+(w.getSprite().getHeight()*.5f));
+                                    }
+                                    else{
+                                        w.setCenter(j.getSprite().getX()+(j.getSprite().getWidth()*.5f), j.getSprite().getY()+(j.getSprite().getHeight()*.5f));
+                                    }
+
                                     //suelta la imagen
                                     estaTocando = false;
                                     w.setMatch(true);
                                     j.setMatch(true);
+                                    fichaFuego = false;
+                                    fichaCruz = false;
+                                }
+                            }
+                        }
+
+
+
+                    }
+
+                }
+
+            }
+
+            if (estaTocando && fichaFuego) {
+                for (FichaSoberbia w : listaMovibles
+                        ) {
+
+                    for (FichaSoberbia j : listaEstaticas
+                            ) {
+
+                        if (w.getSprite().getBoundingRectangle().overlaps(j.getSprite().getBoundingRectangle())) {
+
+
+                            if (w.getEtiqueta().equals(j.getEtiqueta())) {
+                                System.out.println("esta tocando");
+                                if (j.getEtiqueta().equals(listaEstaticas[0].getEtiqueta())) {
+
+                                    //pone la imagen en el mismo centro
+                                    if(fichaFuego){
+                                        j.setCenter(w.getSprite().getX()+(w.getSprite().getWidth()*.5f), w.getSprite().getY()+(w.getSprite().getHeight()*.5f));
+                                    }
+                                    else{
+                                        w.setCenter(j.getSprite().getX()+(j.getSprite().getWidth()*.5f), j.getSprite().getY()+(j.getSprite().getHeight()*.5f));
+                                    }
+
+                                    //suelta la imagen
+                                    estaTocando = false;
+                                    w.setMatch(true);
+                                    j.setMatch(true);
+                                    fichaFuego = false;
+                                    fichaCruz = false;
                                 }
                             }
                         }
@@ -371,21 +488,43 @@ public class Soberbia implements Screen, InputProcessor {
         float x = v.x;
         float y = v.y;
 
+
+
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
-
+            return false;
+        }
+        //para que se salga si no esta en estado normal y dejar de mover las fichas
+        if(estado != Estado.Normal){
+            return  false;
         }
 
         int contador= 0;
 
         for (FichaSoberbia w: listaMovibles
              ) {
-            if(w.contains(x,y)){
+            if(w.contains(x,y)&&!w.isMatch()){
                 cambiarArrayPosPrincipio(listaMovibles,contador);
 
                 estaTocando = true;
                 xAnt = x;
                 yAnt = y;
+                fichaCruz = true;
+                return false;
+
+            }
+            contador++;
+        }
+        contador= 0;
+        for (FichaSoberbia w: listaEstaticas
+                ) {
+            if(w.contains(x,y) && !w.isMatch()){
+                cambiarArrayPosPrincipio(listaEstaticas,contador);
+
+                estaTocando = true;
+                xAnt = x;
+                yAnt = y;
+                fichaFuego = true;
                 return false;
             }
             contador++;
@@ -415,7 +554,10 @@ public class Soberbia implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
         estaTocando = false;
+        fichaCruz = false;
+        fichaFuego = false;
         return false;
+
     }
 
     @Override
@@ -429,12 +571,26 @@ public class Soberbia implements Screen, InputProcessor {
 
         for (FichaSoberbia w: listaMovibles
              ) {
-            if(estaTocando && w.contains(xAnt,yAnt)){
+            if(estaTocando && w.contains(xAnt,yAnt) && fichaCruz){
                 w.setCenter(x,y);
+                xAnt= x;
+                yAnt = y;
+                return false;
             }
-            xAnt= x;
-            yAnt = y;
-            return false;
+
+
+
+        }
+
+        for (FichaSoberbia w: listaEstaticas
+                ) {
+            if(estaTocando && w.contains(xAnt,yAnt) &&fichaFuego){
+                w.setCenter(x,y);
+                xAnt= x;
+                yAnt = y;
+                return false;
+            }
+
 
 
         }
