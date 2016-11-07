@@ -7,8 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /**
  * Created by Sam on 13/09/2016.
  */
-public class Billete
-{
+public class Billete{
     private Sprite sprite;
 
     //'Velocidad'

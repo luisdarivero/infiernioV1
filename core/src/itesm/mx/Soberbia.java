@@ -83,13 +83,18 @@ public class Soberbia implements Screen, InputProcessor {
     private Texto texto;
     private float tiempoGano;
 
+    //settings
+    private Settings_save settings;
+
     //constructor
-    public Soberbia(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel ){
+    public Soberbia(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings ){
         this.juego=Juego;
         this.vidas=vidas;
         this.almas=almas;
         this.nivel = nivel;
         this.escNivel=escNivel;
+        this.settings=settings;
+
         if(nivel<=4){
             tiempoJuego = 6-nivel;
         }
@@ -304,7 +309,7 @@ public class Soberbia implements Screen, InputProcessor {
             if(Estado.Gano ==estado){
                 tiempoGano += Gdx.graphics.getDeltaTime();
                 if(tiempoGano >= .2){
-                    juego.setScreen(new Lobby(juego, vidas,  almas+1,true,escNivel));
+                    juego.setScreen(new Lobby(juego, vidas,  almas+1,true,escNivel,settings));
                 }
             }
             //comentario
@@ -314,7 +319,7 @@ public class Soberbia implements Screen, InputProcessor {
 
 
             if(deltaTime <=0){
-                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
             }
 
 

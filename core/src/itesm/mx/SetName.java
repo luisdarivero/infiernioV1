@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -12,12 +13,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashMap;
 
 /**
 KRLO 2/11/16
@@ -30,6 +35,13 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private final float ancho = 1280;
     private final float alto = 720;
 
+    //prefs
+    Preferences prefs = Gdx.app.getPreferences("ScoresPref");
+
+    //Para los scores
+    private Map mapaP = new HashMap();
+    private ArrayList<String> nombresL;
+
     //puntos a recibir
     int pointer ;
 
@@ -38,13 +50,9 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
     //Texto
     private String text;
+    private ArrayList<String> nombresAcomodados =new ArrayList<String>();
 
-    //Para los scores
-    FileHandle scrs = Gdx.files.internal("scores.txt");
-    private ArrayList<String> nombres = new ArrayList<String>(6);
-    private ArrayList<Integer> scores = new ArrayList<Integer>(6);
-    private ArrayList<String> nombresOrd = new ArrayList<String>(6);
-    private ArrayList<Integer> scoresOrd = new ArrayList<Integer>(6);
+
 
     //textura para la imagen de fondo
     private Texture texturaFondo;
@@ -65,17 +73,14 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private final Music musica;
 
     //constructor
-    public SetName(itesm.mx.juego juego, Music musica){
-        this.juego =  juego;
-        this.musica = musica;
-    }
-
-    //constructor
-    public SetName(itesm.mx.juego juego, int points, Music musica){
+    public SetName(itesm.mx.juego juego, int points){
         this.juego =  juego;
         pointer = points;
-        //TODO: quitar musica
-        this.musica = musica;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
+        musica.setLooping(true);
+        musica.play();
+        musica.setVolume(0.6f);
+        preferencias();
     }
 
     @Override
@@ -102,6 +107,31 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         imgFondo2 = new Fondo(texturaFondo2);
     }
 
+    private void preferencias()
+    {
+        prefs = Gdx.app.getPreferences("ScoresPref");
+
+        if(prefs.getBoolean("Scores"))
+        {
+            int x = 0;
+        }
+        else
+        {
+            prefs.putBoolean("Scores",true);
+            prefs.flush();
+            prefs = Gdx.app.getPreferences("ScoresNames");
+            prefs.putInteger("Karlo",0);
+            prefs.putInteger("Marina",0);
+            prefs.putInteger("Daniel",0);
+            prefs.putInteger("Becky",0);
+            prefs.putInteger("Samantha",0);
+            prefs.flush();
+        }
+        prefs = Gdx.app.getPreferences("ScoresNames");
+        mapaP = prefs.get();
+        Set keys = mapaP.keySet();
+        nombresL = new ArrayList<String>(keys);
+    }
 
     public void cargarTexturas(){
 
@@ -136,54 +166,44 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
         if(teclado == true && Gdx.input.justTouched() && text != null)
         {
-            boolean exist = Gdx.files.external("scores.txt").exists();
-            if(exist)
-            {
-                scrs = Gdx.files.external("scores.txt");
-                cargarScores();
-            }else
-            {
-                cargarScores();
-            }
             escribirScores(text);
-            musica.stop();
-            juego.setScreen(new Score(juego));
+            juego.setScreen(new Score(juego,musica,true));
         }
         batch.end();
     }
 
     private void escribirScores(String texto)
     {
-        pointer=14;
-        boolean added;
-        scores.add(pointer);
-        nombres.add(texto);
-        System.out.println(nombres);
-        System.out.println(scores);
-        for (Integer i : scores)
+        prefs = Gdx.app.getPreferences("ScoresNames");
+        String max = "";
+        mapaP.put(texto,pointer);
+        Set keys = mapaP.keySet();
+        ArrayList<String> keis = new ArrayList<String>(keys);
+        for(String s: nombresL)
         {
-            scoresOrd.add(i);
+            prefs.remove(s);
         }
-        Collections.sort(scoresOrd);
-        Collections.reverse(scoresOrd);
-        for (Integer u : scoresOrd)
+        nombresL = new ArrayList<String>(keys);
+
+        for (int j = 0; j < 5; j++)
         {
-            added =false;
-            for (int k = 0;k< scores.size();k++)
-            {
-                if (u == scores.get(k) && added == false && Collections.frequency(nombresOrd,nombres.get(k)) < Collections.frequency(nombres,nombres.get(k)))
-                {
-                    nombresOrd.add(nombres.get(k));
-                    added = true;
-                }
+            max = nombresL.get(0);
+            for (int i = 0; i < nombresL.size(); i++) {
+                if(i!=nombresL.size()-1)
+                    if (Integer.parseInt(mapaP.get(max).toString()) <= Integer.parseInt((mapaP.get(nombresL.get(i + 1))).toString()))
+                    {
+                        max = nombresL.get(i + 1);
+                    }
             }
+            nombresL.remove(max);
+            nombresAcomodados.add(max);
         }
-        scrs = Gdx.files.external("scores.txt");
-        scrs.writeString(nombresOrd.get(0)+" "+scoresOrd.get(0)+'|', false);
-        for (int i = 1;i<=4;i++)
+
+        for(String x: nombresAcomodados )
         {
-            scrs.writeString(nombresOrd.get(i)+" "+scoresOrd.get(i)+'|', true);
+            prefs.putInteger(x,Integer.parseInt(mapaP.get(x).toString()));
         }
+        prefs.flush();
     }
 
     @Override
@@ -268,30 +288,6 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     @Override
     public void canceled() {
 
-    }
-
-    private void cargarScores() {
-        String alle = scrs.readString();
-        StringBuilder sb = new StringBuilder(50);
-        char[] arrCar = alle.toCharArray();
-
-        for(int i=0; i< arrCar.length; i++)
-        {
-            if(arrCar[i]=='|')
-            {
-                scores.add(Integer.parseInt(sb.toString()));
-                sb = new StringBuilder();
-            }
-            else if (arrCar[i]==' ')
-            {
-                nombres.add(sb.toString());
-                sb = new StringBuilder();
-            }
-            if(Character.isDigit(arrCar[i])||Character.isLetter(arrCar[i]))
-            {
-                sb.append(arrCar[i]);
-            }
-        }
     }
 
 }

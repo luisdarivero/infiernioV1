@@ -55,13 +55,16 @@ public class Avaricia implements Screen, InputProcessor {
     private int temporizador;
     private int tiempoInit;
 
+    //settings
+    private Settings_save settings;
 
 
-    public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel){
+    public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings){
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
         this.escNivel=escNivel;
+        this.settings=settings;
         if (nivel==1)
             this.temporizador=7;
         else if(nivel==2)
@@ -136,10 +139,10 @@ public class Avaricia implements Screen, InputProcessor {
             switch (binario){
                 case 0:
                     almas+=1;
-                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel,settings));
                     break;
                 case 1:
-                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
                     break;
             }
         }
@@ -169,6 +172,9 @@ public class Avaricia implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        texturaFondo.dispose();
+        textInstr.dispose();
+        texDinero.dispose();
 
     }
 
@@ -199,11 +205,11 @@ public class Avaricia implements Screen, InputProcessor {
                 //Toco el billete;
             switch (binario){
                 case 0:
-                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel));
+                    juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
                     break;
                 case 1:
                     almas+=1;
-                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel));
+                    juego.setScreen(new Lobby(juego,vidas,almas,true,escNivel,settings));
                     break;
 
             }

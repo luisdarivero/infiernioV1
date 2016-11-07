@@ -72,24 +72,31 @@ public class NivelPereza implements Screen, InputProcessor {
     //temporizador de toques a pereza
     private int toques=0;
 
-    public NivelPereza(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel)
+    //settings
+    private Settings_save settings;
+
+    public NivelPereza(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel, Settings_save settings)
     {
         this.Juego = Juego;
         this.vidas = vidas;
         this.almas = almas;
         this.dificultad = dificultad;
         this.escNivel=escNivel;
+        this.settings=settings;
 
         this.temporizador = 5;
 
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
-        Winnie = Gdx.audio.newMusic(Gdx.files.internal("bueno.mp3"));
+        Winnie = Gdx.audio.newMusic(Gdx.files.internal("goodgoodnotBad.mp3"));
         Bop = Gdx.audio.newMusic(Gdx.files.internal("bop1.mp3"));
         Bop2 = Gdx.audio.newMusic(Gdx.files.internal("bop2.mp3"));
         Bop3 = Gdx.audio.newMusic(Gdx.files.internal("bop3.mp3"));
         Bop4 = Gdx.audio.newMusic(Gdx.files.internal("bop4.mp3"));
         Musica.setVolume(0.6f);
-        Musica.play();
+        if (this.settings.getMusic()){
+            Musica.play();
+        }
+
     }
 
     //Marcador
@@ -263,7 +270,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me regresa al Lobby
-            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
         }
 
         if(toques>=goal && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
@@ -271,13 +278,11 @@ public class NivelPereza implements Screen, InputProcessor {
             Musica.stop();
             if(bC == 4)
             {
-                Winnie.setVolume(0.4f);
                 Winnie.play();
-                Winnie.setVolume(0.4f);
                 bC++;
             }
             almas++;
-            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel));
+            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel,settings));
         }
         batch.end();
     }
