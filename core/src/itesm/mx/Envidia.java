@@ -227,6 +227,10 @@ public class Envidia implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        texFondo.dispose();
+        texInstr.dispose();
+        texMonedaA.dispose();
+        texMonedaB.dispose();
 
     }
 

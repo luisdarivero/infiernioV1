@@ -172,6 +172,9 @@ public class Avaricia implements Screen, InputProcessor {
 
     @Override
     public void dispose() {
+        texturaFondo.dispose();
+        textInstr.dispose();
+        texDinero.dispose();
 
     }
 
