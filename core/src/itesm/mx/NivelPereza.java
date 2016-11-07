@@ -270,6 +270,7 @@ public class NivelPereza implements Screen, InputProcessor {
         {
             Musica.stop();
             //Aqui me regresa al Lobby
+            this.dispose();
             Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
         }
 
@@ -282,6 +283,7 @@ public class NivelPereza implements Screen, InputProcessor {
                 bC++;
             }
             almas++;
+            this.dispose();
             Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel,settings));
         }
         batch.end();
@@ -308,8 +310,23 @@ public class NivelPereza implements Screen, InputProcessor {
     }
 
     @Override
-    public void dispose() {
-
+    public void dispose()
+    {
+        Musica.dispose();
+        Winnie.dispose();
+        Bop.dispose();
+        Bop2.dispose();
+        Bop3.dispose();
+        Bop4.dispose();
+         texturafondo.dispose();
+         texturaGana.dispose();
+         texturaPierde.dispose();
+         texturaPreza.dispose();
+         texturaPreza2.dispose();
+         texturaPreza3.dispose();
+         texturaPreza4.dispose();
+         texturaPreza5.dispose();
+         texturaInfo.dispose();
     }
 
     @Override
