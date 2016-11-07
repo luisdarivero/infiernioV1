@@ -182,7 +182,7 @@ public class Lobby implements Screen, InputProcessor {
             }
             if (vidas==0) {
                 this.musica.stop();
-                juego.setScreen(new SetName(juego,this.almas));
+                juego.setScreen(new SetName(juego,this.almas, settings));
             }else{
                 int nivel=escNivel.cambiarNivel();
                 int dif=escNivel.getDificultad();

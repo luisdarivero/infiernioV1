@@ -65,13 +65,20 @@ public class AboutUs implements Screen, InputProcessor {
     //musica
     private final Music musica;
 
+    //settings
+    private Settings_save settings;
+
     //constructor
-    public AboutUs(itesm.mx.juego juego){
+    public AboutUs(itesm.mx.juego juego, Settings_save settings){
         this.juego =  juego;
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("AboutUs.mp3"));
-        musica.setLooping(true);
-        musica.play();
-        musica.setVolume(0.4f);
+        this.settings=settings;
+
+        if(this.settings.getMusic()){
+            musica.setLooping(true);
+            musica.play();
+            musica.setVolume(0.4f);
+        }
     }
 
     @Override
@@ -308,7 +315,7 @@ public class AboutUs implements Screen, InputProcessor {
         if (btnBack.contiene(x,y)&& contributor == false)
         {
             musica.stop();
-            juego.setScreen(new MenuPrincipal(juego));
+            juego.setScreen(new MenuPrincipal(juego,settings));
         }
         if (btnOk.contiene(x,y) && contributor == true)
         {
