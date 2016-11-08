@@ -147,7 +147,7 @@ public class Lobby implements Screen, InputProcessor {
                 arrCora.add(cor);
             }
         }
-        this.musica.setVolume(0.4f);
+        this.musica.setVolume(0.3f);
     }
     @Override
     public void render(float delta) {
