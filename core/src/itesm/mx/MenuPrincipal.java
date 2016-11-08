@@ -86,6 +86,19 @@ public class MenuPrincipal implements Screen {
 
     }
 
+    public MenuPrincipal(itesm.mx.juego juego , Settings_save sett) {
+        this.juego = juego;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
+        this.settings=sett;
+
+        if (this.settings.getMusic()) {
+            musica.play();
+        } else {
+            musica.pause();
+        }
+
+    }
+
     @Override
     public void show() {
         //equivalente a create o a start, se ejecuta solo al cargar la pantalla
@@ -203,7 +216,7 @@ public class MenuPrincipal implements Screen {
                 Gdx.app.log("clicked", "TAP sobre el boton acerca de....");
                 //cambiar a la pantalla acerca de
                 musica.stop();
-                juego.setScreen(new AboutUs(juego));
+                juego.setScreen(new AboutUs(juego, settings));
                 //juego.setScreen(new SetName(juego,musica));
             }
         });
@@ -212,7 +225,7 @@ public class MenuPrincipal implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de Puntaje");
-                juego.setScreen(new Score(juego,musica));
+                juego.setScreen(new Score(juego,musica,settings));
             }
         });
     }

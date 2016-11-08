@@ -70,18 +70,31 @@ public class Score implements Screen, InputProcessor {
     //musica
     private final Music musica;
 
+    //Setiings
+    private Settings_save settings;
+
     //constructor
-    public Score(itesm.mx.juego juego, Music musica){
+    public Score(itesm.mx.juego juego, Music musica, Settings_save settings){
         this.juego =  juego;
         this.musica = musica;
+        this.settings=settings;
         preferencias();
+
+        if (this.settings.getMusic()){
+            musica.play();
+        }
+
     }
 
-    public Score(itesm.mx.juego juego, Music musica, boolean setName){
+    public Score(itesm.mx.juego juego, Music musica, boolean setName, Settings_save settings){
         this.juego =  juego;
         this.musica = musica;
         yes = setName;
         preferencias();
+        this.settings=settings;
+        if (this.settings.getMusic()){
+            musica.play();
+        }
     }
 
     private void preferencias() {
@@ -244,7 +257,7 @@ public class Score implements Screen, InputProcessor {
         }
         else if (btnBack.contiene(x,y)&& this.yes != true)
         {
-            juego.setScreen(new MenuPrincipal(juego));//recuperar musica
+            juego.setScreen(new MenuPrincipal(juego,musica,settings));//recuperar musica
         }
         return false;
     }
