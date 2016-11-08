@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,7 +45,6 @@ public class Envidia implements Screen, InputProcessor {
 
     //Texto
     private Texto textoIns;
-    private Texto texCont;
     private Texto textTiempo;
 
     //Monedas array
@@ -55,13 +55,16 @@ public class Envidia implements Screen, InputProcessor {
     private int vidas;
     private int almas;
     private Dificultad escNivel;
-    private int contador;
     private float velocidad;
 
     //tiempo
     private long startTime = System.currentTimeMillis();
     private int temporizador=8;
     private int tiempoInit;
+
+    //Musica
+    private final Music Musica;
+    private final Music ok;
 
     //settings
     private Settings_save settings;
@@ -84,6 +87,13 @@ public class Envidia implements Screen, InputProcessor {
 
         //extras
         this.tiempoInit=temporizador-1;
+        this.Musica=Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+        this.ok=Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
+        this.settings=settings;
+
+        if(this.settings.getMusic()){
+            Musica.play();
+        }
     }
 
 
@@ -95,7 +105,6 @@ public class Envidia implements Screen, InputProcessor {
         crearEscena();
         Gdx.input.setInputProcessor(this);
         textoIns=new Texto("fuenteAv_a.fnt");
-        texCont=new Texto("fuenteAv_a.fnt");
         textTiempo=new Texto("fuenteAv_a.fnt");
     }
 
@@ -185,7 +194,6 @@ public class Envidia implements Screen, InputProcessor {
                 mB.draw(batch);
             }
 
-            texCont.mostrarMensaje(batch, "Marcador: " + contador, 600, 200);
             textTiempo.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 700);
 
             for (Monedas mA : monedasA) {
@@ -231,6 +239,8 @@ public class Envidia implements Screen, InputProcessor {
         texInstr.dispose();
         texMonedaA.dispose();
         texMonedaB.dispose();
+        Musica.play();
+        ok.play();
 
     }
 
@@ -259,8 +269,10 @@ public class Envidia implements Screen, InputProcessor {
         for (Monedas mA:monedasA){
             if (mA.contiene(x,y)){
                 //le pegó
+                ok.stop();
                 mA.setEstado(Monedas.Estado.GOLPEADO);
-                contador++;
+                ok.setVolume(.4f);
+                ok.play();
             }
         }
         for (Monedas mB:monedasB){

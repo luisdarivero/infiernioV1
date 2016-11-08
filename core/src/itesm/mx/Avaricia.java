@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -55,6 +56,9 @@ public class Avaricia implements Screen, InputProcessor {
     private int temporizador;
     private int tiempoInit;
 
+    //Musica
+    private final Music Musica;
+
     //settings
     private Settings_save settings;
 
@@ -74,6 +78,13 @@ public class Avaricia implements Screen, InputProcessor {
 
         //extras
         this.tiempoInit=temporizador-1;
+        this.settings=settings;
+        this.Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+
+        if(this.settings.getMusic()){
+            Musica.play();
+        }
+
 
     }
 
@@ -145,6 +156,7 @@ public class Avaricia implements Screen, InputProcessor {
                     juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
                     break;
             }
+            Musica.stop();
         }
 
         batch.end();
@@ -175,6 +187,7 @@ public class Avaricia implements Screen, InputProcessor {
         texturaFondo.dispose();
         textInstr.dispose();
         texDinero.dispose();
+        Musica.dispose();
 
     }
 
@@ -213,9 +226,7 @@ public class Avaricia implements Screen, InputProcessor {
                     break;
 
             }
-
-
-
+            Musica.stop();
         }
 
         return false;

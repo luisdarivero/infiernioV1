@@ -38,12 +38,15 @@ public class Settings implements Screen {
 
     //texturas de las demas imagenes
     private Texture texturaBtnBack;
-    //sonido
-    private Texture texturaBtnOn_M;
-    private Texture texturaBtnOff_M;
-    //historia
-    private Texture texturaBtnOn_H;
-    private Texture texturaBtnOff_H;
+
+    //Desactivado
+    private Texture btnON_Desactivado;
+    private Texture btnOFF_Desactivado;
+
+
+    //Activado
+    private Texture btnON_activado;
+    private Texture btnOFF_activado;
 
 
     //administra la carga de assets
@@ -59,7 +62,6 @@ public class Settings implements Screen {
     private Settings_save settings;
 
     //constructor
-
     public Settings(itesm.mx.juego juego,Music musica, Settings_save sett){
         this.juego =  juego;
         this.settings= sett;
@@ -98,8 +100,11 @@ public class Settings implements Screen {
 
         //texturas de botones
         assetManager.load("back2.png",Texture.class);
+        //Act-Des
         assetManager.load("btnNo.png",Texture.class);
         assetManager.load("btnYes.png",Texture.class);
+        assetManager.load("btnNo_A.png",Texture.class);
+        assetManager.load("btnYes_A.png",Texture.class);
 
 
 
@@ -109,11 +114,14 @@ public class Settings implements Screen {
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("settings.png");
         texturaBtnBack = assetManager.get("back2.png");
-        texturaBtnOn_M=assetManager.get("btnYes.png");
-        texturaBtnOff_M=assetManager.get("btnNo.png");
-        texturaBtnOn_H=assetManager.get("btnYes.png");
-        texturaBtnOff_H=assetManager.get("btnNo.png");
 
+        //desactivado
+        btnON_Desactivado=assetManager.get("btnYes.png");
+        btnOFF_Desactivado=assetManager.get("btnNo.png");
+
+        //activado
+        btnON_activado=assetManager.get("btnYes_A.png");
+        btnOFF_activado=assetManager.get("btnNo_A.png");
         anadirTexturas();
     }
 
@@ -145,61 +153,82 @@ public class Settings implements Screen {
             }
         });
 
+        //textura Botones
+
+
         //btn Musica-On
-        TextureRegionDrawable trBtn_mOn= new TextureRegionDrawable(new TextureRegion(texturaBtnOn_M));
+        final TextureRegionDrawable trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
         ImageButton btn_mOn =new ImageButton(trBtn_mOn);
         btn_mOn.setPosition(450,470);
         escena.addActor(btn_mOn);
 
+        //btn Musica-Off
+        final TextureRegionDrawable trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
+        ImageButton btn_mOff =new ImageButton(trBtn_mOff);
+        btn_mOff.setPosition(590,475);
+        escena.addActor(btn_mOff);
+
+        //btn Historia-On
+        final TextureRegionDrawable trBtn_hOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
+        ImageButton btn_hOn =new ImageButton(trBtn_hOn);
+        btn_hOn.setPosition(450,290);
+        escena.addActor(btn_hOn);
+
+        //btn Historia-Off
+        final TextureRegionDrawable trBtn_hOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
+        ImageButton btn_hOff =new ImageButton(trBtn_hOff);
+        btn_hOff.setPosition(590,295);
+        escena.addActor(btn_hOff);
+
+
+        //cliK
+
+        //btn Musica-On
         btn_mOn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Musica On");
+                trBtn_mOn.setRegion(new TextureRegion(btnON_activado));
+                trBtn_mOff.setRegion(new TextureRegion(btnOFF_Desactivado));
                 settings.setMusic(true);
                 musica.play();
             }
         });
 
-        //btn Musica-Off
-        TextureRegionDrawable trBtn_mOff= new TextureRegionDrawable(new TextureRegion(texturaBtnOff_M));
-        ImageButton btn_mOff =new ImageButton(trBtn_mOff);
-        btn_mOff.setPosition(590,475);
-        escena.addActor(btn_mOff);
 
+        //btn Musica-Off
         btn_mOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Musica Off");
+                trBtn_mOff.setRegion(new TextureRegion(btnOFF_activado));
+                trBtn_mOn.setRegion(new TextureRegion(btnON_Desactivado));
                 settings.setMusic(false);
                 musica.pause();
             }
         });
 
-        //btn Historia-On
-        TextureRegionDrawable trBtn_hOn= new TextureRegionDrawable(new TextureRegion(texturaBtnOn_H));
-        ImageButton btn_hOn =new ImageButton(trBtn_hOn);
-        btn_hOn.setPosition(450,290);
-        escena.addActor(btn_hOn);
 
+        //btn Historia-On
         btn_hOn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Historia On");
+
+                trBtn_hOn.setRegion(new TextureRegion(btnON_activado));
+                trBtn_hOff.setRegion(new TextureRegion(btnOFF_Desactivado));
+
                 settings.setHistory(true);
             }
         });
 
-
         //btn Historia-Off
-        TextureRegionDrawable trBtn_hOff= new TextureRegionDrawable(new TextureRegion(texturaBtnOff_H));
-        ImageButton btn_hOff =new ImageButton(trBtn_hOff);
-        btn_hOff.setPosition(590,295);
-        escena.addActor(btn_hOff);
-
         btn_hOff.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Historia False");
+                trBtn_hOff.setRegion(new TextureRegion(btnOFF_activado));
+                trBtn_hOn.setRegion(new TextureRegion(btnON_Desactivado));
                 settings.setHistory(false);
             }
         });
