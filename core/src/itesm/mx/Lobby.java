@@ -52,7 +52,7 @@ public class Lobby implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=3;
+    private int temporizador=4;
 
     //dificultad
     private Dificultad escNivel;
@@ -93,17 +93,17 @@ public class Lobby implements Screen, InputProcessor {
             this.Winnie = Gdx.audio.newMusic(Gdx.files.internal("badbadnotgood.mp3"));
         }
 
-        if((almas>= 0 && almas <3)&& vidas >0 )
+        if((almas>= 0 && almas <3)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)))
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby1.mp3"));
-        else if((almas>= 3 && almas <6)&& vidas >0)
+        else if((almas>= 3 && almas <6)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)))
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby2.mp3"));
-        else if((almas>= 6 && almas <9)&& vidas >0 )
+        else if((almas>= 6 && almas <9)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)) )
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby3.mp3"));
-        else if((almas>= 9 && almas <12)&& vidas >0 )
+        else if((almas>= 9 && almas <12)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)))
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby4.mp3"));
-        else if((almas>= 12)&& vidas >0 )
+        else if((almas>= 12)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)))
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby5.mp3"));
-        else if(vidas <= 0)
+        else if(vidas <= 1 && estado==false)
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("LobbyF.mp3"));
 
         if (this.settings.getMusic()){
