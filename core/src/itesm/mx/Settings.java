@@ -69,8 +69,6 @@ public class Settings implements Screen {
 
         if(this.settings.getMusic()){
             musica.play();
-        }else{
-            musica.pause();
         }
     }
 
@@ -158,7 +156,7 @@ public class Settings implements Screen {
         final TextureRegionDrawable trBtn_mOn;
         final TextureRegionDrawable trBtn_mOff;
 
-        if (settings.getMusic()){
+        if (this.settings.getMusic()){
             trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_activado));
             trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
         }else {

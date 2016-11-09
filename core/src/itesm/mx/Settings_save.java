@@ -20,7 +20,7 @@ public class Settings_save {
     public Settings_save(){
         prefs= Gdx.app.getPreferences("Settings_S_H");
         this.music=this.prefs.getBoolean("Music",true);
-        this.music=this.prefs.getBoolean("History",true);
+        this.history=this.prefs.getBoolean("History",true);
     }
 
     public void setMusic(boolean m){

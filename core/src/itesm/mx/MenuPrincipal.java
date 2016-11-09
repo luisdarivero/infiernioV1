@@ -67,9 +67,11 @@ public class MenuPrincipal implements Screen {
     public MenuPrincipal(itesm.mx.juego juego){
         this.juego =  juego;
         musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
-        musica.setLooping(true);
-        musica.play();
-        settings=new Settings_save();
+        this.settings=new Settings_save();
+        if (this.settings.getMusic()){
+            musica.play();
+            musica.setLooping(true);
+        }
 
     }
 
@@ -80,8 +82,6 @@ public class MenuPrincipal implements Screen {
 
         if (this.settings.getMusic()) {
             musica.play();
-        } else {
-            musica.pause();
         }
 
     }
