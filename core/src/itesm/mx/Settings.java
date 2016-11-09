@@ -155,15 +155,23 @@ public class Settings implements Screen {
 
         //textura Botones
 
+        final TextureRegionDrawable trBtn_mOn;
+        final TextureRegionDrawable trBtn_mOff;
+
+        if (settings.getMusic()){
+            trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_activado));
+            trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
+        }else {
+            trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
+            trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_activado));
+        }
 
         //btn Musica-On
-        final TextureRegionDrawable trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
         ImageButton btn_mOn =new ImageButton(trBtn_mOn);
         btn_mOn.setPosition(450,470);
         escena.addActor(btn_mOn);
 
         //btn Musica-Off
-        final TextureRegionDrawable trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
         ImageButton btn_mOff =new ImageButton(trBtn_mOff);
         btn_mOff.setPosition(590,475);
         escena.addActor(btn_mOff);
@@ -207,7 +215,6 @@ public class Settings implements Screen {
                 musica.pause();
             }
         });
-
 
         //btn Historia-On
         btn_hOn.addListener(new ClickListener() {
