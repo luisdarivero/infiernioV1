@@ -199,11 +199,15 @@ public class Envidia implements Screen, InputProcessor {
             for (Monedas mA : monedasA) {
                 if (mA.getyActual() < -40) {
                     juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
+                    Musica.stop();
+                    ok.stop();
                 }
             }
             if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
                 almas += 1;
                 juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
+                Musica.stop();
+                ok.stop();
             }
         }
 
@@ -239,8 +243,8 @@ public class Envidia implements Screen, InputProcessor {
         texInstr.dispose();
         texMonedaA.dispose();
         texMonedaB.dispose();
-        Musica.play();
-        ok.play();
+        Musica.dispose();
+        ok.dispose();
 
     }
 
@@ -277,6 +281,8 @@ public class Envidia implements Screen, InputProcessor {
         }
         for (Monedas mB:monedasB){
             if(mB.contiene(x,y)){
+                Musica.stop();
+                ok.stop();
                 juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
             }
         }
