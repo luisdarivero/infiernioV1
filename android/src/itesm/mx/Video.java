@@ -20,7 +20,7 @@ public class Video extends Activity implements MediaPlayer.OnCompletionListener
         vv = (VideoView)findViewById(R.id.surface);
         vv.setVideoURI(Uri.parse(archivo));
         vv.setOnCompletionListener(this);
-    }
+    }//
     @Override
     protected void onPause() {
         super.onPause();
