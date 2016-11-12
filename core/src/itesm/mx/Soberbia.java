@@ -157,7 +157,7 @@ public class Soberbia implements Screen, InputProcessor {
     public void cargarTexturas(){
         //assetManager.load("back.png",Texture.class);
         assetManager.load("FondoSoberbia.png",Texture.class);
-        assetManager.load("instrucciones_ira.png",Texture.class);
+        assetManager.load("instruccionesSoberbia.png",Texture.class);
 
 
 
@@ -167,7 +167,7 @@ public class Soberbia implements Screen, InputProcessor {
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("FondoSoberbia.png");
-        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
+        texturaInstrucciones = assetManager.get("instruccionesSoberbia.png");
         btnPausa = new Sprite(new Texture("pausaNS.png"));
 
         String listaMovImagenes[] = {"kind.png","beautiful.png","coward.png","mean.png"};
@@ -249,7 +249,7 @@ public class Soberbia implements Screen, InputProcessor {
         if (instrucciones){
             escena.draw();
             deltaTime += Gdx.graphics.getDeltaTime();
-            if(deltaTime > 1.3){
+            if(deltaTime > 2){
                 imgInstrucciones = imgFondo;
                 escena.clear();
                 escena.addActor(imgFondo);
@@ -487,6 +487,9 @@ public class Soberbia implements Screen, InputProcessor {
     @Override
     public void dispose() {
         texturaFondo.dispose();
+        texturaInstrucciones.dispose();
+
+
     }
 
     @Override

@@ -177,7 +177,7 @@ public class Ira implements Screen {
         if (instrucciones){
             escena.draw();
             deltaTime += Gdx.graphics.getDeltaTime();
-            if(deltaTime > 1.3){
+            if(deltaTime > 2){
                 imgInstrucciones = imgFondo;
                 escena.clear();
                 escena.addActor(imgFondo);
@@ -225,5 +225,7 @@ public class Ira implements Screen {
     @Override
     public void dispose() {
         texturaFondo.dispose();
+        texturaInstrucciones.dispose();
+
     }
 }
