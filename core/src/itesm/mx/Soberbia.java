@@ -227,6 +227,14 @@ public class Soberbia implements Screen, InputProcessor {
         imgInstrucciones.setScale(escalaX, escalaY);
         escena.addActor(imgInstrucciones);
 
+        //para declarar los elementos de la pausa
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonsalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
+
 
     }
 
@@ -325,7 +333,19 @@ public class Soberbia implements Screen, InputProcessor {
 
 
             texto.mostrarMensaje(batch,Float.toString(round(deltaTime,1)),ancho*.5f, alto*.98f);
-            btnPausa.draw(batch);
+
+
+            //para el menu de pausa
+
+            if(estado == Estado.Pausa){
+                fondoPausa.draw(batch);
+                btnContinuar.draw(batch);
+                btnSalir.draw(batch);
+            }
+            else{
+                btnPausa.draw(batch);
+            }
+
             batch.end();
 
 
@@ -498,6 +518,16 @@ public class Soberbia implements Screen, InputProcessor {
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
             return false;
+        }
+
+        if(estado == Estado.Pausa){
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                juego.setScreen(new MenuPrincipal(juego));
+            }
         }
         //para que se salga si no esta en estado normal y dejar de mover las fichas
         if(estado != Estado.Normal){
