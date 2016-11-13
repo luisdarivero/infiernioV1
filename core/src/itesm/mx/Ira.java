@@ -285,7 +285,7 @@ public class Ira implements Screen,InputProcessor {
         float x = v.x;
         float y = v.y;
 
-        System.out.println("hola");
+
 
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
