@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,7 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 /**
  * Created by Daniel Riv on 07/10/2016.
  */
-public class Ira implements Screen {
+public class Ira implements Screen,InputProcessor {
 
     //variable tipo juego para poder intarcambiar de escenas
     private final itesm.mx.juego juego;
@@ -52,6 +54,14 @@ public class Ira implements Screen {
     private boolean sizeF = false;
     private Dificultad escNivel;
     private  int nivel;
+
+    //declarar elementos de la pausa
+    private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
+    private Estado estado;
+
 
     //settings
     private Settings_save settings;
@@ -97,6 +107,8 @@ public class Ira implements Screen {
         //inicializar variables tiempo
         instrucciones = true;
         deltaTime = 0;
+        estado = Estado.Normal;
+        Gdx.input.setInputProcessor(this);
 
 
 
@@ -146,6 +158,17 @@ public class Ira implements Screen {
         imgInstrucciones.setScale(escalaX, escalaY);
         escena.addActor(imgInstrucciones);
 
+        //para declarar los elementos de la pausa
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
+
+
 
         /**
         //para asignar funcionalidad a la imagen como boton
@@ -191,8 +214,18 @@ public class Ira implements Screen {
             //para el batch
             batch.setProjectionMatrix(camara.combined);
             batch.begin();
-            furioso.draw(batch);
-            mano.draw(batch);
+
+            if(estado == Estado.Pausa){
+                fondoPausa.draw(batch);
+                btnContinuar.draw(batch);
+                btnSalir.draw(batch);
+            }
+            else{
+                furioso.draw(batch);
+                mano.draw(batch);
+                btnPausa.draw(batch);
+            }
+
             batch.end();
             if (furioso.getEstado() == Furioso.Estado.Gano) {
                 juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel,settings));
@@ -228,4 +261,75 @@ public class Ira implements Screen {
         texturaInstrucciones.dispose();
 
     }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        Vector3 v = new Vector3(screenX,screenY,0);
+        camara.unproject(v);
+        float x = v.x;
+        float y = v.y;
+
+        System.out.println("hola");
+
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+
+            return false;
+        }
+
+        if(estado == Estado.Pausa){
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                juego.setScreen(new MenuPrincipal(juego));
+            }
+        }
+
+
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
+
+    public enum Estado{
+
+        Normal, Pausa
+    }
+
 }

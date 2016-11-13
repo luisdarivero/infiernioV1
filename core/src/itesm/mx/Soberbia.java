@@ -232,7 +232,7 @@ public class Soberbia implements Screen, InputProcessor {
         fondoPausa.setCenter(ancho/2,alto/2);
         btnContinuar = new Sprite(new Texture("botonContinuar.png"));
         btnContinuar.setCenter(ancho/3,alto/2);
-        btnSalir = new Sprite(new Texture("botonsalir.png"));
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
         btnSalir.setCenter(ancho/3*2,alto/2);
 
 
