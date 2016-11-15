@@ -127,7 +127,8 @@ public class Lobby implements Screen, InputProcessor {
         vista=new FitViewport(ancho,alto,camara);
     }
 
-    private void cargarTexturas(){
+    private void cargarTexturas()
+    {
         texFondo=new Texture("Lobby.png");
         texCora=new Texture("vida.png");
     }

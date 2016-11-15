@@ -157,7 +157,7 @@ public class Soberbia implements Screen, InputProcessor {
     public void cargarTexturas(){
         //assetManager.load("back.png",Texture.class);
         assetManager.load("FondoSoberbia.png",Texture.class);
-        assetManager.load("instrucciones_ira.png",Texture.class);
+        assetManager.load("instruccionesSoberbia.png",Texture.class);
 
 
 
@@ -167,7 +167,7 @@ public class Soberbia implements Screen, InputProcessor {
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("FondoSoberbia.png");
-        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
+        texturaInstrucciones = assetManager.get("instruccionesSoberbia.png");
         btnPausa = new Sprite(new Texture("pausaNS.png"));
 
         String listaMovImagenes[] = {"kind.png","beautiful.png","coward.png","mean.png"};
@@ -227,6 +227,14 @@ public class Soberbia implements Screen, InputProcessor {
         imgInstrucciones.setScale(escalaX, escalaY);
         escena.addActor(imgInstrucciones);
 
+        //para declarar los elementos de la pausa
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
+
 
     }
 
@@ -241,7 +249,7 @@ public class Soberbia implements Screen, InputProcessor {
         if (instrucciones){
             escena.draw();
             deltaTime += Gdx.graphics.getDeltaTime();
-            if(deltaTime > 1.3){
+            if(deltaTime > 2){
                 imgInstrucciones = imgFondo;
                 escena.clear();
                 escena.addActor(imgFondo);
@@ -325,7 +333,19 @@ public class Soberbia implements Screen, InputProcessor {
 
 
             texto.mostrarMensaje(batch,Float.toString(round(deltaTime,1)),ancho*.5f, alto*.98f);
-            btnPausa.draw(batch);
+
+
+            //para el menu de pausa
+
+            if(estado == Estado.Pausa){
+                fondoPausa.draw(batch);
+                btnContinuar.draw(batch);
+                btnSalir.draw(batch);
+            }
+            else{
+                btnPausa.draw(batch);
+            }
+
             batch.end();
 
 
@@ -467,6 +487,9 @@ public class Soberbia implements Screen, InputProcessor {
     @Override
     public void dispose() {
         texturaFondo.dispose();
+        texturaInstrucciones.dispose();
+
+
     }
 
     @Override
@@ -498,6 +521,16 @@ public class Soberbia implements Screen, InputProcessor {
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
             return false;
+        }
+
+        if(estado == Estado.Pausa){
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                juego.setScreen(new MenuPrincipal(juego));
+            }
         }
         //para que se salga si no esta en estado normal y dejar de mover las fichas
         if(estado != Estado.Normal){

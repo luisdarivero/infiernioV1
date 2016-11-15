@@ -166,24 +166,24 @@ public class Settings implements Screen {
 
         //btn Musica-On
         ImageButton btn_mOn =new ImageButton(trBtn_mOn);
-        btn_mOn.setPosition(450,470);
+        btn_mOn.setPosition(450,350);
         escena.addActor(btn_mOn);
 
         //btn Musica-Off
         ImageButton btn_mOff =new ImageButton(trBtn_mOff);
-        btn_mOff.setPosition(590,475);
+        btn_mOff.setPosition(590,355);
         escena.addActor(btn_mOff);
 
         //btn Historia-On
         final TextureRegionDrawable trBtn_hOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
         ImageButton btn_hOn =new ImageButton(trBtn_hOn);
-        btn_hOn.setPosition(450,290);
+        btn_hOn.setPosition(450,170);
         escena.addActor(btn_hOn);
 
         //btn Historia-Off
         final TextureRegionDrawable trBtn_hOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
         ImageButton btn_hOff =new ImageButton(trBtn_hOff);
-        btn_hOff.setPosition(590,295);
+        btn_hOff.setPosition(590,175);
         escena.addActor(btn_hOff);
 
 
