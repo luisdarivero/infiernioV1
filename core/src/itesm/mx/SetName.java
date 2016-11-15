@@ -36,7 +36,8 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private final float alto = 720;
 
     //tope de chars
-    private boolean chars =false;
+    private boolean chars = false;
+    private boolean top = false;
 
     //prefs
     Preferences prefs = Gdx.app.getPreferences("ScoresPref");
@@ -83,6 +84,7 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         pointer = points;
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
         preferencias();
+        this.top = compararScores();
         this.settings=settings;
         if (this.settings.getMusic()){
             musica.setLooping(true);
@@ -150,6 +152,19 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         texturaFondo2 = assetManager.get("Continue.png");
     }
 
+    public boolean compararScores()
+    {
+        boolean top =false;
+        for (String name: nombresL)
+        {
+            if(Integer.parseInt(mapaP.get(name).toString())<=pointer)
+            {
+                top = true;
+            }
+        }
+        return top;
+    }
+
     @Override
     public void render(float delta) {
         //pantalla blanca
@@ -166,9 +181,14 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
             imgFondo2.draw(batch);
         }
 
-        if(Gdx.input.justTouched() && teclado == false)
+        if(Gdx.input.justTouched() && teclado == false && top == true)
         {
             Gdx.input.getTextInput(this, "Type your name", "", "Type here");
+            teclado = true;
+        }
+
+        if(Gdx.input.justTouched() && teclado == false && top == false)
+        {
             teclado = true;
         }
 
@@ -184,6 +204,12 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
             escribirScores(text);
             juego.setScreen(new Score(juego,musica,true,settings));
         }
+
+        if(teclado == true && Gdx.input.justTouched() && top == false)
+        {
+            juego.setScreen(new Score(juego,musica,true,settings));
+        }
+
         batch.end();
     }
 
