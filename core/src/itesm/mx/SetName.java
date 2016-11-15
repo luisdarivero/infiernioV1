@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
+import java.lang.StringBuilder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,6 +34,9 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     //variables constantes de ancho y alto de la pamtalla
     private final float ancho = 1280;
     private final float alto = 720;
+
+    //tope de chars
+    private boolean chars =false;
 
     //prefs
     Preferences prefs = Gdx.app.getPreferences("ScoresPref");
@@ -171,6 +174,13 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
         if(teclado == true && Gdx.input.justTouched() && text != null)
         {
+
+            StringBuilder cincoChar = new StringBuilder();
+            char[] cinco = text.toCharArray();
+            for(int i=0;i<8;i++)
+                cincoChar.append(cinco[i]);
+            this.text = cincoChar.toString();
+            System.out.println(cincoChar.toString());
             escribirScores(text);
             juego.setScreen(new Score(juego,musica,true,settings));
         }
@@ -287,7 +297,7 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     @Override
     public void input(String text)
     {
-        this.text = text;
+        this.text =text;
     }
 
     @Override

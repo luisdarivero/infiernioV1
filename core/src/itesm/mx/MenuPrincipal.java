@@ -218,7 +218,6 @@ public class MenuPrincipal implements Screen {
                 //cambiar a la pantalla acerca de
                 musica.stop();
                 juego.setScreen(new AboutUs(juego, settings));
-                //juego.setScreen(new SetName(juego,musica));
             }
         });
 
