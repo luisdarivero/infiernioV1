@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -18,10 +19,19 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 public class NivelPereza implements Screen, InputProcessor {
     private final juego Juego;
+    private Estado estado;
+    private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
+    private int ancho = 1280;
+    private int alto = 720;
+    private boolean ok =false;
 
-//Esto son el tiempo y la dificultad que se va a tener
+
+    //Esto son el tiempo y la dificultad que se va a tener
     private int dificultad;
-    private int temporizador;
+    private long temporizador;
 
 //Los valores que necesito tener guardados para el Lobby
     private  int vidas;
@@ -54,7 +64,7 @@ public class NivelPereza implements Screen, InputProcessor {
 
     //El Tiempo
     private long startTime = System.currentTimeMillis();
-
+    private long pausaT;
     //SpriteBatch
     private SpriteBatch batch;
 
@@ -115,6 +125,14 @@ public class NivelPereza implements Screen, InputProcessor {
         batch = new SpriteBatch();
         fondo = new Fondo(texturafondo);
         info = new Fondo(texturaInfo);
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
+
 
         //Pereza
         perezas = new Array<Pereza>(5);
@@ -169,122 +187,111 @@ public class NivelPereza implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //avisar a batch cual es la camara
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-        //aki se dibujan los elementos
-        fondo.draw(batch);
-        fondo.setSizeF(0, 10);
-
-
-        // Aqui dibujamos perezs distintas
-        if (toques < (goal*1/4))
+        if(estado == Estado.Pausa)
         {
-            if(toques == 0)
+
+            fondoPausa.draw(batch);
+            btnContinuar.draw(batch);
+            btnSalir.draw(batch);
+            System.out.println();
+            if(ok==false)
             {
-                info.draw(batch);
-                if(sizeF == false)
-                {
-                info.setPositionF(0,-200);
-                sizeF = true;
+                temporizador = pausaT;
+                ok =true;
+            }
+        }
+        else{
+            fondo.draw(batch);
+            fondo.setSizeF(0, 10);
+            btnPausa.draw(batch);
+
+            // Aqui dibujamos perezs distintas
+            if (toques < (goal * 1 / 4)) {
+                if (toques == 0) {
+                    info.draw(batch);
+                    if (sizeF == false) {
+                        info.setPositionF(0, -200);
+                        sizeF = true;
+                    }
                 }
-            }
-            Pereza p = perezas.get(0);
+                Pereza p = perezas.get(0);
 
-            p.draw(batch);
-        }
-        else if (toques>=(goal*1/4) && toques < (goal*1/2))
-        {
-            if(bC == 0)
-            {
-                Bop.play();
-                bC++;
-            }
-            Pereza p = perezas.get(1);
-            p.draw(batch);
-        }
-        else if (toques>=(goal*1/2) && toques < (goal*3/4))
-        {
-            if(bC == 1)
-            {
-                Bop2.play();
-                bC++;
-            }
-            Pereza p = perezas.get(2);
-            p.draw(batch);
-        }
-        else if (toques>=(goal*3/4) && toques < goal)
-        {
-            if(bC == 2)
-            {
-                Bop3.play();
-                bC++;
-            }
-            Pereza p = perezas.get(3);
-            p.draw(batch);
-        }
-        else if ( toques >= goal)
-        {
-            if (bC == 3) {
-                Bop4.play();
-                bC++;
-            }
-
-            if (bC >= 44 && bC < 54)
-            {
-                bC++;
-                Pereza p = perezas.get(4);
                 p.draw(batch);
-            }
-            else if (bC >= 94 && bC < 104)
-            {
-                bC++;
-                Pereza p = perezas.get(4);
+            } else if (toques >= (goal * 1 / 4) && toques < (goal * 1 / 2)) {
+                if (bC == 0) {
+                    Bop.play();
+                    bC++;
+                }
+                Pereza p = perezas.get(1);
                 p.draw(batch);
-            }
-            else
-            {
-                bC++;
+            } else if (toques >= (goal * 1 / 2) && toques < (goal * 3 / 4)) {
+                if (bC == 1) {
+                    Bop2.play();
+                    bC++;
+                }
+                Pereza p = perezas.get(2);
+                p.draw(batch);
+            } else if (toques >= (goal * 3 / 4) && toques < goal) {
+                if (bC == 2) {
+                    Bop3.play();
+                    bC++;
+                }
                 Pereza p = perezas.get(3);
                 p.draw(batch);
+            } else if (toques >= goal) {
+                if (bC == 3) {
+                    Bop4.play();
+                    bC++;
+                }
+
+                if (bC >= 44 && bC < 54) {
+                    bC++;
+                    Pereza p = perezas.get(4);
+                    p.draw(batch);
+                } else if (bC >= 94 && bC < 104) {
+                    bC++;
+                    Pereza p = perezas.get(4);
+                    p.draw(batch);
+                } else {
+                    bC++;
+                    Pereza p = perezas.get(3);
+                    p.draw(batch);
+                }
             }
-        }
 
 
-        //MArcador y tiempo
+            //MArcador y tiempo
 
-        if(toques<goal)
-        {
-            texto.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 720);
-        }
-        else
-        {
-            texto.mostrarMensaje(batch, " ", 640, 720);
-        }
-//Si es necesario modificar los toques
-        //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
-
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && toques < goal )
-        {
-            Musica.stop();
-            //Aqui me regresa al Lobby
-            this.dispose();
-            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
-        }
-
-        if(toques>=goal && (temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= -2)
-        {
-            Musica.stop();
-            if(bC == 4)
-            {
-                Winnie.play();
-                bC++;
+            if (toques < goal) {
+                texto.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 720);
+            } else {
+                texto.mostrarMensaje(batch, " ", 640, 720);
             }
-            almas++;
-            this.dispose();
-            Juego.setScreen(new Lobby(Juego,vidas,almas,true,escNivel,settings));
+    //Si es necesario modificar los toques
+            //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
+
+            if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0 && toques < goal) {
+                Musica.stop();
+                //Aqui me regresa al Lobby
+                this.dispose();
+                Juego.setScreen(new Lobby(Juego, vidas, almas, false, escNivel, settings));
+            }
+
+            if (toques >= goal && (temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= -2) {
+                Musica.stop();
+                if (bC == 4) {
+                    Winnie.play();
+                    bC++;
+                }
+                almas++;
+                this.dispose();
+                Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel, settings));
+            }
         }
         batch.end();
     }
@@ -376,6 +383,27 @@ public class NivelPereza implements Screen, InputProcessor {
             }
             m.toquesP++;
         }
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000));
+            return false;
+        }
+
+        if(estado == Estado.Pausa)
+        {
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                Musica.play();
+                startTime = System.currentTimeMillis();
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                Musica.stop();
+                Juego.setScreen(new MenuPrincipal(Juego));
+            }
+        }
         return false;
     }
 
@@ -398,4 +426,9 @@ public class NivelPereza implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public enum Estado{
+        Normal, Pausa
+    }
+
 }

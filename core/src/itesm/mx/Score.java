@@ -183,20 +183,20 @@ public class Score implements Screen, InputProcessor {
         btnBack.draw(batch);
         btnBack.setRotation();
 
-        scr1.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(0)).toString(), ancho/2+140, 525);
-        scr1N.mostrarMensaje(batch,nombresAcomodados.get(0), ancho/2-150, 525);
+        scr1.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(0)).toString(), ancho/2+140, 530+10);
+        scr1N.mostrarMensaje(batch,nombresAcomodados.get(0), ancho/2-150, 530+10);
 
-        scr2.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(1)).toString(), ancho/2+140, 465);
-        scr2N.mostrarMensaje(batch,nombresAcomodados.get(1), ancho/2-150, 465);
+        scr2.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(1)).toString(), ancho/2+140, 470+10);
+        scr2N.mostrarMensaje(batch,nombresAcomodados.get(1), ancho/2-150, 470+10);
 
-        scr3.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(2)).toString(), ancho/2+140, 405);
-        scr3N.mostrarMensaje(batch,nombresAcomodados.get(2), ancho/2-150, 405);
+        scr3.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(2)).toString(), ancho/2+140, 410+10);
+        scr3N.mostrarMensaje(batch,nombresAcomodados.get(2), ancho/2-150, 410+10);
 
-        scr4.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(3)).toString(), ancho/2+140, 345);
-        scr4N.mostrarMensaje(batch,nombresAcomodados.get(3), ancho/2-150, 345);
+        scr4.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(3)).toString(), ancho/2+140, 350+10);
+        scr4N.mostrarMensaje(batch,nombresAcomodados.get(3), ancho/2-150, 350+10);
 
-        scr5.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(4)).toString(), ancho/2+140, 285);
-        scr5N.mostrarMensaje(batch,nombresAcomodados.get(4), ancho/2-150, 285);
+        scr5.mostrarMensaje(batch, mapaP.get(nombresAcomodados.get(4)).toString(), ancho/2+140, 290+10);
+        scr5N.mostrarMensaje(batch,nombresAcomodados.get(4), ancho/2-150, 290+10);
 
         batch.end();
     }

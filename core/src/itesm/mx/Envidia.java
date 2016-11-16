@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -38,6 +39,16 @@ public class Envidia implements Screen, InputProcessor {
     private Viewport vista;
     private final float ancho = 1280;
     private final float alto = 720;
+
+    //implementacion de menu pausa
+    private Estado estado;
+
+
+    private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
+
 
     //clases
     private Fondo fondo;
@@ -100,12 +111,15 @@ public class Envidia implements Screen, InputProcessor {
 
     @Override
     public void show() {
+
+
         cargarTexturas();
         inicializarCamara();
         crearEscena();
         Gdx.input.setInputProcessor(this);
         textoIns=new Texto("fuenteAv_a.fnt");
         textTiempo=new Texto("fuenteAv_a.fnt");
+        estado = Estado.Normal;
     }
 
     private void crearEscena() {
@@ -164,6 +178,17 @@ public class Envidia implements Screen, InputProcessor {
         texMonedaB=new Texture("heladoB.png");
         texFondo=new Texture("fondop.png");
         texInstr=new Texture("instrucciones_envidia.png");
+
+        //para declarar los elementos de la pausa
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
+
     }
 
     @Override
@@ -175,41 +200,53 @@ public class Envidia implements Screen, InputProcessor {
 
         batch.begin();
 
-        //Fondo
-        fondo.draw(batch);
+        if(estado == Estado.Pausa){
+            fondo.draw(batch);
+            fondoPausa.draw(batch);
+            btnContinuar.draw(batch);
+            btnSalir.draw(batch);
+        }
+        else{
+            //Fondo
+            fondo.draw(batch);
 
-        if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) >= tiempoInit) {
-            instr.draw(batch);
-        } else {
+            if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) >= tiempoInit) {
+                instr.draw(batch);
+            } else {
 
-            //Monedas A
+                //Monedas A
 
-            for (Monedas mA : monedasA) {
-                mA.draw(batch);
-            }
+                for (Monedas mA : monedasA) {
+                    mA.draw(batch);
+                }
 
-            //Monedas B
+                //Monedas B
 
-            for (Monedas mB : monedasB) {
-                mB.draw(batch);
-            }
+                for (Monedas mB : monedasB) {
+                    mB.draw(batch);
+                }
 
-            textTiempo.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 700);
+                textTiempo.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 700);
 
-            for (Monedas mA : monedasA) {
-                if (mA.getyActual() < -40) {
-                    juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
+                for (Monedas mA : monedasA) {
+                    if (mA.getyActual() < -40) {
+                        juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
+                        Musica.stop();
+                        ok.stop();
+                    }
+                }
+                if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
+                    almas += 1;
+                    juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
                     Musica.stop();
                     ok.stop();
                 }
             }
-            if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
-                almas += 1;
-                juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
-                Musica.stop();
-                ok.stop();
-            }
+            btnPausa.draw(batch);
         }
+
+
+
 
 
         batch.end();
@@ -270,6 +307,25 @@ public class Envidia implements Screen, InputProcessor {
         camara.unproject(v);
         float x=v.x;
         float y=v.y;
+
+
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+            return false;
+        }
+
+        if(estado == Estado.Pausa){
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                juego.setScreen(new MenuPrincipal(juego));
+                return false;
+            }
+        }
+
+
         for (Monedas mA:monedasA){
             if (mA.contiene(x,y)){
                 //le pegó
@@ -308,4 +364,10 @@ public class Envidia implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public enum Estado{
+
+        Normal, Pausa
+    }
+
 }

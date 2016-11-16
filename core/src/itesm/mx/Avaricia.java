@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -37,6 +38,13 @@ public class Avaricia implements Screen, InputProcessor {
 
     //Texto
     private Texto texTiempo;
+    //implementacion pausa
+    private Estado estado;
+    private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
+
 
     //billete
     Billete b;
@@ -64,6 +72,7 @@ public class Avaricia implements Screen, InputProcessor {
 
 
     public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings){
+
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
@@ -95,6 +104,7 @@ public class Avaricia implements Screen, InputProcessor {
         crearEscena();
         Gdx.input.setInputProcessor(this);
         texTiempo = new Texto("fuenteAv_a.fnt");
+        estado = Estado.Normal;
     }
     private void inicializarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -113,6 +123,17 @@ public class Avaricia implements Screen, InputProcessor {
             texDinero=new Texture("Avaricia.png");// toco
         else
             texDinero=new Texture("AvariciaFalso.png");//no toco
+
+
+        //para declarar los elementos de la pausa
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
 
     }
 
@@ -134,18 +155,33 @@ public class Avaricia implements Screen, InputProcessor {
 
         batch.begin();
         //Dibujar todos los elementos
-        fondo.draw(batch);
+
         //fondo.setSizeF(0, 10);
 
-
-        if ((temporizador - ((System.currentTimeMillis() - startTime)/1000)) >=tiempoInit ){
-            instr.draw(batch);
+        if(estado == Estado.Pausa){
+            fondo.draw(batch);
+            fondoPausa.draw(batch);
+            btnContinuar.draw(batch);
+            btnSalir.draw(batch);
         }
         else{
-            b.draw(batch);
-            texTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
+
+            fondo.draw(batch);
+            if ((temporizador - ((System.currentTimeMillis() - startTime)/1000)) >=tiempoInit ){
+                instr.draw(batch);
+            }
+            else{
+                b.draw(batch);
+                texTiempo.mostrarMensaje(batch,"Time: "+(temporizador - ((System.currentTimeMillis() - startTime) / 1000)),640,700);
+            }
+            btnPausa.draw(batch);
         }
-        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0){
+
+        batch.end();
+
+
+
+        if((temporizador - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && estado==Estado.Normal){
 
             switch (binario){
                 case 0:
@@ -159,7 +195,7 @@ public class Avaricia implements Screen, InputProcessor {
             Musica.stop();
         }
 
-        batch.end();
+
     }
 
     @Override
@@ -214,6 +250,25 @@ public class Avaricia implements Screen, InputProcessor {
         camara.unproject(v);
         float x=v.x;
         float y=v.y;
+
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+            System.out.println("modo pausa");
+            return false;
+        }
+
+        if(estado == Estado.Pausa){
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                juego.setScreen(new MenuPrincipal(juego));
+                return false;
+            }
+        }
+
+
         if (b.contiene(x,y)){
                 //Toco el billete;
             switch (binario){
@@ -251,4 +306,10 @@ public class Avaricia implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+    public enum Estado{
+
+        Normal, Pausa
+    }
+
 }
