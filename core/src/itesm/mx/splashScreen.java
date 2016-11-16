@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+
+import java.util.Random;
 
 /**
  * Created by KRLO on 11/16/2016.
@@ -21,8 +24,15 @@ public class splashScreen implements Screen
     private OrthographicCamera camara;
     private StretchViewport vista;
     private Texture texturaCargando;
+    private Texture texturaf1;
+    private Texture texturaf2;
+    private Texture texturaf3;
     private Sprite spriteCargando;
+    Random rnd = new Random();
+    int x = 0;
+    int y = 3;
     private final AssetManager assetManager;// = new AssetManager();
+    private Array<Lujuria> flamas;
 
     public splashScreen(juego juego)
     {
@@ -41,8 +51,30 @@ public class splashScreen implements Screen
         assetManager.load("Splash.png",Texture.class);
         assetManager.finishLoading();
         texturaCargando = assetManager.get("Splash.png");
+        texturaf1 = new Texture("Llama1.png");
+        texturaf2 = new Texture("Llama2.png");
+        texturaf3 = new Texture("Llama3.png");
         spriteCargando = new Sprite(texturaCargando);
         spriteCargando.setPosition(1280/2-spriteCargando.getWidth()/2,800/2-spriteCargando.getHeight()/2);
+        flamas = new Array<Lujuria>(3);
+        for(int i = 0;i<3;i++)
+        {
+            if(i==0)
+            {
+                Lujuria lujuria = new Lujuria(texturaf1,1280/2-50,800/2-200,1);
+                flamas.add(lujuria);
+            }
+            else if(i==1)
+            {
+                Lujuria lujuria = new Lujuria(texturaf2,1280/2-50,800/2-200,1);
+                flamas.add(lujuria);
+            }
+            else if(i==2)
+            {
+                Lujuria lujuria = new Lujuria(texturaf3,1280/2-50,800/2-200,1);
+                flamas.add(lujuria);
+            }
+        }
         cargarRecursos();
     }
 
@@ -82,6 +114,22 @@ public class splashScreen implements Screen
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
         spriteCargando.draw(batch);
+        if (y == 3)
+        {
+            x = rnd.nextInt(3);
+            y = 0;
+        }
+        if (y!=3)
+        {
+            y++;
+        }
+
+        flamas.get(x).draw(batch);
+
+        for(Lujuria l:flamas)
+        {
+            l.setRotation();
+        }
         batch.end();
     }
 
