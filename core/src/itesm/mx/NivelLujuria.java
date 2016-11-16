@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import java.util.Random;
 
@@ -20,6 +21,14 @@ import java.util.Random;
 
 public class NivelLujuria implements Screen, InputProcessor {
     private final juego Juego;
+    private Estado estado;
+    private Sprite btnPausa;
+    private Sprite fondoPausa;
+    private Sprite btnContinuar;
+    private Sprite btnSalir;
+    private int ancho = 1280;
+    private int alto = 720;
+    private boolean ok =false;
 
     //Esto son el tiempo y la dificultad que se va a tener
     private int dificultad;
@@ -44,6 +53,7 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     //Valores iniciales necesarios
     private long startTime = System.currentTimeMillis();
+    private long pausaT;
     private int toques = 0;
     private int totals = 0;
 
@@ -108,6 +118,13 @@ public class NivelLujuria implements Screen, InputProcessor {
         batch = new SpriteBatch();
         fondo = new Fondo(texturafondo);
         inst = new Fondo(texturaInstr);
+        btnPausa = new Sprite(new Texture("pausaNS.png"));
+        fondoPausa = new Sprite(new Texture("Pausa.png"));
+        fondoPausa.setCenter(ancho/2,alto/2);
+        btnContinuar = new Sprite(new Texture("botonContinuar.png"));
+        btnContinuar.setCenter(ancho/3,alto/2);
+        btnSalir = new Sprite(new Texture("botonSalir.png"));
+        btnSalir.setCenter(ancho/3*2,alto/2);
 //Lujurias
         Random rnd = new Random();
         int num; int color;
@@ -206,93 +223,100 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1,1,1,1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //avisar a batch cual es la camara
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
-
-        //aqui se dibujan los elementos
-        fondo.draw(batch);
-
-
-        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 4)
+        if(estado == Estado.Pausa)
         {
-            fondo.setSizeF(0, 10);
-            for (Lujuria l : lujurias) {
-                if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec == 5) {
-                    Random rnd = new Random();
-                    l.dec = rnd.nextInt(3);
-                    Lujuria ll = decentes.get(l.dec);
-                    ll.setCoordenates(l.getX(), l.getY());
-                    ll.draw(batch);
-                    if (ll.info==false)//
-                    {
-                        ll.setSize(l.getW()-15, l.getH() - 15);
-                        ll.info = true;
+
+            fondoPausa.draw(batch);
+            btnContinuar.draw(batch);
+            btnSalir.draw(batch);
+            System.out.println();
+            if(ok==false)
+            {
+                tempo = pausaT;
+                ok =true;
+            }
+        }
+        else {
+            //aqui se dibujan los elementos
+            fondo.draw(batch);
+            fondo.setSizeF(10, 10);
+
+
+            if ((tempo - ((System.currentTimeMillis() - startTime) / 1000)) <= 4) {
+                fondo.setSizeF(0, 10);
+                for (Lujuria l : lujurias) {
+                    if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec == 5) {
+                        Random rnd = new Random();
+                        l.dec = rnd.nextInt(3);
+                        Lujuria ll = decentes.get(l.dec);
+                        ll.setCoordenates(l.getX(), l.getY());
+                        ll.draw(batch);
+                        if (ll.info == false)//
+                        {
+                            ll.setSize(l.getW() - 15, l.getH() - 15);
+                            ll.info = true;
+                        }
+                    } else if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec != 5) {
+                        Random rnd = new Random();
+                        Lujuria ll = decentes.get(l.dec);
+                        ll.setCoordenates(l.getX(), l.getY());
+                        ll.draw(batch);
+                        if (ll.info == false) {
+                            ll.setSize(l.getW() - 15, l.getH() - 15);
+                            ll.info = true;
+                        }
+                    } else {
+                        l.draw(batch);
+                        if (l.info == false) {
+                            l.setSize(l.getW() - 15, l.getH() - 15);
+                            l.info = true;
+                        }
                     }
-                } else if (l.sexy == 0 && l.estado == Lujuria.Estado.ALREVES && l.dec != 5) {
-                    Random rnd = new Random();
-                    Lujuria ll = decentes.get(l.dec);
-                    ll.setCoordenates(l.getX(), l.getY());
-                    ll.draw(batch);
-                    if (ll.info==false)
-                    {
-                        ll.setSize(l.getW()-15, l.getH() - 15);
-                        ll.info = true;
-                    }
+                }
+
+                //MArcador
+                if (toques < totals) {
+                    texto.mostrarMensaje(batch, "Time: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 640, 400);
                 } else {
-                    l.draw(batch);
-                    if(l.info==false)
-                    {
-                        l.setSize(l.getW()-15, l.getH() - 15);
-                        l.info = true;
+                    texto.mostrarMensaje(batch, "Time: 0", 640, 400);
+                }
+
+                // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
+
+                if (contador >= totals) {
+                    Musica.stop();
+                    if (tunTun) {
+                        Winnie.play();
+                        tunTun = false;
+                    }
+                    Winnie.setLooping(false);
+                    //Winnie.setVolume(0.4f);
+
+
+                    if ((tempo - ((System.currentTimeMillis() - startTime) / 1000)) < -1) {
+                        almas++;
+                        this.dispose();
+                        Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel, settings));
                     }
                 }
-            }
-
-            //MArcador
-            if (toques < totals) {
-                texto.mostrarMensaje(batch, "Time: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 640, 400);
             } else {
-                texto.mostrarMensaje(batch, "Time: 0", 640, 400);
+                inst.draw(batch);
             }
 
-            // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);
-
-            if (contador >= totals) {
+            if ((tempo - ((System.currentTimeMillis() - startTime) / 1000)) <= 0 && contador < totals) {
                 Musica.stop();
-                if (tunTun)
-                {
-                    Winnie.play();
-                    tunTun=false;
-                }
-                Winnie.setLooping(false);
-                //Winnie.setVolume(0.4f);
-
-
-                if((tempo - ((System.currentTimeMillis() - startTime) / 1000))<-1)
-                {
-                    almas++;
-                    this.dispose();
-                    Juego.setScreen(new Lobby(Juego, vidas, almas, true, escNivel, settings));
-                }
+                //Aqui me deberia regresar al Lobby
+                this.dispose();
+                Juego.setScreen(new Lobby(Juego, vidas, almas, false, escNivel, settings));
             }
+            btnPausa.draw(batch);
         }
-        else
-        {
-            inst.draw(batch);
-        }
-
-        if((tempo - ((System.currentTimeMillis() - startTime)/1000)) <= 0 && contador < totals)
-        {
-            Musica.stop();
-            //Aqui me deberia regresar al Lobby
-            this.dispose();
-            Juego.setScreen(new Lobby(Juego,vidas,almas,false,escNivel,settings));
-        }
-
         batch.end();
     }
 
@@ -375,6 +399,27 @@ public class NivelLujuria implements Screen, InputProcessor {
                 toques++;
             }
         }
+        if(btnPausa.getBoundingRectangle().contains(x,y)){
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok = false;
+            pausaT = (tempo - ((System.currentTimeMillis() - startTime) / 1000));
+            return false;
+        }
+
+        if(estado == Estado.Pausa)
+        {
+            if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                Musica.play();
+                startTime = System.currentTimeMillis();
+                estado = Estado.Normal;
+                return false;
+            }
+            else if(btnSalir.getBoundingRectangle().contains(x,y)){
+                Musica.stop();
+                Juego.setScreen(new MenuPrincipal(Juego));
+            }
+        }
         return false;
     }
 
@@ -396,6 +441,11 @@ public class NivelLujuria implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    public enum Estado
+    {
+        Normal, Pausa
     }
 
 }
