@@ -119,7 +119,6 @@ public class Score implements Screen, InputProcessor {
         mapaP = prefs.get();
         Set keys = mapaP.keySet();
         nombresL = new ArrayList<String>(keys);
-
         for (int j = 0; j < 5; j++)
         {
             String max = nombresL.get(0);
