@@ -274,7 +274,7 @@ public class NivelPereza implements Screen, InputProcessor {
             } else {
                 texto.mostrarMensaje(batch, " ", 640, 720);
             }
-    //Si es necesario modificar los toques
+            //Si es necesario modificar los toques
             //texto.mostrarMensaje(batch, "Toques: " + toques,200, 720);
 
             if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0 && toques < goal) {

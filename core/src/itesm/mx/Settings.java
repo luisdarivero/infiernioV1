@@ -90,6 +90,7 @@ public class Settings implements Screen {
     }
 
     public void cargarTexturas(){
+        /*
         //textura de fondo
         assetManager.load("settings.png",Texture.class);
 
@@ -105,7 +106,7 @@ public class Settings implements Screen {
 
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
-
+*/
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("settings.png");
         texturaBtnBack = assetManager.get("back2.png");

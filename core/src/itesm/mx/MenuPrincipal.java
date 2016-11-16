@@ -131,18 +131,17 @@ public class MenuPrincipal implements Screen {
     public void cargarTexturas(){
 
 
-
+        /*
         //textura de fondo
         assetManager.load("piedras_inicio.png",Texture.class);
-
         //texturas de botones
         assetManager.load("btnPlay.png",Texture.class);
         assetManager.load("btnSettings.png",Texture.class);
         assetManager.load("btnAboutUs.png",Texture.class);
         assetManager.load("btnScore.png",Texture.class);
-
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
+        */
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("piedras_inicio.png");
         texturaBtnPlay = assetManager.get("btnPlay.png");

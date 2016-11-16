@@ -170,8 +170,12 @@ public class Score implements Screen, InputProcessor {
 
     public void cargarTexturas()
     {
-        texturaFondo = new Texture("Scores.png");
-        texturaBtnBack = new Texture("back.png");
+        /*
+        assetManager.load("Scores.png",Texture.class);
+        assetManager.load("back.png",Texture.class);
+*/
+        texturaFondo = assetManager.get("Scores.png");
+        texturaBtnBack = assetManager.get("back.png");
     }
 
     @Override
@@ -229,7 +233,7 @@ public class Score implements Screen, InputProcessor {
         //liberar los recursos utilizados en la memoria
         texturaBtnBack.dispose();
         texturaFondo.dispose();
-                /*
+        /*
         assetManager.unload("Scores.png");
         assetManager.unload("back.png");
         */

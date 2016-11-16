@@ -145,8 +145,9 @@ public class AboutUs implements Screen, InputProcessor {
     }
 
 
-    public void cargarTexturas(){
-
+    public void cargarTexturas()
+    {
+        /*
         //textura de vac
         assetManager.load("LujuriaP1.png",Texture.class);
 
@@ -155,19 +156,28 @@ public class AboutUs implements Screen, InputProcessor {
 
         //texturas de botones
         assetManager.load("back.png",Texture.class);
+        assetManager.load("Karlo.png",Texture.class);
+        assetManager.load("Becky.png",Texture.class);
+        assetManager.load("Marina.png",Texture.class);
+        assetManager.load("Daniel.png",Texture.class);
+        assetManager.load("Sam.png",Texture.class);
+        assetManager.load("ok.png",Texture.class);
 
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
+        */
+
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("aboutUs.png");
         texturaBtnBack = assetManager.get("back.png");
         texturavac = assetManager.get("LujuriaP1.png");
-        texturakarlo = new Texture("Karlo.png");
-        texturabecky = new Texture("Becky.png");
-        texturamarina = new Texture("Marina.png");
-        texturadaniel = new Texture("Daniel.png");
-        texturasam = new Texture("Sam.png");
-        texturaBtnOk = new Texture("ok.png");
+
+        texturakarlo = assetManager.get("Karlo.png");
+        texturabecky = assetManager.get("Becky.png");
+        texturamarina = assetManager.get("Marina.png");
+        texturadaniel = assetManager.get("Daniel.png");
+        texturasam = assetManager.get("Sam.png");
+        texturaBtnOk = assetManager.get("ok.png");
     }
 
     public void anadirTexturas()
