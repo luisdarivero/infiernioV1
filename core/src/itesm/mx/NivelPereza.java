@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -28,6 +29,7 @@ public class NivelPereza implements Screen, InputProcessor {
     private int alto = 720;
     private boolean ok =false;
 
+    private final AssetManager assetManager;// = new AssetManager();
 
     //Esto son el tiempo y la dificultad que se va a tener
     private int dificultad;
@@ -93,7 +95,7 @@ public class NivelPereza implements Screen, InputProcessor {
         this.dificultad = dificultad;
         this.escNivel=escNivel;
         this.settings=settings;
-
+        assetManager = Juego.getAssetManager();
         this.temporizador = 5;
 
         Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
@@ -334,6 +336,21 @@ public class NivelPereza implements Screen, InputProcessor {
          texturaPreza4.dispose();
          texturaPreza5.dispose();
          texturaInfo.dispose();
+        /*
+        assetManager.unload("pausaNS.png");
+        assetManager.unload("Pausa.png");
+        assetManager.unload("botonContinuar.png");
+        assetManager.unload("botonSalir.png");
+        assetManager.unload("Fondo2.png");
+        assetManager.unload("Pereza1.png");
+        assetManager.unload("Pereza2.png");
+        assetManager.unload("Pereza3.png");
+        assetManager.unload("Pereza4.png");
+        assetManager.unload("Pereza5.png");
+        assetManager.unload("win.jpg");
+        assetManager.unload("Tache.png");
+        assetManager.unload("instruccionesPereza01.png");
+        */
     }
 
     @Override

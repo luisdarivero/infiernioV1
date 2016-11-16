@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -31,8 +32,10 @@ public class Furioso {
     private  int nivel;
 
 
+
     public Furioso(float x, float y,int nivel){//se modifica la posicion al centro
         cargarTexturas();
+
         sprite = new Sprite(azul);
         isRojo = false;
         this.x = x;

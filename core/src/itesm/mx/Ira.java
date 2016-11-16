@@ -36,7 +36,7 @@ public class Ira implements Screen,InputProcessor {
     private Stage escena;
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -68,6 +68,7 @@ public class Ira implements Screen,InputProcessor {
 
     //constructor
     public Ira(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel,Settings_save settings ){
+        assetManager = Juego.getAssetManager();
         this.juego=Juego;
         this.vidas=vidas;
         this.almas=almas;
@@ -259,7 +260,14 @@ public class Ira implements Screen,InputProcessor {
     public void dispose() {
         texturaFondo.dispose();
         texturaInstrucciones.dispose();
-
+        /*
+        assetManager.unload("Ira.png");
+        assetManager.unload("instrucciones_ira.png");
+        assetManager.unload("pausaNS.png");
+        assetManager.unload("Pausa.png");
+        assetManager.unload("botonContinuar.png");
+        assetManager.unload("botonSalir.png");
+        */
     }
 
     @Override

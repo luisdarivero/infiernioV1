@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -27,6 +28,7 @@ public class Lobby implements Screen, InputProcessor {
     private Fondo fondo;
     private Music musica;
     private  Music Winnie;
+    private final AssetManager assetManager;// = new AssetManager();
 
 
     //array
@@ -62,6 +64,7 @@ public class Lobby implements Screen, InputProcessor {
 
     public Lobby(juego juego,Settings_save sett){
         this.juego=juego;
+        assetManager = juego.getAssetManager();
         this.vidas=3;
         this.almas=0;
         this.estado=true;
@@ -78,6 +81,7 @@ public class Lobby implements Screen, InputProcessor {
     }
     public Lobby(juego juego, int vidas, int almas, boolean estado, Dificultad escNivel, Settings_save sett){
         this.juego=juego;
+        assetManager = juego.getAssetManager();
         this.vidas=vidas;
         this.almas=almas;
         this.estado=estado;
@@ -267,6 +271,8 @@ public class Lobby implements Screen, InputProcessor {
         texFondo.dispose();
         musica.dispose();
         Winnie.dispose();
+        //assetManager.unload("Lobby.png");
+        //assetManager.unload("vida.png");
     }
 
 

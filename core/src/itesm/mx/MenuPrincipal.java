@@ -50,7 +50,7 @@ public class MenuPrincipal implements Screen {
 
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -66,6 +66,7 @@ public class MenuPrincipal implements Screen {
     //constructor
     public MenuPrincipal(itesm.mx.juego juego){
         this.juego =  juego;
+        assetManager = juego.getAssetManager();
         musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
         this.settings=new Settings_save();
         if (this.settings.getMusic()){
@@ -77,6 +78,7 @@ public class MenuPrincipal implements Screen {
 
     public MenuPrincipal(itesm.mx.juego juego , Music musica, Settings_save sett) {
         this.juego = juego;
+        assetManager = juego.getAssetManager();
         this.musica = musica;
         this.settings=sett;
 
@@ -88,6 +90,7 @@ public class MenuPrincipal implements Screen {
 
     public MenuPrincipal(itesm.mx.juego juego , Settings_save sett) {
         this.juego = juego;
+        assetManager = juego.getAssetManager();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("Cempasuchitl.mp3"));
         this.settings=sett;
 
@@ -280,6 +283,13 @@ public class MenuPrincipal implements Screen {
         texturaBtnSettings.dispose();
         texturaBtnPlay.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("piedras_inicio.png" );
+        assetManager. unload("btnPlay.png" );
+        assetManager. unload("btnSettings.png" );
+        assetManager. unload("btnAboutUs.png" );
+        assetManager. unload("btnScore.png" );
+        */
         musica.dispose();
     }
 }

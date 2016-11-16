@@ -56,7 +56,7 @@ public class AboutUs implements Screen, InputProcessor {
     Lujuria btnBack ;
     Lujuria btnOk ;
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager ;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -71,6 +71,7 @@ public class AboutUs implements Screen, InputProcessor {
     //constructor
     public AboutUs(itesm.mx.juego juego, Settings_save settings){
         this.juego =  juego;
+        assetManager = juego.getAssetManager();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("AboutUs.mp3"));
         this.settings=settings;
 
@@ -259,6 +260,17 @@ public class AboutUs implements Screen, InputProcessor {
 
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("aboutUs.png");
+        assetManager.unload("back.png");
+        assetManager.unload("LujuriaP1.png");
+        assetManager.unload("Karlo.png");
+        assetManager.unload("Becky.png");
+        assetManager.unload("Marina.png");
+        assetManager.unload("Daniel.png");
+        assetManager.unload("Sam.png");
+        assetManager.unload("Sam.png");
+        assetManager.unload("ok.png");*/
     }
 
     @Override

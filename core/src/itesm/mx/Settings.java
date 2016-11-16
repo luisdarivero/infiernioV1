@@ -50,7 +50,7 @@ public class Settings implements Screen {
 
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -66,7 +66,7 @@ public class Settings implements Screen {
         this.juego =  juego;
         this.settings= sett;
         this.musica=musica;
-
+        assetManager = juego.getAssetManager();
         if(this.settings.getMusic()){
             musica.play();
         }
@@ -90,9 +90,6 @@ public class Settings implements Screen {
     }
 
     public void cargarTexturas(){
-
-
-
         //textura de fondo
         assetManager.load("settings.png",Texture.class);
 
@@ -277,6 +274,14 @@ public class Settings implements Screen {
 
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("settings.png");
+        assetManager.unload("back2.png");
+        assetManager.unload("btnNo.png");
+        assetManager.unload("btnYes.png");
+        assetManager.unload("btnNo_A.png");
+        assetManager.unload("btnYes_A.png");
+        */
     }
 }
 

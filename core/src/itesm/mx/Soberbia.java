@@ -36,7 +36,7 @@ public class Soberbia implements Screen, InputProcessor {
     private Stage escena;
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -96,6 +96,7 @@ public class Soberbia implements Screen, InputProcessor {
         this.juego=Juego;
         this.vidas=vidas;
         this.almas=almas;
+        assetManager = juego.getAssetManager();
         this.nivel = nivel;
         this.escNivel=escNivel;
         this.settings=settings;
@@ -488,8 +489,22 @@ public class Soberbia implements Screen, InputProcessor {
     public void dispose() {
         texturaFondo.dispose();
         texturaInstrucciones.dispose();
-
-
+        /*
+        assetManager.unload("FondoSoberbia.png");
+        assetManager.unload("instruccionesSoberbia.png");
+        assetManager.unload("pausaNS.png");
+        assetManager.unload("kind.png");
+        assetManager.unload("beautiful.png");
+        assetManager.unload("coward.png");
+        assetManager.unload("mean.png");
+        assetManager.unload("rude.png");
+        assetManager.unload("ugly.png");
+        assetManager.unload("brave.png");
+        assetManager.unload( "nice.png");
+        assetManager.unload("Pausa.png");
+        assetManager.unload("botonContinuar.png");
+        assetManager.unload("botonSalir.png");
+        */
     }
 
     @Override

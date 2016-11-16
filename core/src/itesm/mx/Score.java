@@ -61,7 +61,7 @@ public class Score implements Screen, InputProcessor {
 
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager ;//= new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -76,6 +76,7 @@ public class Score implements Screen, InputProcessor {
     //constructor
     public Score(itesm.mx.juego juego, Music musica, Settings_save settings){
         this.juego =  juego;
+        assetManager = juego.getAssetManager();
         this.musica = musica;
         this.settings=settings;
         preferencias();
@@ -88,6 +89,7 @@ public class Score implements Screen, InputProcessor {
 
     public Score(itesm.mx.juego juego, Music musica, boolean setName, Settings_save settings){
         this.juego =  juego;
+        assetManager = juego.getAssetManager();
         this.musica = musica;
         yes = setName;
         preferencias();
@@ -227,6 +229,10 @@ public class Score implements Screen, InputProcessor {
         //liberar los recursos utilizados en la memoria
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+                /*
+        assetManager.unload("Scores.png");
+        assetManager.unload("back.png");
+        */
     }
 
     @Override
