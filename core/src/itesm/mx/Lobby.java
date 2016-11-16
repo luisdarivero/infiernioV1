@@ -136,9 +136,10 @@ public class Lobby implements Screen, InputProcessor {
         /*
         assetManager.load("Lobby.png",Texture.class);
         assetManager.load("vida.png",Texture.class);
-        */
-        texFondo=assetManager.get("Lobby.png");
-        texCora=assetManager.get("vida.png");
+        assetManager.finishLoading();
+*/
+        texFondo= new Texture("Lobby.png");
+        texCora= new Texture("vida.png");
     }
 
     private void crearEscena(){

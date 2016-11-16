@@ -69,8 +69,6 @@ public class splashScreen implements Screen
         assetManager.load("Daniel.png",Texture.class);
         assetManager.load("Sam.png",Texture.class);
         assetManager.load("ok.png",Texture.class);
-        assetManager.load("Lobby.png",Texture.class);
-        assetManager.load("vida.png",Texture.class);
     }
 
     @Override
