@@ -156,15 +156,13 @@ public class Soberbia implements Screen, InputProcessor {
     }
 
     public void cargarTexturas(){
+        /*
         //assetManager.load("back.png",Texture.class);
         assetManager.load("FondoSoberbia.png",Texture.class);
         assetManager.load("instruccionesSoberbia.png",Texture.class);
-
-
-
         //bloquea hasta que se carguen las imgenes
         assetManager.finishLoading();
-
+        */
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
         texturaFondo = assetManager.get("FondoSoberbia.png");
