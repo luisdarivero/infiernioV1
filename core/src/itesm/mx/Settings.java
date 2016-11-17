@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
@@ -18,6 +19,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by Daniel Riv on 16/09/2016.
  */
@@ -29,6 +34,11 @@ public class Settings implements Screen {
     private final float ancho = 1280;
     private final float alto = 720;
 
+    //preferencias
+    Preferences prefs = Gdx.app.getPreferences("ScoresNames");
+    private Map mapaP = prefs.get();
+    Set keys = mapaP.keySet();
+    private ArrayList<String> nombresL = new ArrayList<String>(keys);
 
     //escena para la pantalla
     private Stage escena;
@@ -43,6 +53,9 @@ public class Settings implements Screen {
     private Texture btnON_Desactivado;
     private Texture btnOFF_Desactivado;
 
+    //Scores
+    private Texture borrar;
+    private Texture borradas;
 
     //Activado
     private Texture btnON_activado;
@@ -50,7 +63,7 @@ public class Settings implements Screen {
 
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -66,7 +79,7 @@ public class Settings implements Screen {
         this.juego =  juego;
         this.settings= sett;
         this.musica=musica;
-
+        assetManager = juego.getAssetManager();
         if(this.settings.getMusic()){
             musica.play();
         }
@@ -90,9 +103,7 @@ public class Settings implements Screen {
     }
 
     public void cargarTexturas(){
-
-
-
+        /*
         //textura de fondo
         assetManager.load("settings.png",Texture.class);
 
@@ -108,7 +119,7 @@ public class Settings implements Screen {
 
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
-
+*/
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("settings.png");
         texturaBtnBack = assetManager.get("back2.png");
@@ -120,6 +131,10 @@ public class Settings implements Screen {
         //activado
         btnON_activado=assetManager.get("btnYes_A.png");
         btnOFF_activado=assetManager.get("btnNo_A.png");
+
+        //scores
+        borrar = assetManager.get("ok.png");
+        borradas = assetManager.get("back2.png");
         anadirTexturas();
     }
 
@@ -187,7 +202,52 @@ public class Settings implements Screen {
         escena.addActor(btn_hOff);
 
 
-        //cliK
+         //btn Borrar Scores
+        final TextureRegionDrawable btnScores = new TextureRegionDrawable(new TextureRegion(borrar));
+        final ImageButton scoresB =new ImageButton(btnScores);
+        scoresB.setPosition(1000,40);
+        escena.addActor(scoresB);
+
+        //btn Scores Borradas
+        final TextureRegionDrawable btnScores2 = new TextureRegionDrawable(new TextureRegion(borradas));
+        final ImageButton scoresBo =new ImageButton(btnScores2);
+        scoresBo.setPosition(1500,40);
+        escena.addActor(scoresBo);
+
+        //clicK
+
+        //btn borrarScores
+        scoresB.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("clicked", "Scores erase");
+                scoresBo.setPosition(1000,40);
+                scoresB.setPosition(1500,40);
+                prefs = Gdx.app.getPreferences("ScoresPref");
+                prefs.putBoolean("Scores", false);
+                prefs.flush();
+                System.out.println(nombresL);
+
+                prefs = Gdx.app.getPreferences("ScoresNames");
+                for(String s: nombresL)
+                {
+                    prefs.remove(s);
+                }
+                prefs.putInteger("Karlo", 0);
+                prefs.putInteger("Marina", 0);
+                prefs.putInteger("Daniel", 0);
+                prefs.putInteger("Becky", 0);
+                prefs.putInteger("Samantha", 0);
+                prefs.flush();
+                }
+        });
+
+        //btn ScoresBorradas
+        scoresBo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+            }
+        });
 
         //btn Musica-On
         btn_mOn.addListener(new ClickListener() {
@@ -277,6 +337,14 @@ public class Settings implements Screen {
 
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("settings.png");
+        assetManager.unload("back2.png");
+        assetManager.unload("btnNo.png");
+        assetManager.unload("btnYes.png");
+        assetManager.unload("btnNo_A.png");
+        assetManager.unload("btnYes_A.png");
+        */
     }
 }
 

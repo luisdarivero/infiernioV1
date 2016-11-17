@@ -67,7 +67,7 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     //SpriteBatch
     private SpriteBatch batch;
 
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -82,6 +82,7 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     public SetName(itesm.mx.juego juego, int points,Settings_save settings){
         this.juego =  juego;
         pointer = points;
+        assetManager = juego.getAssetManager();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("gameOver.mp3"));
         preferencias();
         this.top = compararScores();
@@ -268,8 +269,13 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     }
 
     @Override
-    public void dispose() {
+    public void dispose()
+    {
         texturaFondo.dispose();
+        /*
+        assetManager.unload("GameOver.png");
+        assetManager.unload("Continue.png");
+        */
     }
 
     @Override

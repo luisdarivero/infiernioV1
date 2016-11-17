@@ -56,7 +56,7 @@ public class AboutUs implements Screen, InputProcessor {
     Lujuria btnBack ;
     Lujuria btnOk ;
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager ;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -71,6 +71,7 @@ public class AboutUs implements Screen, InputProcessor {
     //constructor
     public AboutUs(itesm.mx.juego juego, Settings_save settings){
         this.juego =  juego;
+        assetManager = juego.getAssetManager();
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("AboutUs.mp3"));
         this.settings=settings;
 
@@ -144,8 +145,9 @@ public class AboutUs implements Screen, InputProcessor {
     }
 
 
-    public void cargarTexturas(){
-
+    public void cargarTexturas()
+    {
+        /*
         //textura de vac
         assetManager.load("LujuriaP1.png",Texture.class);
 
@@ -154,19 +156,28 @@ public class AboutUs implements Screen, InputProcessor {
 
         //texturas de botones
         assetManager.load("back.png",Texture.class);
+        assetManager.load("Karlo.png",Texture.class);
+        assetManager.load("Becky.png",Texture.class);
+        assetManager.load("Marina.png",Texture.class);
+        assetManager.load("Daniel.png",Texture.class);
+        assetManager.load("Sam.png",Texture.class);
+        assetManager.load("ok.png",Texture.class);
 
         //se bloquea hasta cargar los recursos
         assetManager.finishLoading();//bloquea hasta que se carguen las imgenes
+        */
+
         //cuando termina, leemos las texturas
         texturaFondo = assetManager.get("aboutUs.png");
         texturaBtnBack = assetManager.get("back.png");
         texturavac = assetManager.get("LujuriaP1.png");
-        texturakarlo = new Texture("Karlo.png");
-        texturabecky = new Texture("Becky.png");
-        texturamarina = new Texture("Marina.png");
-        texturadaniel = new Texture("Daniel.png");
-        texturasam = new Texture("Sam.png");
-        texturaBtnOk = new Texture("ok.png");
+
+        texturakarlo = assetManager.get("Karlo.png");
+        texturabecky = assetManager.get("Becky.png");
+        texturamarina = assetManager.get("Marina.png");
+        texturadaniel = assetManager.get("Daniel.png");
+        texturasam = assetManager.get("Sam.png");
+        texturaBtnOk = assetManager.get("ok.png");
     }
 
     public void anadirTexturas()
@@ -259,6 +270,17 @@ public class AboutUs implements Screen, InputProcessor {
 
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("aboutUs.png");
+        assetManager.unload("back.png");
+        assetManager.unload("LujuriaP1.png");
+        assetManager.unload("Karlo.png");
+        assetManager.unload("Becky.png");
+        assetManager.unload("Marina.png");
+        assetManager.unload("Daniel.png");
+        assetManager.unload("Sam.png");
+        assetManager.unload("Sam.png");
+        assetManager.unload("ok.png");*/
     }
 
     @Override

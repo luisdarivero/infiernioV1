@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -70,9 +71,11 @@ public class Avaricia implements Screen, InputProcessor {
     //settings
     private Settings_save settings;
 
+    //asset
+    private final AssetManager assetManager;
 
     public Avaricia(juego juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings){
-
+        assetManager = juego.getAssetManager();
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
@@ -165,7 +168,7 @@ public class Avaricia implements Screen, InputProcessor {
             btnSalir.draw(batch);
         }
         else{
-
+            fondo.setSizeF(10, 0);
             fondo.draw(batch);
             if ((temporizador - ((System.currentTimeMillis() - startTime)/1000)) >=tiempoInit ){
                 instr.draw(batch);
@@ -224,7 +227,16 @@ public class Avaricia implements Screen, InputProcessor {
         textInstr.dispose();
         texDinero.dispose();
         Musica.dispose();
-
+        /*
+        assetManager.unload("FondoA.png");
+        assetManager.unload("InstruccionesAvaricia.png");
+        assetManager.unload("Avaricia.png");
+        assetManager.unload("AvariciaFalso.png");
+        assetManager.unload("pausaNS.png");
+        assetManager.unload("Pausa.png");
+        assetManager.unload("botonContinuar.png");
+        assetManager.unload("botonSalir.png");
+        */
     }
 
     @Override

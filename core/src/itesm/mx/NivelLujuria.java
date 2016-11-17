@@ -4,6 +4,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,6 +30,7 @@ public class NivelLujuria implements Screen, InputProcessor {
     private int ancho = 1280;
     private int alto = 720;
     private boolean ok =false;
+    private final AssetManager assetManager;// = new AssetManager();
 
     //Esto son el tiempo y la dificultad que se va a tener
     private int dificultad;
@@ -84,6 +86,7 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     public NivelLujuria(juego Juego, int vidas, int almas, int dificultad, Dificultad escNivel,Settings_save settings)
     {
+        assetManager = Juego.getAssetManager();
         this.Juego = Juego;
         this.vidas = vidas;
         this.almas = almas;
@@ -356,6 +359,22 @@ public class NivelLujuria implements Screen, InputProcessor {
         texturaLujuria3.dispose();
         texturaGana.dispose();
         texturaInstr.dispose();
+        /*
+        assetManager.unload("Fondo5.png");
+        assetManager.unload("Tache.png");
+        assetManager.unload("LujuriaP1.png");
+        assetManager.unload("LujuriaP2.png");
+        assetManager.unload("LujuriaP3.png");
+        assetManager.unload("LujuriaS1.png");
+        assetManager.unload("LujuriaS2.png");
+        assetManager.unload("LujuriaS3.png");
+        assetManager.unload("win.jpg");
+        assetManager.unload("instruccionesLujuria.png");
+        assetManager.unload("pausaNS.png");
+        assetManager.unload("Pausa.png");
+        assetManager.unload("botonContinuar.png");
+        assetManager.unload("botonSalir.png");
+        */
     }
 
     @Override

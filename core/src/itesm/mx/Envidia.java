@@ -3,6 +3,7 @@ package itesm.mx;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +34,9 @@ public class Envidia implements Screen, InputProcessor {
 
     //Batch
     private SpriteBatch batch;
+
+    //administra la carga de assets
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
@@ -85,6 +89,7 @@ public class Envidia implements Screen, InputProcessor {
         this.juego=juego;
         this.vidas=vidas;
         this.almas=almas;
+        assetManager = juego.getAssetManager();
         this.escNivel=escNivel;
         this.settings=settings;
 
@@ -111,8 +116,6 @@ public class Envidia implements Screen, InputProcessor {
 
     @Override
     public void show() {
-
-
         cargarTexturas();
         inicializarCamara();
         crearEscena();
@@ -208,6 +211,7 @@ public class Envidia implements Screen, InputProcessor {
         }
         else{
             //Fondo
+
             fondo.draw(batch);
 
             if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) >= tiempoInit) {
@@ -281,8 +285,16 @@ public class Envidia implements Screen, InputProcessor {
         texMonedaA.dispose();
         texMonedaB.dispose();
         Musica.dispose();
-        ok.dispose();
-
+        ok.dispose();/*
+        assetManager. unload("heladoA.png");
+        assetManager. unload("heladoB.png");
+        assetManager. unload("fondop.png");
+        assetManager. unload("instrucciones_envidia.png");
+        assetManager. unload("instrucciones_envidia.png");
+        assetManager. unload("pausaNS.png");
+        assetManager. unload("Pausa.png");
+        assetManager. unload("botonContinuar.png");
+        assetManager. unload("botonSalir.png");*/
     }
 
 

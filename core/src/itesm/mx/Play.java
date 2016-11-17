@@ -41,14 +41,16 @@ public class Play implements Screen {
 
 
     //administra la carga de assets
-    private final AssetManager assetManager = new AssetManager();
+    private final AssetManager assetManager;// = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
     private Viewport vista;
 
     //constructor
-    public Play(itesm.mx.juego juego){
+    public Play(itesm.mx.juego juego)
+    {
+        assetManager = juego.getAssetManager();
         this.juego =  juego;
     }
 
@@ -162,6 +164,11 @@ public class Play implements Screen {
 
         texturaBtnBack.dispose();
         texturaFondo.dispose();
+        /*
+        assetManager.unload("blank.png" );
+        assetManager.unload("back.png" );
+        assetManager.unload("Pereza3.png");
+        */
     }
 }
 
