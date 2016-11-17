@@ -130,6 +130,7 @@ public class Ira implements Screen,InputProcessor {
     }
 
     public void cargarTexturas(){
+        /*
         //assetManager.load("back.png",Texture.class);
         assetManager.load("Ira.png",Texture.class);
         assetManager.load("instrucciones_ira.png",Texture.class);
@@ -137,11 +138,12 @@ public class Ira implements Screen,InputProcessor {
 
         //bloquea hasta que se carguen las imgenes
         assetManager.finishLoading();
+        */
 
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = assetManager.get("Ira.png");
-        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
+        texturaFondo = new Texture("Ira.png");
+        texturaInstrucciones =  new Texture("instrucciones_ira.png");
 
 
 
