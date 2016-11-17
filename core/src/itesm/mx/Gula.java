@@ -284,6 +284,8 @@ public class Gula implements Screen,InputProcessor {
             }
         }
 
+        golozo.setEstado(Golozo.Estado.Saltando);
+
 
         return false;
     }
