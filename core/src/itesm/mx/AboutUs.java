@@ -154,6 +154,7 @@ public class AboutUs implements Screen, InputProcessor {
         //textura de fondo
         assetManager.load("aboutUs.png",Texture.class);
 
+
         //texturas de botones
         assetManager.load("back.png",Texture.class);
         assetManager.load("Karlo.png",Texture.class);
