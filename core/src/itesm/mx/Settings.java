@@ -133,8 +133,8 @@ public class Settings implements Screen {
         btnOFF_activado=assetManager.get("btnNo_A.png");
 
         //scores
-        borrar = assetManager.get("ok.png");
-        borradas = assetManager.get("back2.png");
+        borrar = assetManager.get("Reset.png");
+        borradas = assetManager.get("Reseted.png");
         anadirTexturas();
     }
 
@@ -205,7 +205,7 @@ public class Settings implements Screen {
          //btn Borrar Scores
         final TextureRegionDrawable btnScores = new TextureRegionDrawable(new TextureRegion(borrar));
         final ImageButton scoresB =new ImageButton(btnScores);
-        scoresB.setPosition(1000,40);
+        scoresB.setPosition(950,40);
         escena.addActor(scoresB);
 
         //btn Scores Borradas
@@ -221,7 +221,7 @@ public class Settings implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Scores erase");
-                scoresBo.setPosition(1000,40);
+                scoresBo.setPosition(950,40);
                 scoresB.setPosition(1500,40);
                 prefs = Gdx.app.getPreferences("ScoresPref");
                 prefs.putBoolean("Scores", false);

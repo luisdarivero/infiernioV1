@@ -101,6 +101,9 @@ public class splashScreen implements Screen
         assetManager.load("Daniel.png",Texture.class);
         assetManager.load("Sam.png",Texture.class);
         assetManager.load("ok.png",Texture.class);
+        assetManager.load("Reset.png",Texture.class);
+        assetManager.load("Reset.png",Texture.class);
+        assetManager.load("Reseted.png",Texture.class);
     }
 
     @Override
