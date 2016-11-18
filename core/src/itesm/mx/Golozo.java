@@ -21,6 +21,8 @@ public class Golozo {
     private float y;
     private Estado estado;
     private float alturaSalto;
+    private float acumuladorDtime;
+
 
     public Golozo(String imagen1, String imgen2, float x, float y){
         personaje = new Sprite(new Texture("Gula1.png"));
@@ -31,7 +33,8 @@ public class Golozo {
         this.x = x;
         this.y = y + personaje.getHeight()/2;
         estado = Estado.Normal;
-        alturaSalto = 200;
+        alturaSalto = 260;
+        acumuladorDtime = 0;
     }
 
     public void draw(SpriteBatch batch){
@@ -40,19 +43,28 @@ public class Golozo {
         personaje.setRegion(animacion.getKeyFrame(deltaTime));
 
         if (estado == Estado.Saltando){
-            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) + 8);
+            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) + 5);
             if(personaje.getY()+(personaje.getHeight()/2) > y + alturaSalto){
-                estado = Estado.Cayendo;
+                estado = Estado.Estatico;
+                acumuladorDtime = 0;
             }
 
         }
+        if(estado == Estado.Estatico){
+            acumuladorDtime += Gdx.graphics.getDeltaTime();
+            if(acumuladorDtime>0.2){
+                estado = Estado.Cayendo;
+            }
+        }
         if (estado == Estado.Cayendo){
-            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) - 8);
+            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) - 4);
             if(personaje.getY()+(personaje.getHeight()/2) < y ){
                 estado = Estado.Normal;
                 personaje.setCenter(x,y);
             }
         }
+
+
 
 
     }
@@ -70,8 +82,12 @@ public class Golozo {
 
     }
 
+    public  Sprite getSprite(){
+        return personaje;
+    }
+
     public enum Estado{
 
-        Normal, Saltando, Cayendo
+        Normal, Saltando,Estatico, Cayendo
     }
 }
