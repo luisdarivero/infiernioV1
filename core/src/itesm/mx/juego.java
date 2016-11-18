@@ -20,6 +20,7 @@ public class juego extends Game{
         assetManager.setLoader(TiledMap.class,new TmxMapLoader(new InternalFileHandleResolver()));
         //va a crear un objeto tipo menu principal
         setScreen(new Intro(this));
+        //setScreen(new Historia(this));
         //setScreen(new MenuPrincipal(this));
     }
     //acceso del assetmanager

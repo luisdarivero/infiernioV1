@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -31,6 +32,7 @@ public class Historia implements Screen, InputProcessor
     private int hoja7=5;
     private int hoja8=0;
     private int select = 1;
+    private final Music musica;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -65,6 +67,7 @@ public class Historia implements Screen, InputProcessor
     public Historia(itesm.mx.juego juego)
     {
         this.juego =  juego;
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("c2.mp3"));
         assetManager = juego.getAssetManager();
     }
 
@@ -73,6 +76,8 @@ public class Historia implements Screen, InputProcessor
         cargarTexturas();
         inicializarCamara();
         crearEscena();
+        this.musica.play();
+        this.musica.setVolume(0.4f);
         Gdx.input.setInputProcessor(this);
     }
 
@@ -150,6 +155,7 @@ public class Historia implements Screen, InputProcessor
 
         if((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0)
         {
+            this.musica.stop();
             juego.setScreen(new splashScreen(juego));
         }
         batch.end();

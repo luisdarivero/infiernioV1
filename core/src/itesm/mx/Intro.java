@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,18 +43,22 @@ public class Intro  implements Screen, InputProcessor
     //camara
     private OrthographicCamera camara;
     private Viewport vista;
+    private final Music musica;
 
     //constructor
     public Intro(itesm.mx.juego juego)
     {
         this.juego =  juego;
         assetManager = juego.getAssetManager();
+        this.musica = Gdx.audio.newMusic(Gdx.files.internal("cI.mp3"));
     }
 
     @Override
     public void show() {
         cargarTexturas();
         inicializarCamara();
+        this.musica.play();
+        this.musica.setVolume(0.5f);
         crearEscena();
         Gdx.input.setInputProcessor(this);
     }
