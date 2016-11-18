@@ -41,6 +41,7 @@ public class Gula implements Screen,InputProcessor {
 
     //declarando al golozo
     private Golozo golozo;
+    private  Sprite piso;
 
     //spritebatch . administra trazos
     private SpriteBatch batch;
@@ -106,7 +107,7 @@ public class Gula implements Screen,InputProcessor {
         deltaTime = 0;
         estado = Estado.Normal;
         Gdx.input.setInputProcessor(this);
-        golozo = new Golozo("Gula1.png","Gula2.png",ancho/2,alto/2);
+
 
 
 
@@ -128,7 +129,7 @@ public class Gula implements Screen,InputProcessor {
 
     public void cargarTexturas(){
         //assetManager.load("back.png",Texture.class);
-        assetManager.load("Ira.png",Texture.class);
+        assetManager.load("blank.png",Texture.class);
         assetManager.load("instrucciones_ira.png",Texture.class);
 
 
@@ -137,7 +138,7 @@ public class Gula implements Screen,InputProcessor {
 
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = assetManager.get("Ira.png");
+        texturaFondo = assetManager.get("blank.png");
         texturaInstrucciones = assetManager.get("instrucciones_ira.png");
 
 
@@ -165,6 +166,11 @@ public class Gula implements Screen,InputProcessor {
         btnContinuar.setCenter(ancho/3,alto/2);
         btnSalir = new Sprite(new Texture("botonSalir.png"));
         btnSalir.setCenter(ancho/3*2,alto/2);
+
+        piso = new Sprite(new Texture("pisoGula.png"));
+        piso.setCenter(ancho/2,piso.getHeight()/2);
+
+        golozo = new Golozo("Gula1.png","Gula2.png",235,(piso.getHeight()));
 
 
 
@@ -205,9 +211,8 @@ public class Gula implements Screen,InputProcessor {
                 btnSalir.draw(batch);
             }
             else{
+                piso.draw(batch);
                 golozo.draw(batch);
-
-
                 btnPausa.draw(batch);
             }
 
@@ -284,7 +289,7 @@ public class Gula implements Screen,InputProcessor {
             }
         }
 
-        golozo.setEstado(Golozo.Estado.Saltando);
+        golozo.saltar();
 
 
         return false;

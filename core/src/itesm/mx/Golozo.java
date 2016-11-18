@@ -20,26 +20,40 @@ public class Golozo {
     private float x;
     private float y;
     private Estado estado;
+    private float alturaSalto;
 
     public Golozo(String imagen1, String imgen2, float x, float y){
         personaje = new Sprite(new Texture("Gula1.png"));
-        personaje.setCenter(x,y);
+        personaje.setCenter(x,y + personaje.getHeight()/2);
         animacion = new Animation(0.17f,new TextureRegion(new Texture("Gula1.png")), new TextureRegion(new Texture("Gula2.png")));
         animacion.setPlayMode(Animation.PlayMode.LOOP);
         deltaTime = 0;
         this.x = x;
-        this.y = y;
+        this.y = y + personaje.getHeight()/2;
         estado = Estado.Normal;
+        alturaSalto = 200;
     }
 
     public void draw(SpriteBatch batch){
         deltaTime+= Gdx.graphics.getDeltaTime();
         personaje.draw(batch);
         personaje.setRegion(animacion.getKeyFrame(deltaTime));
+
         if (estado == Estado.Saltando){
-            personaje.setCenter(personaje.getX(),personaje.getY() + 1);
-            System.out.println("esta saltando");
+            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) + 8);
+            if(personaje.getY()+(personaje.getHeight()/2) > y + alturaSalto){
+                estado = Estado.Cayendo;
+            }
+
         }
+        if (estado == Estado.Cayendo){
+            personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) - 8);
+            if(personaje.getY()+(personaje.getHeight()/2) < y ){
+                estado = Estado.Normal;
+                personaje.setCenter(x,y);
+            }
+        }
+
 
     }
 
@@ -48,10 +62,11 @@ public class Golozo {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void saltar() {
         if(estado == Estado.Normal){
-            this.estado = estado;
+            this.estado = Estado.Saltando;
         }
+
 
     }
 
