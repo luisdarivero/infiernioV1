@@ -236,9 +236,14 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     {
         prefs = Gdx.app.getPreferences("ScoresNames");
         String max = "";
-        if(texto.equals("")||texto.equals(" ")||texto.equals("  ")||texto.equals("\n"))
-            texto = "No Name";
-        mapaP.put(texto,pointer);
+        if(!texto.equals( "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"))
+        {
+            if(texto.equals("")||texto.equals(" ")||texto.equals("  ")||texto.equals("\n"))
+            {
+                texto = "No Name";
+                mapaP.put(texto,pointer);
+            }
+        }
         Set keys = mapaP.keySet();
         ArrayList<String> keis = new ArrayList<String>(keys);
         for(String s: nombresL)
@@ -353,8 +358,9 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     }
 
     @Override
-    public void canceled() {
-
+    public void canceled()
+    {
+        this.text = "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||";
     }
 
 }
