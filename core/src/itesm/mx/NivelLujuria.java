@@ -287,7 +287,7 @@ public class NivelLujuria implements Screen, InputProcessor {
                 if (toques < totals) {
                     texto.mostrarMensaje(batch, "Time: " + (tempo - ((System.currentTimeMillis() - startTime) / 1000)), 640, 400);
                 } else {
-                    texto.mostrarMensaje(batch, "Time: 0", 640, 400);
+                    texto.mostrarMensaje(batch, " ", 640, 400);
                 }
 
                 // texto.mostrarMensaje(batch, "Toques: " + toques, 200, 800);

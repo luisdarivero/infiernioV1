@@ -7,23 +7,20 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * Created by Daniel Riv on 07/10/2016.
  */
-public class Ira implements Screen,InputProcessor {
+public class Gula implements Screen,InputProcessor {
 
     //variable tipo juego para poder intarcambiar de escenas
     private final itesm.mx.juego juego;
@@ -36,11 +33,14 @@ public class Ira implements Screen,InputProcessor {
     private Stage escena;
 
     //administra la carga de assets
-    private final AssetManager assetManager;// = new AssetManager();
+    private final AssetManager assetManager = new AssetManager();
 
     //camara
     private OrthographicCamera camara;
     private Viewport vista;
+
+    //declarando al golozo
+    private Golozo golozo;
 
     //spritebatch . administra trazos
     private SpriteBatch batch;
@@ -67,8 +67,7 @@ public class Ira implements Screen,InputProcessor {
     private Settings_save settings;
 
     //constructor
-    public Ira(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel,Settings_save settings ){
-        assetManager = Juego.getAssetManager();
+    public Gula(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings ){
         this.juego=Juego;
         this.vidas=vidas;
         this.almas=almas;
@@ -78,9 +77,7 @@ public class Ira implements Screen,InputProcessor {
 
     }
 
-    //Objetos en el escenario
-    private Furioso furioso;
-    private ManoIra mano;
+
 
 
     //texturas
@@ -103,13 +100,13 @@ public class Ira implements Screen,InputProcessor {
         //cargar texturas
         cargarTexturas();
         //inicializar los objetos en el escenario
-        furioso = new Furioso(ancho/2, alto*0.35f,nivel);//se alinea con respecto al centro
-        mano = new ManoIra(ancho,alto,furioso);
+
         //inicializar variables tiempo
         instrucciones = true;
         deltaTime = 0;
         estado = Estado.Normal;
         Gdx.input.setInputProcessor(this);
+        golozo = new Golozo("Gula1.png","Gula2.png",ancho/2,alto/2);
 
 
 
@@ -130,7 +127,6 @@ public class Ira implements Screen,InputProcessor {
     }
 
     public void cargarTexturas(){
-        /*
         //assetManager.load("back.png",Texture.class);
         assetManager.load("Ira.png",Texture.class);
         assetManager.load("instrucciones_ira.png",Texture.class);
@@ -138,12 +134,11 @@ public class Ira implements Screen,InputProcessor {
 
         //bloquea hasta que se carguen las imgenes
         assetManager.finishLoading();
-        */
 
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = new Texture("Ira.png");
-        texturaInstrucciones =  new Texture("instrucciones_ira.png");
+        texturaFondo = assetManager.get("Ira.png");
+        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
 
 
 
@@ -173,22 +168,7 @@ public class Ira implements Screen,InputProcessor {
 
 
 
-        /**
-        //para asignar funcionalidad a la imagen como boton
-        TextureRegionDrawable trBtnBack = new TextureRegionDrawable(new TextureRegion(texturaback));
-        ImageButton btnBack = new ImageButton(trBtnBack);
-        btnBack.setPosition(btnBack.getWidth()/2, alto - btnBack.getHeight());
-        escena.addActor(btnBack);
 
-
-        //registrar listener para registarar evento del boton
-        btnBack.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clicked", "TAP sobre el boton de regresar");
-                juego.setScreen(new MenuPrincipal(juego));
-            }
-        });**/
 
     }
 
@@ -208,6 +188,7 @@ public class Ira implements Screen,InputProcessor {
                 escena.clear();
                 escena.addActor(imgFondo);
                 instrucciones = false;
+                deltaTime = 0;
 
             }
         }
@@ -224,17 +205,14 @@ public class Ira implements Screen,InputProcessor {
                 btnSalir.draw(batch);
             }
             else{
-                furioso.draw(batch);
-                mano.draw(batch);
+                golozo.draw(batch);
+
+
                 btnPausa.draw(batch);
             }
 
             batch.end();
-            if (furioso.getEstado() == Furioso.Estado.Gano) {
-                juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel,settings));
-            } else if (furioso.getEstado() == Furioso.Estado.Perdio) {
-                juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
-            }
+
         }
     }
 
@@ -262,14 +240,7 @@ public class Ira implements Screen,InputProcessor {
     public void dispose() {
         texturaFondo.dispose();
         texturaInstrucciones.dispose();
-        /*
-        assetManager.unload("Ira.png");
-        assetManager.unload("instrucciones_ira.png");
-        assetManager.unload("pausaNS.png");
-        assetManager.unload("Pausa.png");
-        assetManager.unload("botonContinuar.png");
-        assetManager.unload("botonSalir.png");
-        */
+
     }
 
     @Override
@@ -312,6 +283,8 @@ public class Ira implements Screen,InputProcessor {
                 juego.setScreen(new MenuPrincipal(juego));
             }
         }
+
+        golozo.setEstado(Golozo.Estado.Saltando);
 
 
         return false;

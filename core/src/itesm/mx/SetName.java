@@ -63,6 +63,8 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     private Fondo imgFondo;
     private Texture texturaFondo2;
     private Fondo imgFondo2;
+    private long startTime;
+    private long temporizador = 3;
 
     //SpriteBatch
     private SpriteBatch batch;
@@ -172,12 +174,13 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camara.combined);
+        boolean im = false;
         batch.begin();
         if(teclado == false)
         {
             imgFondo.draw(batch);
         }
-        else if (teclado == true && text != null)
+        else if (teclado == true && (text != null)||(temporizador - ((System.currentTimeMillis() - startTime) / 1000))<=1)
         {
             imgFondo2.draw(batch);
         }
@@ -186,6 +189,11 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
         {
             Gdx.input.getTextInput(this, "Type your name", "", "Type here");
             teclado = true;
+            if(!im)
+            {
+                startTime = System.currentTimeMillis();
+                im = true;
+            }
         }
 
         if(Gdx.input.justTouched() && teclado == false && top == false)
@@ -195,22 +203,32 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
 
         if(teclado == true && Gdx.input.justTouched() && text != null)
         {
-
             StringBuilder cincoChar = new StringBuilder();
             char[] cinco = text.toCharArray();
-            for(int i=0;i<8;i++)
-                cincoChar.append(cinco[i]);
-            this.text = cincoChar.toString();
-            System.out.println(cincoChar.toString());
+            if(cinco.length>=8)
+            {
+                for (int i = 0; i < 8; i++)
+                    cincoChar.append(cinco[i]);
+                this.text = cincoChar.toString();
+                System.out.println(cincoChar.toString());
+            }
             escribirScores(text);
             juego.setScreen(new Score(juego,musica,true,settings));
         }
+
+        if(teclado == true && Gdx.input.justTouched() &&  text == null && (temporizador - ((System.currentTimeMillis() - startTime) / 1000))<=0)
+        {
+
+            escribirScores(text);
+            juego.setScreen(new Score(juego,musica,true,settings));
+        }
+
 
         if(teclado == true && Gdx.input.justTouched() && top == false)
         {
             juego.setScreen(new Score(juego,musica,true,settings));
         }
-
+        System.out.println((temporizador - ((System.currentTimeMillis() - startTime) / 1000)));
         batch.end();
     }
 
@@ -218,7 +236,14 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     {
         prefs = Gdx.app.getPreferences("ScoresNames");
         String max = "";
-        mapaP.put(texto,pointer);
+        if(!texto.equals( "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"))
+        {
+            if(texto.equals("")||texto.equals(" ")||texto.equals("  ")||texto.equals("\n"))
+            {
+                texto = "No Name";
+                mapaP.put(texto,pointer);
+            }
+        }
         Set keys = mapaP.keySet();
         ArrayList<String> keis = new ArrayList<String>(keys);
         for(String s: nombresL)
@@ -333,8 +358,9 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
     }
 
     @Override
-    public void canceled() {
-
+    public void canceled()
+    {
+        this.text = "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||";
     }
 
 }

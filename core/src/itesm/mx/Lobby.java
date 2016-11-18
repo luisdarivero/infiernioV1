@@ -59,6 +59,8 @@ public class Lobby implements Screen, InputProcessor {
     //dificultad
     private Dificultad escNivel;
 
+    boolean f =false;
+
     //settings
     private Settings_save settings;
 
@@ -108,8 +110,10 @@ public class Lobby implements Screen, InputProcessor {
         else if((almas>= 12)&& ((vidas >=1 && estado)||(vidas >1 && estado==false)))
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("Lobby5.mp3"));
         else if(vidas <= 1 && estado==false)
+        {
             this.musica = Gdx.audio.newMusic(Gdx.files.internal("LobbyF.mp3"));
-
+            f=true;
+        }
         if (this.settings.getMusic()){
             this.musica.play();
         }
@@ -157,7 +161,10 @@ public class Lobby implements Screen, InputProcessor {
                 arrCora.add(cor);
             }
         }
-        this.musica.setVolume(0.3f);
+        if(!f)
+            this.musica.setVolume(0.3f);
+        else
+            this.musica.setVolume(0.2f);
     }
     @Override
     public void render(float delta) {
@@ -191,7 +198,8 @@ public class Lobby implements Screen, InputProcessor {
                 vidas-=1;
             }
             if (vidas==0) {
-                this.musica.stop();
+                if(!f)
+                    this.musica.stop();
                 juego.setScreen(new SetName(juego,this.almas, settings));
             }else{
                 int nivel=escNivel.cambiarNivel();
