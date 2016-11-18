@@ -104,8 +104,10 @@ public class splashScreen implements Screen
         assetManager.load("Reset.png",Texture.class);
         assetManager.load("Reset.png",Texture.class);
         assetManager.load("Reseted.png",Texture.class);
+        /*
         assetManager.load("FondoSoberbia.png",Texture.class);
         assetManager.load("instruccionesSoberbia.png",Texture.class);
+        */
     }
 
     @Override

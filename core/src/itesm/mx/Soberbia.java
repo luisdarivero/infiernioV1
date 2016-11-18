@@ -165,8 +165,8 @@ public class Soberbia implements Screen, InputProcessor {
         */
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = assetManager.get("FondoSoberbia.png");
-        texturaInstrucciones = assetManager.get("instruccionesSoberbia.png");
+        texturaFondo = new Texture("FondoSoberbia.png");
+        texturaInstrucciones = new Texture("instruccionesSoberbia.png");
         btnPausa = new Sprite(new Texture("pausaNS.png"));
 
         String listaMovImagenes[] = {"kind.png","beautiful.png","coward.png","mean.png"};
