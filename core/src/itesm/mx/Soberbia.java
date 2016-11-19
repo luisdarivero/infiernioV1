@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -137,6 +138,8 @@ public class Soberbia implements Screen, InputProcessor {
         texto = new Texto();
         estado = Estado.Normal;
         tiempoGano = 0;
+
+        Gdx.input.setCatchBackKey(true);
 
 
     }
@@ -507,7 +510,11 @@ public class Soberbia implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+            // Regresar al menú
+            estado=Estado.Pausa;// Cambio de pantalla
+        }
+        return true;
     }
 
     @Override
@@ -542,7 +549,7 @@ public class Soberbia implements Screen, InputProcessor {
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,settings));
             }
         }
         //para que se salga si no esta en estado normal y dejar de mover las fichas

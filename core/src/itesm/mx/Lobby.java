@@ -127,6 +127,7 @@ public class Lobby implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         texto=new Texto();
         textTiempo=new Texto();
+        Gdx.input.setCatchBackKey(true);
     }
     private void cargarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -210,14 +211,12 @@ public class Lobby implements Screen, InputProcessor {
                         this.musica.stop();
                         this.dispose();
                         juego.setScreen(new Soberbia(juego,vidas,almas,dif,escNivel,settings));
-
                         break;
                     case 2:
                         //envidia
                         this.musica.stop();
                         this.dispose();
                         juego.setScreen(new Envidia(juego,vidas,almas,dif,escNivel,settings));
-
                         break;
                     case 3:
                         //ira
@@ -234,10 +233,10 @@ public class Lobby implements Screen, InputProcessor {
 
                         break;
                     case 5:
+                        //Avaricia
                         this.musica.stop();
                         this.dispose();
                         juego.setScreen(new Avaricia(juego,vidas,almas,dif,escNivel,settings));
-                        //Avaricia
 
                         break;
                     case 6:
@@ -291,7 +290,7 @@ public class Lobby implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        return true;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -74,8 +75,10 @@ public class Envidia implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador=8;
-    private int tiempoInit;
+    private long temporizador=10;
+    private long tiempoInit;
+    private boolean ok1 =false;
+    private long pausaT;
 
     //Musica
     private final Music Musica;
@@ -102,7 +105,7 @@ public class Envidia implements Screen, InputProcessor {
         }
 
         //extras
-        this.tiempoInit=temporizador-1;
+        this.tiempoInit=temporizador-2;
         this.Musica=Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
         this.ok=Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
         this.settings=settings;
@@ -123,6 +126,7 @@ public class Envidia implements Screen, InputProcessor {
         textoIns=new Texto("fuenteAv_a.fnt");
         textTiempo=new Texto("fuenteAv_a.fnt");
         estado = Estado.Normal;
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void crearEscena() {
@@ -208,6 +212,12 @@ public class Envidia implements Screen, InputProcessor {
             fondoPausa.draw(batch);
             btnContinuar.draw(batch);
             btnSalir.draw(batch);
+
+            if(ok1==false)
+            {
+                temporizador = pausaT;
+                ok1=true;
+            }
         }
         else{
             //Fondo
@@ -232,28 +242,24 @@ public class Envidia implements Screen, InputProcessor {
 
                 textTiempo.mostrarMensaje(batch, "Time: " + (temporizador - ((System.currentTimeMillis() - startTime) / 1000)), 640, 700);
 
-                for (Monedas mA : monedasA) {
-                    if (mA.getyActual() < -40) {
-                        juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
-                        Musica.stop();
-                        ok.stop();
-                    }
-                }
-                if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0) {
-                    almas += 1;
-                    juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
+            }
+            for (Monedas mA : monedasA) {
+                if (mA.getyActual() < -40) {
+                    juego.setScreen(new Lobby(juego, vidas, almas, false, escNivel,settings));
                     Musica.stop();
                     ok.stop();
                 }
             }
+            if ((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0 && estado==Estado.Normal) {
+                almas += 1;
+                juego.setScreen(new Lobby(juego, vidas, almas, true, escNivel,settings));
+                Musica.stop();
+                ok.stop();
+            }
             btnPausa.draw(batch);
         }
-
-
-
-
-
         batch.end();
+
 
 
     }
@@ -300,7 +306,14 @@ public class Envidia implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+            // cambia a pausa
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok1 = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000)); // Cambio a pausa
+        }
+        return true;
     }
 
     @Override
@@ -323,16 +336,25 @@ public class Envidia implements Screen, InputProcessor {
 
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
+            Musica.pause();
+            ok.pause();
+            ok1 = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000));
             return false;
         }
 
         if(estado == Estado.Pausa){
             if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                Musica.play();
+                ok.pause();
+                startTime = System.currentTimeMillis();
                 estado = Estado.Normal;
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,settings));
+                Musica.stop();
+                ok.stop();
                 return false;
             }
         }

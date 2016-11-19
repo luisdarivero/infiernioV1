@@ -2,6 +2,7 @@ package itesm.mx;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -114,6 +115,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         crearEscena();
         Gdx.input.setInputProcessor(this);
         texto = new Texto("fuenteAv_a.fnt");
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void crearEscena()
@@ -379,8 +381,14 @@ public class NivelLujuria implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
-    }
+        if (keycode== Input.Keys.BACK) {
+            // Regresar al menú
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok = false;
+            pausaT = (tempo - ((System.currentTimeMillis() - startTime) / 1000));// Cambio de pantalla
+        }
+        return true;    }
 
     @Override
     public boolean keyUp(int keycode) {
@@ -436,7 +444,7 @@ public class NivelLujuria implements Screen, InputProcessor {
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
                 Musica.stop();
-                Juego.setScreen(new MenuPrincipal(Juego));
+                Juego.setScreen(new MenuPrincipal(Juego,settings));
             }
         }
         return false;

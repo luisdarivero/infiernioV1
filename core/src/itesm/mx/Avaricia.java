@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -62,8 +63,10 @@ public class Avaricia implements Screen, InputProcessor {
 
     //tiempo
     private long startTime = System.currentTimeMillis();
-    private int temporizador;
-    private int tiempoInit;
+    private long temporizador;
+    private long tiempoInit;
+    private boolean ok =false;
+    private long pausaT;
 
     //Musica
     private final Music Musica;
@@ -82,14 +85,14 @@ public class Avaricia implements Screen, InputProcessor {
         this.escNivel=escNivel;
         this.settings=settings;
         if (nivel==1)
-            this.temporizador=7;
+            this.temporizador=8;
         else if(nivel==2)
-            this.temporizador=6;
+            this.temporizador=7;
         else if (nivel>=3)
-            this.temporizador=5;
+            this.temporizador=6;
 
         //extras
-        this.tiempoInit=temporizador-1;
+        this.tiempoInit=temporizador-2;
         this.settings=settings;
         this.Musica = Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
 
@@ -108,6 +111,7 @@ public class Avaricia implements Screen, InputProcessor {
         Gdx.input.setInputProcessor(this);
         texTiempo = new Texto("fuenteAv_a.fnt");
         estado = Estado.Normal;
+        Gdx.input.setCatchBackKey(true);
     }
     private void inicializarCamara(){
         camara=new OrthographicCamera(ancho,alto);
@@ -166,6 +170,12 @@ public class Avaricia implements Screen, InputProcessor {
             fondoPausa.draw(batch);
             btnContinuar.draw(batch);
             btnSalir.draw(batch);
+
+            if(ok==false)
+            {
+                temporizador = pausaT;
+                ok =true;
+            }
         }
         else{
             fondo.setSizeF(10, 0);
@@ -241,7 +251,14 @@ public class Avaricia implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+            // cambia a pausa
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000)); // Cambio a pausa
+        }
+        return true; // Para que el sistema operativo no la procese
     }
 
     @Override
@@ -265,17 +282,22 @@ public class Avaricia implements Screen, InputProcessor {
 
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
-            System.out.println("modo pausa");
+            Musica.pause();
+            ok = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000));
             return false;
         }
 
         if(estado == Estado.Pausa){
             if(btnContinuar.getBoundingRectangle().contains(x,y)){
+                Musica.play();
+                startTime = System.currentTimeMillis();
                 estado = Estado.Normal;
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego, settings));
+                Musica.stop();
                 return false;
             }
         }

@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.InputProcessor;
@@ -121,6 +122,7 @@ public class NivelPereza implements Screen, InputProcessor {
         crearEscena();
         Gdx.input.setInputProcessor(this);
         texto = new Texto();
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void crearEscena() {
@@ -355,8 +357,13 @@ public class NivelPereza implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
-    }
+        if (keycode== Input.Keys.BACK) {
+            estado = Estado.Pausa;
+            Musica.pause();
+            ok = false;
+            pausaT = (temporizador - ((System.currentTimeMillis() - startTime) / 1000));
+        }
+        return true;    }
 
     @Override
     public boolean keyUp(int keycode) {
@@ -418,7 +425,7 @@ public class NivelPereza implements Screen, InputProcessor {
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
                 Musica.stop();
-                Juego.setScreen(new MenuPrincipal(Juego));
+                Juego.setScreen(new MenuPrincipal(Juego,settings));
             }
         }
         return false;

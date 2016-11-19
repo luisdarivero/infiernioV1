@@ -168,8 +168,14 @@ public class Settings implements Screen {
 
         //textura Botones
 
+        //Musica
         final TextureRegionDrawable trBtn_mOn;
         final TextureRegionDrawable trBtn_mOff;
+
+        //Historia
+        final TextureRegionDrawable trBtn_hOn;
+        final TextureRegionDrawable trBtn_hOff;
+
 
         if (this.settings.getMusic()){
             trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_activado));
@@ -177,6 +183,14 @@ public class Settings implements Screen {
         }else {
             trBtn_mOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
             trBtn_mOff= new TextureRegionDrawable(new TextureRegion(btnOFF_activado));
+        }
+
+        if (this.settings.getHistory()){
+            trBtn_hOn= new TextureRegionDrawable(new TextureRegion(btnON_activado));
+            trBtn_hOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
+        }else {
+            trBtn_hOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
+            trBtn_hOff= new TextureRegionDrawable(new TextureRegion(btnOFF_activado));
         }
 
         //btn Musica-On
@@ -190,13 +204,11 @@ public class Settings implements Screen {
         escena.addActor(btn_mOff);
 
         //btn Historia-On
-        final TextureRegionDrawable trBtn_hOn= new TextureRegionDrawable(new TextureRegion(btnON_Desactivado));
         ImageButton btn_hOn =new ImageButton(trBtn_hOn);
         btn_hOn.setPosition(450,170);
         escena.addActor(btn_hOn);
 
         //btn Historia-Off
-        final TextureRegionDrawable trBtn_hOff= new TextureRegionDrawable(new TextureRegion(btnOFF_Desactivado));
         ImageButton btn_hOff =new ImageButton(trBtn_hOff);
         btn_hOff.setPosition(590,175);
         escena.addActor(btn_hOff);
@@ -279,10 +291,8 @@ public class Settings implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "Historia On");
-
                 trBtn_hOn.setRegion(new TextureRegion(btnON_activado));
                 trBtn_hOff.setRegion(new TextureRegion(btnOFF_Desactivado));
-
                 settings.setHistory(true);
             }
         });
