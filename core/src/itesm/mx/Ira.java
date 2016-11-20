@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -110,7 +111,7 @@ public class Ira implements Screen,InputProcessor {
         deltaTime = 0;
         estado = Estado.Normal;
         Gdx.input.setInputProcessor(this);
-
+        Gdx.input.setCatchBackKey(true);
 
 
     }
@@ -274,7 +275,11 @@ public class Ira implements Screen,InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+            // Regresar al menú
+            estado=Estado.Pausa; // Cambio de pantalla
+        }
+        return true;
     }
 
     @Override
@@ -309,7 +314,7 @@ public class Ira implements Screen,InputProcessor {
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
-                juego.setScreen(new MenuPrincipal(juego));
+                juego.setScreen(new MenuPrincipal(juego,settings));
             }
         }
 

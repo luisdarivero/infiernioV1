@@ -63,12 +63,16 @@ public class Historia implements Screen, InputProcessor
     private OrthographicCamera camara;
     private Viewport vista;
 
+    //settings
+    private Settings_save settings;
+
     //constructor
-    public Historia(itesm.mx.juego juego)
+    public Historia(itesm.mx.juego juego, Settings_save settings)
     {
         this.juego =  juego;
         this.musica = Gdx.audio.newMusic(Gdx.files.internal("c2.mp3"));
         assetManager = juego.getAssetManager();
+        this.settings=settings;
     }
 
     @Override
@@ -156,7 +160,7 @@ public class Historia implements Screen, InputProcessor
         if((temporizador - ((System.currentTimeMillis() - startTime) / 1000)) <= 0)
         {
             this.musica.stop();
-            juego.setScreen(new splashScreen(juego));
+            juego.setScreen(new Lobby(juego,settings));
         }
         batch.end();
     }
