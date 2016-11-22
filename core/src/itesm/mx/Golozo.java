@@ -66,6 +66,11 @@ public class Golozo {
             }
         }
 
+        if(estado == Estado.Perdio){
+            personaje.rotate(10);
+            personaje.setCenter(personaje.getX()+ personaje.getWidth()/2+8,personaje.getY() + personaje.getHeight()/2 + 8);
+        }
+
 
 
 

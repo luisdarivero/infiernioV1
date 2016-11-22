@@ -243,11 +243,12 @@ public class Lobby implements Screen, InputProcessor {
                         //Gula
                         this.musica.stop();
                         this.dispose();
-                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel,settings));
+                        juego.setScreen(new Gula(juego,vidas,almas,dif,escNivel,settings));
 
                         break;
                     case 7:
                         //Lujuria
+                        juego.setScreen(new NivelLujuria(juego,vidas,almas,dif,escNivel,settings));
                         this.musica.stop();
                         this.dispose();
                         break;

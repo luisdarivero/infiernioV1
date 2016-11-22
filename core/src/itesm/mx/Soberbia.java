@@ -102,12 +102,18 @@ public class Soberbia implements Screen, InputProcessor {
         this.escNivel=escNivel;
         this.settings=settings;
 
-        if(nivel<=4){
+        if(nivel==1){
             //tiempoJuego = 6-nivel;
-            tiempoJuego = 1000f;
+            tiempoJuego = 15f;
         }
-        else{
-            tiempoJuego = 1.5f;
+        else if(nivel == 2){
+            tiempoJuego = 12f;
+        }
+        else if(nivel == 3){
+            tiempoJuego = 9f;
+        }
+        else {
+            tiempoJuego = 6f;
         }
 
 

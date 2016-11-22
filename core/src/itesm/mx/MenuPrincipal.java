@@ -205,8 +205,8 @@ public class MenuPrincipal implements Screen {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
                 //juego.setScreen(new Historia(juego));
-                //juego.setScreen(new Lobby(juego,settings));
-                juego.setScreen(new Gula(juego,3,0,1, new Dificultad(),settings ));
+                juego.setScreen(new Lobby(juego,settings));
+                //juego.setScreen(new Gula(juego,1,1,1, new Dificultad(),settings ));
             }
         });
 
