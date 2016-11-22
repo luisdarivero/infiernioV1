@@ -29,6 +29,8 @@ public class Gula implements Screen,InputProcessor {
     private final float ancho = 1280;
     private final float alto = 720;
 
+
+    private float velocidad;
     //escena para la pantalla
     private Stage escena;
 
@@ -64,6 +66,10 @@ public class Gula implements Screen,InputProcessor {
     private Sprite btnSalir;
     private Estado estado;
 
+    private Sprite fondoGula;
+    private Sprite fondoGula2;
+    private Sprite piso2;
+
 
     //settings
     private Settings_save settings;
@@ -76,6 +82,8 @@ public class Gula implements Screen,InputProcessor {
         this.nivel = nivel;
         this.escNivel=escNivel;
         this.settings=settings;
+
+        velocidad = 6;
 
     }
 
@@ -130,8 +138,8 @@ public class Gula implements Screen,InputProcessor {
 
     public void cargarTexturas(){
         //assetManager.load("back.png",Texture.class);
-        assetManager.load("blank.png",Texture.class);
-        assetManager.load("instrucciones_ira.png",Texture.class);
+        assetManager.load("fire1.png",Texture.class);
+        assetManager.load("instruccionesGula.png",Texture.class);
 
 
         //bloquea hasta que se carguen las imgenes
@@ -139,8 +147,8 @@ public class Gula implements Screen,InputProcessor {
 
         //cuando termina, leemos las texturas
         //texturaback = assetManager.get("back.png");
-        texturaFondo = assetManager.get("blank.png");
-        texturaInstrucciones = assetManager.get("instrucciones_ira.png");
+        texturaFondo = assetManager.get("fire1.png");
+        texturaInstrucciones = assetManager.get("instruccionesGula.png");
 
 
 
@@ -149,7 +157,7 @@ public class Gula implements Screen,InputProcessor {
         float escalaX = ancho / imgFondo.getWidth();
         float escalaY = alto / imgFondo.getHeight();
         imgFondo.setScale(escalaX, escalaY);
-        //escena.addActor(imgFondo);
+        escena.addActor(imgFondo);
 
         imgInstrucciones = new Image(texturaInstrucciones);
         //Escalar
@@ -170,11 +178,17 @@ public class Gula implements Screen,InputProcessor {
 
         piso = new Sprite(new Texture("pisoGula.png"));
         piso.setCenter(ancho/2,piso.getHeight()/2);
+        piso2 = new Sprite(new Texture("pisoGula.png"));
+        piso2.setCenter(ancho/2+ancho,piso.getHeight()/2);
 
         golozo = new Golozo("Gula1.png","Gula2.png",235,(piso.getHeight()));
 
-        comida = new Comida("Chocolate.png","Helado.png","Chocolate.png",800,1000,ancho*.75f, piso.getY()+piso.getHeight()+25);
+        comida = new Comida("Chocolate.png","Helado.png","Chocolate.png",800,1000,ancho*.75f, piso.getY()+piso.getHeight()+25,velocidad);
 
+        fondoGula = new Sprite(new Texture("FondoGula.png"));
+        fondoGula.setCenter(2000/2,alto/2);
+        fondoGula2 = new Sprite(new Texture("FondoGula2.png"));
+        fondoGula2.setCenter(2000/2+2000,alto/2);
 
 
 
@@ -202,7 +216,7 @@ public class Gula implements Screen,InputProcessor {
             }
         }
         else {
-            escena.draw();
+            //escena.draw();
 
             //para el batch
             batch.setProjectionMatrix(camara.combined);
@@ -210,12 +224,19 @@ public class Gula implements Screen,InputProcessor {
 
             if(estado == Estado.Pausa){
                 fondoPausa.draw(batch);
+
                 btnContinuar.draw(batch);
                 btnSalir.draw(batch);
             }
             else{
+                fondoGula.draw(batch);
+                fondoGula2.draw(batch);
                 piso.draw(batch);
+                piso2.draw(batch);
                 comida.draw(batch, golozo.getSprite());
+                comida.moverImagen(piso);
+                comida.moverImagen(piso2);
+                comida.moverFondo(fondoGula,fondoGula2);
                 golozo.draw(batch);
                 btnPausa.draw(batch);
                 if(comida.isPerdio()){

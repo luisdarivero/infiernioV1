@@ -23,9 +23,10 @@ public class Comida {
     private float y;
     private float ancho;
     private float alto;
+    private float velocidad;
 
 
-    public Comida(String uno, String dos, String tres, int espacioMin, int espacioMax,float x, float y){
+    public Comida(String uno, String dos, String tres, int espacioMin, int espacioMax,float x, float y, float velocidad){
 
         this.espacioMax = espacioMax;
         this.espacioMin =  espacioMin;
@@ -48,6 +49,8 @@ public class Comida {
 
         perdio = false;
 
+        this.velocidad = velocidad;
+
     }
 
 
@@ -60,7 +63,7 @@ public class Comida {
         for(int i = 0; i<comida.length;i++){
             comida[i].draw(batch);
             if(!perdio){
-                comida[i].setCenter(comida[i].getX()+comida[i].getWidth()/2-5f,comida[i].getY()+comida[i].getHeight()/2 );
+                comida[i].setCenter(comida[i].getX()+comida[i].getWidth()/2-velocidad,comida[i].getY()+comida[i].getHeight()/2 );
             }
 
             if(personaje.getBoundingRectangle().overlaps(comida[i].getBoundingRectangle())){
@@ -163,9 +166,9 @@ public class Comida {
                     perdio = true;
                 }
                 x +=ancho;
-                y += 3;
+                y += 8;
                 ancho = 13;
-                alto -=3;
+                alto -=8;
                 r = personaje.getBoundingRectangle();
                 if( (new Rectangle(r.getX() + x,r.getY()+y,ancho,alto)).overlaps(comida[i].getBoundingRectangle())){
                     perdio = true;
@@ -209,5 +212,37 @@ public class Comida {
 
     public boolean isPerdio() {
         return perdio;
+    }
+
+    public void moverImagen(Sprite img){
+        if(!isPerdio()){
+            img.setCenter(img.getX()+(img.getWidth()/2)-velocidad,img.getY()+img.getHeight()/2);
+            if(img.getX() <= -1280){
+                img.setX(1280);
+            }
+        }
+
+    }
+
+    public void moverFondo(Sprite img, Sprite img2){
+        if(!isPerdio()){
+            img.setCenter(img.getX()+(img.getWidth()/2)-velocidad,img.getY()+img.getHeight()/2);
+            img2.setCenter(img2.getX()+(img2.getWidth()/2)-velocidad,img2.getY()+img2.getHeight()/2);
+
+            if(img.getX()<img2.getX()){
+                if(img.getX() <= -2000){
+                    img.setX(img2.getX()+2000);
+                }
+            }
+            else{
+                if(img2.getX() <= -2000){
+                    img2.setX(img.getX()+2000);
+                }
+            }
+
+
+
+        }
+
     }
 }
