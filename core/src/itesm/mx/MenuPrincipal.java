@@ -1,20 +1,17 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -35,6 +32,8 @@ public class MenuPrincipal implements Screen {
     private final int ANCHO = 1280;
     private final int ALTO = 720;
 
+
+
     //para el movimiento de particulas
     private SpriteBatch batch;
     private ParticleEffect pe;
@@ -51,6 +50,8 @@ public class MenuPrincipal implements Screen {
     private Texture texturaBtnSettings;
     private Texture texturaBtnAboutUs;
     private Sprite spriteFondo;
+
+
 
 
     //administra la carga de assets
@@ -130,8 +131,6 @@ public class MenuPrincipal implements Screen {
         //pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         pe.setPosition(ANCHO *.53f, ALTO *.1f);
 
-
-
     }
 
     public void cargarTexturas(){
@@ -205,13 +204,9 @@ public class MenuPrincipal implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.log("clicked", "TAP sobre el boton de jugar");
                 musica.stop();
-                if (settings.getHistory()){
-                    juego.setScreen(new Historia(juego, settings));
-                }else{
-                    juego.setScreen(new Lobby(juego,settings));
-                }
-
-                //juego.setScreen(new Envidia(juego,3,0,1, new Dificultad(),settings ));
+                //juego.setScreen(new Historia(juego));
+                juego.setScreen(new Lobby(juego,settings));
+                //juego.setScreen(new Gula(juego,1,1,1, new Dificultad(),settings ));
             }
         });
 
@@ -241,6 +236,8 @@ public class MenuPrincipal implements Screen {
                 juego.setScreen(new Score(juego,musica,settings));
             }
         });
+
+
     }
 
     @Override
