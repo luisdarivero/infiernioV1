@@ -40,7 +40,9 @@ public class Golozo {
     public void draw(SpriteBatch batch){
         deltaTime+= Gdx.graphics.getDeltaTime();
         personaje.draw(batch);
-        personaje.setRegion(animacion.getKeyFrame(deltaTime));
+        if(estado == Estado.Normal){
+            personaje.setRegion(animacion.getKeyFrame(deltaTime));
+        }
 
         if (estado == Estado.Saltando){
             personaje.setCenter(x,personaje.getY()+(personaje.getHeight()/2) + 5);
@@ -82,12 +84,16 @@ public class Golozo {
 
     }
 
+    public void perdio() {
+        this.estado = Estado.Perdio;
+    }
+
     public  Sprite getSprite(){
         return personaje;
     }
 
     public enum Estado{
 
-        Normal, Saltando,Estatico, Cayendo
+        Normal, Saltando,Estatico, Cayendo, Perdio
     }
 }

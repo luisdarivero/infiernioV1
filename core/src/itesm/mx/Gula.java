@@ -173,7 +173,7 @@ public class Gula implements Screen,InputProcessor {
 
         golozo = new Golozo("Gula1.png","Gula2.png",235,(piso.getHeight()));
 
-        comida = new Comida("heladoA.png","heladoB.png","heladoA.png",800,1000,ancho*.75f, piso.getY()+piso.getHeight()-25);
+        comida = new Comida("Chocolate.png","Helado.png","Chocolate.png",800,1000,ancho*.75f, piso.getY()+piso.getHeight()+25);
 
 
 
@@ -218,6 +218,9 @@ public class Gula implements Screen,InputProcessor {
                 comida.draw(batch, golozo.getSprite());
                 golozo.draw(batch);
                 btnPausa.draw(batch);
+                if(comida.isPerdio()){
+                    golozo.perdio();
+                }
             }
 
             batch.end();
