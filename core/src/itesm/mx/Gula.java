@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -82,6 +83,9 @@ public class Gula implements Screen,InputProcessor {
     //settings
     private Settings_save settings;
 
+    private final Music Musica;
+    private final Music ok;
+
     //constructor
     public Gula(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel, Settings_save settings ){
         this.juego=Juego;
@@ -121,6 +125,15 @@ public class Gula implements Screen,InputProcessor {
         }
 
         esperar = false;
+
+        this.Musica=Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+        this.ok=Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
+
+
+        if(this.settings.getMusic()){
+            Musica.setLooping(true);
+            Musica.play();
+        }
 
     }
 
@@ -336,6 +349,8 @@ public class Gula implements Screen,InputProcessor {
     public void dispose() {
         texturaFondo.dispose();
         texturaInstrucciones.dispose();
+        Musica.dispose();
+        ok.dispose();
 
     }
 
@@ -366,6 +381,7 @@ public class Gula implements Screen,InputProcessor {
 
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
+            Musica.stop();
 
             return false;
         }
@@ -373,6 +389,7 @@ public class Gula implements Screen,InputProcessor {
         if(estado == Estado.Pausa){
             if(btnContinuar.getBoundingRectangle().contains(x,y)){
                 estado = Estado.Normal;
+                Musica.play();
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){

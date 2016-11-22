@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -67,6 +68,9 @@ public class Ira implements Screen,InputProcessor {
     //settings
     private Settings_save settings;
 
+    private final Music Musica;
+    private final Music ok;
+
     //constructor
     public Ira(juego Juego, int vidas, int almas, int nivel, Dificultad escNivel,Settings_save settings ){
         assetManager = Juego.getAssetManager();
@@ -76,6 +80,15 @@ public class Ira implements Screen,InputProcessor {
         this.nivel = nivel;
         this.escNivel=escNivel;
         this.settings=settings;
+
+        this.Musica=Gdx.audio.newMusic(Gdx.files.internal("time.mp3"));
+        this.ok=Gdx.audio.newMusic(Gdx.files.internal("OK.mp3"));
+
+
+        if(this.settings.getMusic()){
+            Musica.setLooping(true);
+            Musica.play();
+        }
 
     }
 
@@ -263,6 +276,8 @@ public class Ira implements Screen,InputProcessor {
     public void dispose() {
         texturaFondo.dispose();
         texturaInstrucciones.dispose();
+        Musica.dispose();
+        ok.dispose();
         /*
         assetManager.unload("Ira.png");
         assetManager.unload("instrucciones_ira.png");
@@ -304,6 +319,7 @@ public class Ira implements Screen,InputProcessor {
 
         if(btnPausa.getBoundingRectangle().contains(x,y)){
             estado = Estado.Pausa;
+            Musica.stop();
 
             return false;
         }
@@ -311,6 +327,7 @@ public class Ira implements Screen,InputProcessor {
         if(estado == Estado.Pausa){
             if(btnContinuar.getBoundingRectangle().contains(x,y)){
                 estado = Estado.Normal;
+                Musica.play();
                 return false;
             }
             else if(btnSalir.getBoundingRectangle().contains(x,y)){
