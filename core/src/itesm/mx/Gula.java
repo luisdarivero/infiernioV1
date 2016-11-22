@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -167,6 +168,8 @@ public class Gula implements Screen,InputProcessor {
         estado = Estado.Normal;
         Gdx.input.setInputProcessor(this);
         texto = new Texto();
+
+        Gdx.input.setCatchBackKey(true);
 
 
 
@@ -356,7 +359,11 @@ public class Gula implements Screen,InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+            // Regresar al menú
+            estado=Estado.Pausa; // Cambio de pantalla
+        }
+        return true;
     }
 
     @Override
