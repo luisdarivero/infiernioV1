@@ -243,6 +243,10 @@ public class SetName implements Screen, InputProcessor, Input.TextInputListener{
                 texto = "No Name";
                 mapaP.put(texto,pointer);
             }
+            else
+            {
+                mapaP.put(texto, pointer);
+            }
         }
         Set keys = mapaP.keySet();
         ArrayList<String> keis = new ArrayList<String>(keys);

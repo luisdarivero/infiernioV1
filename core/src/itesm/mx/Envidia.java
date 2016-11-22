@@ -97,11 +97,11 @@ public class Envidia implements Screen, InputProcessor {
         this.settings=settings;
 
         if (nivel==1){
-            velocidad=0.4f;
+            velocidad=1.0f;
         }else if(nivel==2){
-            velocidad=0.8f;
+            velocidad=2.0f;
         }else{
-            velocidad=1.2f;
+            velocidad=3.0f;
         }
 
         //extras
