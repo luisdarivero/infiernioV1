@@ -17,6 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Daniel Riv on 07/10/2016.
  */
@@ -29,10 +31,13 @@ public class Gula implements Screen,InputProcessor {
     private final float ancho = 1280;
     private final float alto = 720;
 
+    private float tiempo;
 
+    private Texto texto;
     private float velocidad;
     //escena para la pantalla
     private Stage escena;
+    private boolean esperar;
 
     //administra la carga de assets
     private final AssetManager assetManager = new AssetManager();
@@ -70,6 +75,9 @@ public class Gula implements Screen,InputProcessor {
     private Sprite fondoGula2;
     private Sprite piso2;
 
+    private int min;
+    private int max;
+
 
     //settings
     private Settings_save settings;
@@ -84,6 +92,35 @@ public class Gula implements Screen,InputProcessor {
         this.settings=settings;
 
         velocidad = 6;
+        tiempo = 6;
+
+        if(nivel ==1){
+            velocidad = 6;
+            tiempo = 6;
+            min =1000;
+            max = 1500;
+
+        }
+        else if(nivel == 2){
+            velocidad = 7;
+            tiempo = 10;
+            min = 1000;
+            max = 1200;
+        }
+        else if(nivel == 3){
+            velocidad = 8;
+            tiempo = 12;
+            min = 1100;
+            max = 1150;
+        }
+        else if(nivel >=4){
+            velocidad = 9;
+            tiempo = 13;
+            min = 1200;
+            max = 1220;
+        }
+
+        esperar = false;
 
     }
 
@@ -116,6 +153,7 @@ public class Gula implements Screen,InputProcessor {
         deltaTime = 0;
         estado = Estado.Normal;
         Gdx.input.setInputProcessor(this);
+        texto = new Texto();
 
 
 
@@ -183,7 +221,7 @@ public class Gula implements Screen,InputProcessor {
 
         golozo = new Golozo("Gula1.png","Gula2.png",235,(piso.getHeight()));
 
-        comida = new Comida("Chocolate.png","Helado.png","Chocolate.png",800,1000,ancho*.75f, piso.getY()+piso.getHeight()+25,velocidad);
+        comida = new Comida("Chocolate.png","Helado.png","Chocolate.png",min,max,ancho*.75f, piso.getY()+piso.getHeight()+25,velocidad);
 
         fondoGula = new Sprite(new Texture("FondoGula.png"));
         fondoGula.setCenter(2000/2,alto/2);
@@ -223,8 +261,10 @@ public class Gula implements Screen,InputProcessor {
             batch.begin();
 
             if(estado == Estado.Pausa){
-                fondoPausa.draw(batch);
 
+                fondoGula2.draw(batch);
+                fondoPausa.draw(batch);
+                fondoGula.draw(batch);
                 btnContinuar.draw(batch);
                 btnSalir.draw(batch);
             }
@@ -238,9 +278,30 @@ public class Gula implements Screen,InputProcessor {
                 comida.moverImagen(piso2);
                 comida.moverFondo(fondoGula,fondoGula2);
                 golozo.draw(batch);
+
                 btnPausa.draw(batch);
-                if(comida.isPerdio()){
+                if(comida.isPerdio() && !esperar){
                     golozo.perdio();
+                    deltaTime = 0;
+                    esperar = true;
+                }else {
+                    if(!esperar){
+                        tiempo -= Gdx.graphics.getDeltaTime();
+                        texto.mostrarMensaje(batch,Float.toString(round(tiempo,1)),ancho*.5f, alto*.8f);
+                        if(tiempo <=0){
+                            //gano
+                            juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
+                        }
+                    }
+
+                }
+                if (esperar){
+                    deltaTime +=Gdx.graphics.getDeltaTime();
+                    System.out.println(deltaTime);
+                    if(deltaTime >1){
+                        //perdio
+                        juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
+                    }
                 }
             }
 
@@ -346,6 +407,12 @@ public class Gula implements Screen,InputProcessor {
     public enum Estado{
 
         Normal, Pausa
+    }
+
+    public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
     }
 
 }
