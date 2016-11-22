@@ -1,6 +1,7 @@
 package itesm.mx;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -83,6 +84,7 @@ public class Historia implements Screen, InputProcessor
         this.musica.play();
         this.musica.setVolume(0.4f);
         Gdx.input.setInputProcessor(this);
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void crearEscena()
@@ -205,7 +207,10 @@ public class Historia implements Screen, InputProcessor
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if (keycode== Input.Keys.BACK) {
+
+        }
+        return true;
     }
 
     @Override
