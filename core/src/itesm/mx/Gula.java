@@ -290,7 +290,8 @@ public class Gula implements Screen,InputProcessor {
                         texto.mostrarMensaje(batch,Float.toString(round(tiempo,1)),ancho*.5f, alto*.8f);
                         if(tiempo <=0){
                             //gano
-                            juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
+                            juego.setScreen(new Lobby(juego,vidas,almas+1,true,escNivel,settings));
+                            //juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
                         }
                     }
 
@@ -300,7 +301,8 @@ public class Gula implements Screen,InputProcessor {
                     System.out.println(deltaTime);
                     if(deltaTime >1){
                         //perdio
-                        juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
+                        //juego.setScreen(new Gula(juego,vidas,almas,nivel+1,escNivel,settings));
+                        juego.setScreen(new Lobby(juego,vidas,almas,false,escNivel,settings));
                     }
                 }
             }
