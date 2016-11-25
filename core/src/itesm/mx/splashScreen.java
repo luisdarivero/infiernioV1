@@ -76,6 +76,7 @@ public class splashScreen implements Screen
             }
         }
         cargarRecursos();
+        Gdx.input.setCatchBackKey(true);
     }
 
     private void cargarRecursos()
