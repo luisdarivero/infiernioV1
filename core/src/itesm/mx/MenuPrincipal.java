@@ -241,6 +241,7 @@ public class MenuPrincipal implements Screen {
             }
         });
 
+        Gdx.input.setCatchBackKey(false);
 
     }
 
