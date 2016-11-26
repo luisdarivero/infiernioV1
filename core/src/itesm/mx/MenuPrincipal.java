@@ -130,6 +130,7 @@ public class MenuPrincipal implements Screen {
         pe.load(Gdx.files.internal("particles3.party"),Gdx.files.internal(""));
         //pe.getEmitters().first().setPosition(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
         pe.setPosition(ANCHO *.53f, ALTO *.1f);
+        Gdx.input.setCatchBackKey(false);
 
     }
 
@@ -240,6 +241,7 @@ public class MenuPrincipal implements Screen {
                 juego.setScreen(new Score(juego,musica,settings));
             }
         });
+
 
 
     }
