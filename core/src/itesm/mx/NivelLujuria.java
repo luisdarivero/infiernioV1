@@ -234,6 +234,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         //avisar a batch cual es la camara
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
+        fondo.draw(batch);
         if(estado == Estado.Pausa)
         {
 
@@ -249,7 +250,7 @@ public class NivelLujuria implements Screen, InputProcessor {
         }
         else {
             //aqui se dibujan los elementos
-            fondo.draw(batch);
+
             fondo.setSizeF(10, 10);
 
 

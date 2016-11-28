@@ -43,7 +43,7 @@ public class NivelPereza implements Screen, InputProcessor {
     private Dificultad escNivel;
 
     //Toques
-    private int goal = 20+(dificultad-1);
+    private int goal = 20+((3*dificultad)-1);
 
     //Texturas
     private Texture texturafondo;
@@ -196,6 +196,7 @@ public class NivelPereza implements Screen, InputProcessor {
         //avisar a batch cual es la camara
         batch.setProjectionMatrix(camara.combined);
         batch.begin();
+        fondo.draw(batch);
         if(estado == Estado.Pausa)
         {
 
@@ -210,7 +211,7 @@ public class NivelPereza implements Screen, InputProcessor {
             }
         }
         else{
-            fondo.draw(batch);
+
             fondo.setSizeF(0, 10);
             btnPausa.draw(batch);
 
