@@ -102,27 +102,27 @@ public class Gula implements Screen,InputProcessor {
         if(nivel ==1){
             velocidad = 6;
             tiempo = 6;
-            min =1000;
-            max = 1500;
+            min =750;
+            max = 1000;
 
         }
         else if(nivel == 2){
             velocidad = 7;
             tiempo = 10;
-            min = 1000;
-            max = 1200;
+            min = 900;
+            max = 1110;
         }
         else if(nivel == 3){
-            velocidad = 8;
+            velocidad = 9;
             tiempo = 12;
-            min = 1100;
-            max = 1150;
+            min = 1150;
+            max = 1200;
         }
         else if(nivel >=4){
-            velocidad = 9;
+            velocidad = 11;
             tiempo = 13;
-            min = 1200;
-            max = 1220;
+            min = 1350;
+            max = 1450;
         }
 
         esperar = false;

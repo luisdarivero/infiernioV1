@@ -44,6 +44,7 @@ public class Comida {
 
         comida[0].setCenter(x, y + comida[0].getHeight()/2);
         for(int i=1; i<6;i++){
+            System.out.println("El random es: " + (espacioMax-espacioMin));
             comida[i].setCenter(comida[i-1].getX()+comida[i-1].getHeight()/2 +rand.nextInt(espacioMax-espacioMin)+espacioMin, y + comida[i].getHeight()/2);
         }
 
