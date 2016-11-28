@@ -122,15 +122,36 @@ public class Historia implements Screen, InputProcessor
 
     public void cambioHojas(long x)
     {
-        int[] arr = {150,300,450};
+        int[] arr = {100,200,300,400};
         if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)<=arr[0])
             f2.draw(batch);
         if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)>arr[0] &&(((x - (System.currentTimeMillis() - startTime))*(-1))%1000)<=arr[1] )
             f3.draw(batch);
         if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)>arr[1] &&(((x - (System.currentTimeMillis() - startTime))*(-1))%1000)<=arr[2] )
             f4.draw(batch);
-        if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)>arr[2])
+        if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)>arr[2]&&(((x - (System.currentTimeMillis() - startTime))*(-1))%1000)<=arr[3])
             f5.draw(batch);
+        if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)>arr[3])
+        {
+            switch(select)
+            {
+                case 6:
+                    f6.draw(batch);
+                    break;
+            }
+            switch(select)
+            {
+                case 7:
+                    f7.draw(batch);
+                    break;
+            }
+            switch(select)
+            {
+                case 8:
+                    f8.draw(batch);
+                    break;
+            }
+        }
     }
     @Override
     public void render(float delta) {
