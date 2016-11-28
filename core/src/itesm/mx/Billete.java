@@ -11,7 +11,7 @@ public class Billete{
     private Sprite sprite;
 
     //'Velocidad'
-    private float velocidad=2.5f;
+    private float velocidad=6.0f;
 
     //Estado
     private Estado estado= Estado.SUBIENDO;
