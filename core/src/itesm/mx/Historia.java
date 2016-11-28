@@ -120,7 +120,7 @@ public class Historia implements Screen, InputProcessor
         t8=new Texture("libro8.png");
     }
 
-    public void cambioHojas(long x)
+    public void cambioHojas(long x,boolean[]k)
     {
         int[] arr = {100,200,300,400};
         if((((x - (System.currentTimeMillis() - startTime))*(-1))%1000)<=arr[0])
@@ -158,24 +158,25 @@ public class Historia implements Screen, InputProcessor
         Gdx.gl.glClearColor(1,1,1,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camara.combined);
+        boolean[] k = {false, false,false,false};
         batch.begin();
         if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))>hoja1 && select ==1)
             f1.draw(batch);
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))==hoja1) {
-            cambioHojas(hoja1);
             select =6;
+            cambioHojas(hoja1,k);
         }
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))>hoja6 && select ==6)
             f6.draw(batch);
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))==hoja6){
-            cambioHojas(hoja6);
             select =7;
+            cambioHojas(hoja6,k);
         }
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))>hoja7 && select == 7)
             f7.draw(batch);
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))==hoja7){
-            cambioHojas(hoja7);
             select =8;
+            cambioHojas(hoja7,k);
         }
         else if((temporizador - ((System.currentTimeMillis() - startTime) / 1000))>hoja8 && select == 8)
             f8.draw(batch);
